@@ -246,19 +246,17 @@ def ingest_event(req: EventRequest):
     if action_dict["type"] in ("re_explain", "hint"):
         concept_obj = get_concept_by_id(concept_id) or {"name": "Fractions"}
         q_prompt = question.get("prompt", "") if question else "Explain this concept"
-        prompt = build_explain_prompt(
-            concept_name=concept_obj.get("name", "Fractions"),
-            question_prompt=q_prompt,
-            style=action_dict["style"],
-            level=action_dict["level"],
-            reasons=confusion["reasons"]
-        )
-        # LLM call through single gateway ask()
         tutor_data = ask(
-            prompt=prompt,
-            fallback_concept_id=concept_id,
-            style=action_dict["style"],
-            level=action_dict["level"]
+            "explain_concept",
+            {
+                "concept_name": concept_obj.get("name", "Fractions"),
+                "concept_id": concept_id,
+                "student_age": 10,
+                "confusion_reasons": confusion["reasons"],
+                "style": action_dict["style"],
+                "level": action_dict["level"],
+                "question_prompt": q_prompt
+            }
         )
 
     tutor_model = None
@@ -325,19 +323,17 @@ def get_explanation(req: ExplainRequest):
                 question_prompt = q.get("prompt", question_prompt)
 
     concept_obj = get_concept_by_id(concept_id) or {"name": "Fractions"}
-    prompt = build_explain_prompt(
-        concept_name=concept_obj.get("name", "Fractions"),
-        question_prompt=question_prompt,
-        style=req.style or "visual",
-        level=req.level or 1,
-        reasons=["User requested re-explanation"]
-    )
-
     res = ask(
-        prompt=prompt,
-        fallback_concept_id=concept_id,
-        style=req.style or "visual",
-        level=req.level or 1
+        "explain_concept",
+        {
+            "concept_name": concept_obj.get("name", "Fractions"),
+            "concept_id": concept_id,
+            "student_age": 10,
+            "confusion_reasons": ["User requested re-explanation"],
+            "style": req.style or "visual",
+            "level": req.level or 1,
+            "question_prompt": question_prompt
+        }
     )
 
     return ExplainResponse(
@@ -363,17 +359,14 @@ def student_chat(req: ChatRequest):
                 question_prompt = q.get("prompt", question_prompt)
 
     concept_obj = get_concept_by_id(concept_id) or {"name": "Fractions"}
-    prompt = build_chat_prompt(
-        concept_name=concept_obj.get("name", "Fractions"),
-        question_prompt=question_prompt,
-        student_message=req.message
-    )
-
     res = ask(
-        prompt=prompt,
-        fallback_concept_id=concept_id,
-        is_chat=True,
-        chat_message=req.message
+        "chat_reply",
+        {
+            "chat_history": [],
+            "concept": concept_obj.get("name", "Fractions"),
+            "concept_id": concept_id,
+            "student_message": req.message
+        }
     )
 
     return ChatResponse(
