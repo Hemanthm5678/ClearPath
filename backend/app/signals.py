@@ -1,71 +1,195 @@
-from typing import Any, Dict, List, Tuple
-from backend.app.config import settings
+"""
+Telemetric signal extraction for ClearPath cognitive detector.
+Extracts 7 passive behavioral signals:
+  1. latency_s: Total response time / dwell time in seconds.
+  2. think_time_s: Pause / hesitation duration before/between actions in seconds.
+  3. edit_count: Total edits, revisions, or backspaces.
+  4. hint_count: Total hints requested.
+  5. retry_count: Number of repeated attempts / option switches on this question.
+  6. idle_ratio: Ratio of think/idle time to total latency (think_time_s / latency_s).
+  7. recent_accuracy: Accuracy over recent attempts ([0.0, 1.0]).
+
+Strictly non-intrusive timing and counts: zero camera, zero microphone, zero personal data.
+"""
+
+from typing import Any, Dict, List, Optional, Tuple
 
 FEATURE_NAMES = [
-    "dwell_time_sec",
-    "pause_duration_sec",
+    "latency_s",
+    "think_time_s",
     "edit_count",
-    "option_switches",
-    "hint_clicks",
-    "lost_clicks",
-    "rapid_clicks",
+    "hint_count",
+    "retry_count",
+    "idle_ratio",
+    "recent_accuracy",
 ]
+
+
+def extract_signals_dict(raw_features: Dict[str, Any]) -> Dict[str, float]:
+    """
+    Parses incoming telemetry from either standard dictionary names, frontend
+    millisecond measurements, or simulated records into normalized numerical values.
+    """
+    if raw_features is None:
+        raw_features = {}
+
+    # 1. Latency (seconds)
+    if "latency_s" in raw_features:
+        latency_s = float(raw_features["latency_s"])
+    elif "dwell_time_ms" in raw_features:
+        latency_s = float(raw_features["dwell_time_ms"]) / 1000.0
+    elif "dwell_time_sec" in raw_features:
+        latency_s = float(raw_features["dwell_time_sec"])
+    else:
+        latency_s = 0.0
+
+    # 2. Think time / Pause duration (seconds)
+    if "think_time_s" in raw_features:
+        think_time_s = float(raw_features["think_time_s"])
+    elif "pause_duration_ms" in raw_features:
+        think_time_s = float(raw_features["pause_duration_ms"]) / 1000.0
+    elif "pause_duration_sec" in raw_features:
+        think_time_s = float(raw_features["pause_duration_sec"])
+    else:
+        think_time_s = 0.0
+
+    # 3. Edit count
+    edit_count = float(
+        raw_features.get("edit_count",
+        raw_features.get("backspaces", 0))
+    )
+
+    # 4. Hint count
+    hint_count = float(
+        raw_features.get("hint_count",
+        raw_features.get("hint_clicks",
+        raw_features.get("hints", 0)))
+    )
+
+    # 5. Retry count / option switches
+    retry_count = float(
+        raw_features.get("retry_count",
+        raw_features.get("retries",
+        raw_features.get("option_switches", 0)))
+    )
+
+    # 6. Idle ratio (think_time_s / latency_s, clamped to [0.0, 1.0])
+    if "idle_ratio" in raw_features:
+        idle_ratio = float(raw_features["idle_ratio"])
+    else:
+        if latency_s > 0.0:
+            idle_ratio = min(1.0, max(0.0, think_time_s / latency_s))
+        else:
+            idle_ratio = 0.0
+
+    # 7. Recent accuracy ([0.0, 1.0])
+    recent_accuracy = float(
+        raw_features.get("recent_accuracy",
+        raw_features.get("accuracy", 1.0))
+    )
+    recent_accuracy = min(1.0, max(0.0, recent_accuracy))
+
+    return {
+        "latency_s": round(max(0.0, latency_s), 2),
+        "think_time_s": round(max(0.0, think_time_s), 2),
+        "edit_count": round(max(0.0, edit_count), 2),
+        "hint_count": round(max(0.0, hint_count), 2),
+        "retry_count": round(max(0.0, retry_count), 2),
+        "idle_ratio": round(min(1.0, max(0.0, idle_ratio)), 3),
+        "recent_accuracy": round(recent_accuracy, 3),
+    }
+
+
+def generate_top_reasons(
+    signals: Dict[str, float],
+    raw_features: Optional[Dict[str, Any]] = None,
+    max_reasons: int = 3,
+) -> List[str]:
+    """
+    Identifies the top contributing behavioral factors to hesitation or confusion,
+    returning up to `max_reasons` concise plain text descriptions.
+    Example: ["25 s pause", "4 edits", "hint tapped"]
+    """
+    raw_features = raw_features or {}
+    candidates: List[Tuple[float, str]] = []
+
+    think_time = signals.get("think_time_s", 0.0)
+    latency = signals.get("latency_s", 0.0)
+    edits = signals.get("edit_count", 0.0)
+    hints = signals.get("hint_count", 0.0)
+    retries = signals.get("retry_count", 0.0)
+    idle_ratio = signals.get("idle_ratio", 0.0)
+    recent_acc = signals.get("recent_accuracy", 1.0)
+    lost_clicks = float(raw_features.get("lost_clicks", 0))
+
+    # Weight contributions based on rule heuristic importance
+    if lost_clicks > 0:
+        candidates.append((0.60, "lost button tapped"))
+
+    if think_time >= 5.0:
+        weight = 0.02 * think_time
+        candidates.append((weight, f"{int(round(think_time))} s pause"))
+    elif latency >= 20.0:
+        weight = 0.01 * latency
+        candidates.append((weight, f"{int(round(latency))} s on question"))
+
+    if edits >= 1.0:
+        weight = 0.08 * edits
+        candidates.append((weight, f"{int(round(edits))} edits"))
+
+    if hints >= 1.0:
+        weight = 0.15 * hints
+        text = "hint tapped" if hints == 1.0 else f"{int(round(hints))} hints tapped"
+        candidates.append((weight, text))
+
+    if retries >= 1.0:
+        weight = 0.15 * retries
+        text = "retry attempt" if retries == 1.0 else f"{int(round(retries))} retries"
+        candidates.append((weight, text))
+
+    if idle_ratio >= 0.65 and think_time >= 5.0:
+        candidates.append((0.10, f"high idle ({int(round(idle_ratio * 100))}%)"))
+
+    if recent_acc <= 0.4:
+        candidates.append((0.15, f"low accuracy ({int(round(recent_acc * 100))}%)"))
+
+    # Sort descending by contribution weight
+    candidates.sort(key=lambda item: item[0], reverse=True)
+
+    # Return top unique reasons
+    reasons: List[str] = []
+    seen = set()
+    for _, text in candidates:
+        if text not in seen:
+            seen.add(text)
+            reasons.append(text)
+        if len(reasons) >= max_reasons:
+            break
+
+    return reasons
+
+
+def format_reasons(reasons: List[str]) -> str:
+    """Formats reasons list as human-readable comma-separated plain text."""
+    return ", ".join(reasons)
+
 
 def extract_features(raw_features: Dict[str, Any]) -> Tuple[List[float], List[str]]:
     """
-    Transforms raw timing and count events into a clean numerical feature vector
-    and generates human-readable reason explanations.
-    Strictly timing and counts: NO camera, microphone, or PII.
+    Transforms raw timing and count events into the 7-feature numerical vector
+    and generates the top 3 plain text reasons.
     """
-    # Extract values with safe defaults
-    dwell_ms = float(raw_features.get("dwell_time_ms", 0.0))
-    pause_ms = float(raw_features.get("pause_duration_ms", 0.0))
-    edit_count = int(raw_features.get("edit_count", raw_features.get("backspaces", 0)))
-    option_switches = int(raw_features.get("option_switches", 0))
-    hint_clicks = int(raw_features.get("hint_clicks", raw_features.get("hints", 0)))
-    lost_clicks = int(raw_features.get("lost_clicks", 0))
-    rapid_clicks = int(raw_features.get("rapid_clicks", 0))
-
-    dwell_sec = round(dwell_ms / 1000.0, 1)
-    pause_sec = round(pause_ms / 1000.0, 1)
+    signals = extract_signals_dict(raw_features)
 
     feature_vector = [
-        dwell_sec,
-        pause_sec,
-        float(edit_count),
-        float(option_switches),
-        float(hint_clicks),
-        float(lost_clicks),
-        float(rapid_clicks),
+        signals["latency_s"],
+        signals["think_time_s"],
+        signals["edit_count"],
+        signals["hint_count"],
+        signals["retry_count"],
+        signals["idle_ratio"],
+        signals["recent_accuracy"],
     ]
 
-    # Generate reasons based on rule thresholds from config
-    rules = settings.RULES
-    reasons: List[str] = []
-
-    dwell_trigger_sec = rules.get("dwell_time_trigger_ms", 25000) / 1000.0
-    pause_trigger_sec = rules.get("pause_trigger_ms", 15000) / 1000.0
-
-    if pause_sec >= pause_trigger_sec:
-        reasons.append(f"{int(pause_sec)} s pause")
-    elif dwell_sec >= dwell_trigger_sec:
-        reasons.append(f"{int(dwell_sec)} s on question")
-
-    if edit_count >= rules.get("edit_count_trigger", 4):
-        reasons.append(f"{edit_count} edits")
-    elif edit_count > 1:
-        reasons.append(f"{edit_count} revisions")
-
-    if option_switches >= rules.get("option_switch_trigger", 3):
-        reasons.append(f"{option_switches} option changes")
-
-    if hint_clicks >= rules.get("hint_click_trigger", 1):
-        reasons.append("hint tapped")
-
-    if lost_clicks >= rules.get("lost_click_trigger", 1):
-        reasons.append("lost button tapped")
-
-    if rapid_clicks >= 3:
-        reasons.append(f"{rapid_clicks} rapid clicks")
-
+    reasons = generate_top_reasons(signals, raw_features=raw_features, max_reasons=3)
     return feature_vector, reasons

@@ -22,6 +22,7 @@ from backend.app.policy import (
     get_question_by_id,
     load_concepts,
     load_questions,
+    record_policy_event,
     select_next_question,
 )
 from backend.app.llm.prompts import build_chat_prompt, build_explain_prompt
@@ -173,7 +174,7 @@ def ingest_event(req: EventRequest):
         reasons.append("lost button tapped")
 
     # 2. Confusion detection (XGBoost + rule fallback)
-    confusion = detect_confusion(feature_vec, reasons)
+    confusion = detect_confusion(feature_vec, reasons, session_id=req.session_id)
 
     # 3. Retrieve session context
     concept_id = "c3_fraction_as_division"
@@ -187,6 +188,15 @@ def ingest_event(req: EventRequest):
     if req.type == "submit" and req.answer is not None and question is not None:
         is_correct = (str(req.answer).strip().lower() == str(question.get("correct_answer")).strip().lower())
         bkt.record_attempt(req.session_id, concept_id, is_correct)
+        record_policy_event(
+            session_id=req.session_id,
+            event_type="submit",
+            is_correct=is_correct,
+            confusion_score=confusion["score"],
+            question_id=req.question_id,
+            think_time_s=feature_vec[1],
+            latency_s=feature_vec[0],
+        )
 
     mastery_prob = bkt.get_mastery(req.session_id, concept_id)
     all_mastery = bkt.get_all_mastery(req.session_id)
@@ -198,7 +208,8 @@ def ingest_event(req: EventRequest):
         confusion=confusion,
         mastery_prob=mastery_prob,
         hint_tapped=hint_tapped,
-        concept_id=concept_id
+        concept_id=concept_id,
+        session_id=req.session_id,
     )
 
     # Update session in DB

@@ -26,6 +26,10 @@ if config_path.exists():
         raw_config = yaml.safe_load(f) or {}
 
 class Settings:
+    ROOT_DIR: Path = ROOT_DIR
+    BACKEND_DIR: Path = BACKEND_DIR
+    DATA_DIR: Path = DATA_DIR
+
     # Environment variables
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     DEMO_MODE: str = os.getenv("DEMO_MODE", "live")  # live | replay

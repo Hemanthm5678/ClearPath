@@ -1,88 +1,155 @@
-import json
+"""
+Confusion detector training pipeline.
+  - Loads or simulates 20,000 attempts across 4 learner profiles
+  - Splits data by learner (disjoint learner train/test sets to evaluate generalization)
+  - Trains xgboost.XGBClassifier(n_estimators=120, max_depth=3, learning_rate=0.1)
+  - Evaluates and prints F1 score and confusion matrix
+  - Compares with the rule-based heuristic fallback
+  - Saves trained model to models/detector.json
+"""
+
 import os
 from pathlib import Path
+import sys
+from typing import Tuple
 import numpy as np
+import pandas as pd
+from sklearn.metrics import classification_report, confusion_matrix, f1_score, roc_auc_score
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, accuracy_score
 import xgboost as xgb
 
-def generate_synthetic_telemetry(n_samples: int = 2000):
-    np.random.seed(42)
-    X = []
-    y = []
+# Path resolution
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT_DIR = SCRIPT_DIR.parent if (SCRIPT_DIR.name == "scripts" and (SCRIPT_DIR.parent / "backend").exists()) else SCRIPT_DIR.parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
-    # 1. Focused / Confident students (Label 0)
-    n_focused = int(n_samples * 0.45)
-    for _ in range(n_focused):
-        dwell = np.random.uniform(4.0, 18.0)
-        pause = np.random.uniform(0.5, 6.0)
-        edits = np.random.choice([0, 1, 2], p=[0.75, 0.20, 0.05])
-        switches = np.random.choice([0, 1], p=[0.85, 0.15])
-        hints = 0
-        lost = 0
-        rapid = 0
-        X.append([dwell, pause, edits, switches, hints, lost, rapid])
-        y.append(0.0)
+from backend.app.signals import FEATURE_NAMES
+from backend.app.confusion import compute_rule_score
+from backend.scripts.simulate import simulate_dataset
 
-    # 2. Hesitant students (Label ~0.5)
-    n_hesitant = int(n_samples * 0.25)
-    for _ in range(n_hesitant):
-        dwell = np.random.uniform(15.0, 35.0)
-        pause = np.random.uniform(8.0, 18.0)
-        edits = np.random.choice([1, 2, 3], p=[0.3, 0.5, 0.2])
-        switches = np.random.choice([1, 2, 3], p=[0.5, 0.4, 0.1])
-        hints = np.random.choice([0, 1], p=[0.7, 0.3])
-        lost = 0
-        rapid = np.random.choice([0, 1], p=[0.8, 0.2])
-        X.append([dwell, pause, edits, switches, hints, lost, rapid])
-        y.append(1.0 if np.random.rand() > 0.4 else 0.0)
 
-    # 3. Confused students (Label 1)
-    n_confused = n_samples - n_focused - n_hesitant
-    for _ in range(n_confused):
-        dwell = np.random.uniform(25.0, 75.0)
-        pause = np.random.uniform(16.0, 45.0)
-        edits = np.random.choice([3, 4, 5, 7], p=[0.2, 0.4, 0.3, 0.1])
-        switches = np.random.choice([2, 3, 4, 6], p=[0.2, 0.4, 0.3, 0.1])
-        hints = np.random.choice([1, 2, 3], p=[0.5, 0.3, 0.2])
-        lost = np.random.choice([0, 1], p=[0.6, 0.4])
-        rapid = np.random.choice([0, 2, 4, 6], p=[0.4, 0.3, 0.2, 0.1])
-        X.append([dwell, pause, edits, switches, hints, lost, rapid])
-        y.append(1.0)
+def load_or_simulate_data(data_path: Optional[Path] = None) -> pd.DataFrame:
+    """Loads existing 20,000 synthetic attempts or generates them."""
+    if data_path is None:
+        candidates = [
+            ROOT_DIR / "data" / "synthetic_attempts.csv",
+            ROOT_DIR / "backend" / "data" / "synthetic_attempts.csv",
+            Path("data/synthetic_attempts.csv"),
+            Path("backend/data/synthetic_attempts.csv"),
+        ]
+        for c in candidates:
+            if c.exists() and c.stat().st_size > 0:
+                data_path = c
+                break
 
-    return np.array(X), np.array(y)
+    if data_path is not None and data_path.exists():
+        print(f"Loading simulated data from {data_path}...")
+        df = pd.read_csv(data_path)
+        if len(df) >= 20000:
+            return df
 
-def train_and_save():
-    print("Generating synthetic student telemetry...")
-    X, y = generate_synthetic_telemetry(3000)
+    print("Generating fresh 20,000 simulated attempts across 4 profiles...")
+    out_file = ROOT_DIR / "data" / "synthetic_attempts.csv"
+    return simulate_dataset(total_attempts=20000, seed=42, output_path=out_file)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    dtrain = xgb.DMatrix(X_train, label=y_train)
-    dtest = xgb.DMatrix(X_test, label=y_test)
+def train_and_evaluate(
+    df: Optional[pd.DataFrame] = None,
+    test_size: float = 0.20,
+    random_seed: int = 42,
+) -> Tuple[xgb.XGBClassifier, float, np.ndarray]:
+    """
+    Executes training split by learner, prints F1 and confusion matrix,
+    and persists detector model to models/detector.json.
+    """
+    if df is None:
+        df = load_or_simulate_data()
 
-    params = {
-        "max_depth": 4,
-        "eta": 0.1,
-        "objective": "binary:logistic",
-        "eval_metric": ["logloss", "auc"],
-        "seed": 42
-    }
+    print(f"\nTotal Dataset: {len(df)} rows across {df['learner_id'].nunique()} distinct learners.")
 
-    print("Training XGBoost confusion detector...")
-    bst = xgb.train(params, dtrain, num_boost_round=60, evals=[(dtest, "test")], verbose_eval=False)
+    # 1. Split strictly by learner to prevent cross-learner leakage
+    unique_learners = df["learner_id"].unique()
+    train_learners, test_learners = train_test_split(
+        unique_learners,
+        test_size=test_size,
+        random_state=random_seed,
+    )
 
-    preds = bst.predict(dtest)
-    auc = roc_auc_score(y_test, preds)
-    acc = accuracy_score(y_test, (preds >= 0.5).astype(int))
+    train_df = df[df["learner_id"].isin(train_learners)].copy()
+    test_df = df[df["learner_id"].isin(test_learners)].copy()
 
-    print(f"Model trained successfully! Test AUC: {auc:.4f}, Accuracy: {acc:.4f}")
+    print(f"Train set: {len(train_df)} attempts ({len(train_learners)} learners)")
+    print(f"Test set:  {len(test_df)} attempts ({len(test_learners)} learners)")
 
-    models_dir = Path(__file__).resolve().parent.parent / "models"
-    models_dir.mkdir(parents=True, exist_ok=True)
-    out_path = models_dir / "detector.json"
-    bst.save_model(str(out_path))
-    print(f"Saved model to {out_path}")
+    feature_cols = FEATURE_NAMES
+    X_train = train_df[feature_cols].values
+    y_train = train_df["is_confused"].values
+    X_test = test_df[feature_cols].values
+    y_test = test_df["is_confused"].values
+
+    # 2. Instantiate XGBoost Classifier exactly as specified
+    # Model: xgboost.XGBClassifier(n_estimators=120, max_depth=3, learning_rate=0.1) on the 7 signals.
+    model = xgb.XGBClassifier(
+        n_estimators=120,
+        max_depth=3,
+        learning_rate=0.1,
+        eval_metric="logloss",
+        random_state=random_seed,
+    )
+
+    print("\nTraining XGBoost Classifier...")
+    model.fit(X_train, y_train)
+
+    # 3. Model Predictions on unseen learners
+    y_pred_proba = model.predict_proba(X_test)[:, 1]
+    y_pred = (y_pred_proba >= 0.50).astype(int)
+
+    f1 = float(f1_score(y_test, y_pred))
+    auc = float(roc_auc_score(y_test, y_pred_proba))
+    cm = confusion_matrix(y_test, y_pred)
+
+    print("=" * 60)
+    print("XGBoost Confusion Detector Evaluation (Split by Learner)")
+    print("=" * 60)
+    print(f"F1 Score:   {f1:.4f}")
+    print(f"ROC AUC:    {auc:.4f}")
+    print("\nConfusion Matrix:")
+    print(f"                  Predicted Calm (0)  Predicted Confused (1)")
+    print(f"Actual Calm (0)          {cm[0, 0]:<19} {cm[0, 1]:<20}")
+    print(f"Actual Confused (1)      {cm[1, 0]:<19} {cm[1, 1]:<20}")
+    print("-" * 60)
+    print("\nClassification Report:")
+    print(classification_report(y_test, y_pred, target_names=["Calm", "Confused"]))
+
+    # 4. Evaluate Rule Fallback Baseline on same test set
+    print("=" * 60)
+    print("Rule-Based Heuristic Fallback Evaluation")
+    print("Formula: score = clip(0.02*think_time + 0.08*edits + 0.15*hints + 0.15*retries, 0, 1)")
+    print("=" * 60)
+    rule_scores = np.array([compute_rule_score(row) for row in X_test])
+    rule_preds = (rule_scores >= 0.50).astype(int)
+    rule_f1 = float(f1_score(y_test, rule_preds))
+    rule_cm = confusion_matrix(y_test, rule_preds)
+
+    print(f"Rule Fallback F1 Score: {rule_f1:.4f}")
+    print("Rule Confusion Matrix:")
+    print(f"                  Predicted Calm (0)  Predicted Confused (1)")
+    print(f"Actual Calm (0)          {rule_cm[0, 0]:<19} {rule_cm[0, 1]:<20}")
+    print(f"Actual Confused (1)      {rule_cm[1, 0]:<19} {rule_cm[1, 1]:<20}")
+
+    # 5. Save model to models/detector.json
+    out_paths = [
+        ROOT_DIR / "models" / "detector.json",
+        ROOT_DIR / "backend" / "models" / "detector.json",
+    ]
+    for p in out_paths:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        model.save_model(str(p))
+        print(f"Successfully saved model to: {p}")
+
+    return model, f1, cm
+
 
 if __name__ == "__main__":
-    train_and_save()
+    train_and_evaluate()
