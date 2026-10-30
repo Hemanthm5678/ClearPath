@@ -1,0 +1,192 @@
+{
+  "c3_fraction_as_division": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture 3 pizzas shared by 4 friends. If you slice each of the 3 pizzas into 4 quarters, there are 12 quarters total. When distributed equally, each friend takes 3 quarters (3/4 of a pizza).",
+        "check_question": "How much pizza does each friend get?",
+        "visual_description": "Draw 3 circles (pizzas). Cut each into 4 equal slices (quarters). Give 1 slice from each pizza to each friend, giving 3 slices out of 4 to each person."
+      },
+      "level_2": {
+        "explanation": "Imagine 3 identical rectangular candy bars. Divide each candy bar into 4 equal blocks. Each friend gets one block from each candy bar. Since there are 3 candy bars, each friend holds 3 fourth-blocks: exactly 3/4 of a whole bar.",
+        "check_question": "If you had 2 candy bars shared among 3 friends, what fraction would each get?",
+        "visual_description": "Draw 3 long rectangles side by side. Draw lines splitting each into 4 segments. Color in one segment per rectangle in blue: 3 blocks out of 4-unit whole."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a fraction like a recipe shared among cooks. The numerator is what you have on the kitchen counter (3 items), and the denominator is the number of plates you must fill evenly (4 plates). Each plate receives 3/4 of an item.",
+        "check_question": "In this kitchen analogy, what does the denominator represent?",
+        "visual_description": "Imagine 3 pies lined up, with arrows pointing into 4 empty banquet plates."
+      },
+      "level_2": {
+        "explanation": "Think of a music band splitting cash earnings after a gig. If the band earned $300 and has 4 members, each gets $300 ÷ 4 = $75. Similarly, if they share 3 gold coins, each gets 3/4 of a coin.",
+        "check_question": "What mathematical operation does the fraction line '/' represent?",
+        "visual_description": "A fraction bar acting like a seesaw with total items on top and receivers balanced on the bottom."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Identify what is being shared (the items). That is 3, which becomes the numerator (top).\\nStep 2: Identify who or what is dividing the items (the recipients). That is 4, which becomes the denominator (bottom).\\nStep 3: Write it as a fraction: 3/4.",
+        "check_question": "What is the numerator in 3/4?",
+        "visual_description": "A vertical layout highlighting 'Items (3)' -> numerator over 'People (4)' -> denominator."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When you have 3 things and 4 people, no one gets a whole thing. Everyone gets a fraction: 3 divided by 4, written simply as 3/4.",
+        "check_question": "Can everyone get a whole pizza if there are only 3 pizzas for 4 people?",
+        "visual_description": "3 pizzas grouped together, with a small caption showing each person gets 3 out of 4 slices."
+      }
+    }
+  },
+  "c2_equal_parts": {
+    "visual": {
+      "level_1": {
+        "explanation": "Look at two pizzas cut into slices. Pizza A has slices of all different sizes (some huge, some tiny). Pizza B has slices that are strictly identical in size. A fraction can ONLY describe Pizza B because equal sharing requires identical slices!",
+        "check_question": "Can you use standard fractions if the slices are different sizes?",
+        "visual_description": "Two circular pizzas: one divided unevenly with jagged slices; one divided cleanly with 4 identical quadrant slices."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine sharing rent with roommates: if everyone pays for an equal share of the apartment, the bedrooms must be the same size. If one room is a master suite and one is a closet, splitting 50/50 is not fair equal partitioning!",
+        "check_question": "Why must fraction slices be equal in size?",
+        "visual_description": "A floor plan split into two equal symmetrical halves."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Inspect the whole object.\\nStep 2: Check each dividing line.\\nStep 3: Confirm that every slice has the exact same area or volume. If yes, it represents a valid fraction.",
+        "check_question": "What is the key rule for partitioning a whole into fractions?",
+        "visual_description": "A ruler checking equal width across three bar segments."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "In fractions, 'fair is fair'. All pieces must be the exact same size. If one piece is bigger than the rest, it is not an equal fraction.",
+        "check_question": "Do fraction pieces have to be the exact same size?",
+        "visual_description": "Equal balance scales weighing two pieces of cake."
+      }
+    }
+  },
+  "c1_fraction_basics": {
+    "visual": {
+      "level_1": {
+        "explanation": "Visualize a circle cut into 5 equal wedges like a clock face. If 3 wedges are colored orange and 2 are white, the fraction of orange wedges is 3/5. The denominator 5 tells us how many wedges make the entire circle.",
+        "check_question": "If 1 more wedge is colored orange, what is the new fraction?",
+        "visual_description": "A circle divided into 5 equal pie slices. 3 slices shaded orange, 2 slices white."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of an egg carton that holds 12 eggs. If 7 slots are filled, the denominator is 12 (the capacity of the container) and the numerator is 7 (the count of eggs present).",
+        "check_question": "What does the top number in a fraction tell us?",
+        "visual_description": "A carton grid of 12 spaces, with 7 eggs resting in slots."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Look at the top number (numerator). It tells you how many pieces you are counting.\\nStep 2: Look at the bottom number (denominator). It tells you how many equal pieces make up the complete whole.",
+        "check_question": "Does the denominator represent the parts you have or the whole?",
+        "visual_description": "Diagram with an arrow pointing to top 'Numerator = Parts' and bottom 'Denominator = Whole'."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "A fraction is just a part of something. The top number counts how many slices you have. The bottom number counts how many slices the whole cake was cut into.",
+        "check_question": "What is the bottom number called?",
+        "visual_description": "A slice of cake pulled out of a whole cake."
+      }
+    }
+  },
+  "c4_equivalent_fractions": {
+    "visual": {
+      "level_1": {
+        "explanation": "Look at two chocolate bars of the same size. Bar A is cut into 2 halves, and you take 1 piece (1/2). Bar B is cut into 4 quarters, and you take 2 pieces (2/4). Notice that both amounts cover the exact same area!",
+        "check_question": "Is 2/4 greater than, less than, or equal to 1/2?",
+        "visual_description": "Two identical bars side-by-side: Top bar has 1/2 shaded; bottom bar has 2/4 shaded. Both shaded lengths are identical."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of currency: one $1 bill has the exact same value as two 50-cent coins or four 25-cent quarters. They look different, but their value is identical.",
+        "check_question": "How many fourths equal one half?",
+        "visual_description": "A 1-dollar bill shown as equal to two half-dollar coins."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 × 2 = 4, so 1 × 2 = 2. The equivalent fraction is 2/4.",
+        "check_question": "What must you do to the top number if you multiply the bottom number by 3?",
+        "visual_description": "1/2 with ×2 on top and ×2 on bottom leading to 2/4."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Equivalent fractions are different ways of naming the exact same amount. Cutting a pizza into smaller slices doesn't give you more pizza!",
+        "check_question": "Does cutting pizza into more slices increase the total food you have?",
+        "visual_description": "Two pizzas of same size, one cut into 2 slices, one cut into 4 slices."
+      }
+    }
+  },
+  "c5_comparing_fractions": {
+    "visual": {
+      "level_1": {
+        "explanation": "Imagine two identical measuring cups. Cup A is filled to 2/5 and Cup B is filled to 3/5. Because both cups have fifths as their marking, Cup B with 3 parts is noticeably higher than Cup A with 2 parts.",
+        "check_question": "Between 2/5 and 3/5, which cup has more liquid?",
+        "visual_description": "Two graduated cylinders with 5 tick marks. One filled to mark 2, other filled to mark 3."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine two runners on a 5-mile track. Runner A completed 2 miles (2/5) while Runner B completed 3 miles (3/5). Runner B is further along the track.",
+        "check_question": "Why is 3/5 greater than 2/5?",
+        "visual_description": "A 5-mile road with two runners at milestone 2 and 3."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Look at the denominators. Are they the same? Yes, both are 5.\\nStep 2: Since pieces are identical in size, compare numerators: 3 > 2.\\nStep 3: Conclude that 3/5 > 2/5.",
+        "check_question": "When denominators are equal, which fraction is larger?",
+        "visual_description": "Comparing numerators 2 vs 3 over equal denominators 5."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When two fractions have the same bottom number, the slices are the same size. Having 3 slices is always more than having 2 slices!",
+        "check_question": "Which is more: 3 slices or 2 slices of the same size?",
+        "visual_description": "3 slices on a plate vs 2 slices on another plate."
+      }
+    }
+  },
+  "c6_adding_fractions": {
+    "visual": {
+      "level_1": {
+        "explanation": "Imagine a 6-slice pizza. You eat 1 slice (1/6) and your friend eats 3 slices (3/6). Together you ate 1 + 3 = 4 slices out of the 6 total slices (4/6). We can simplify 4/6 by grouping into thirds to get 2/3.",
+        "check_question": "Why didn't the denominator change to 12 when adding?",
+        "visual_description": "A pizza with 6 slices: 1 shaded blue, 3 shaded green, 2 unshaded."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "If you have 1 apple and get 3 more apples, you have 4 apples. The unit 'apple' doesn't change into 'double apples'. Similarly, 1 sixth + 3 sixths = 4 sixths.",
+        "check_question": "What is the common unit when adding 1/6 and 3/6?",
+        "visual_description": "Baskets with sixths labeled like unit items."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Check that denominators are identical (both 6).\\nStep 2: Add numerators only: 1 + 3 = 4.\\nStep 3: Keep the denominator: 4/6.\\nStep 4: Reduce to lowest terms by dividing by 2: 2/3.",
+        "check_question": "What is 4/6 divided by 2/2?",
+        "visual_description": "Fraction addition equation showing numerators adding and denominator staying constant."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When adding fractions with the same bottom number, only add the top numbers. Keep the bottom number the same!",
+        "check_question": "Do you add the bottom numbers when adding fractions?",
+        "visual_description": "Equation highlighting top numbers with a plus sign, bottom number with an arrow straight across."
+      }
+    }
+  }
+}

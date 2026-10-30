@@ -1,0 +1,146 @@
+[
+  {
+    "id": "q1_basics_1",
+    "concept_id": "c1_fraction_basics",
+    "difficulty": "easy",
+    "prompt": "In the fraction 3/5, what does the number 5 represent?",
+    "type": "multiple_choice",
+    "options": [
+      "The number of parts you currently have",
+      "The total number of equal parts that make up the whole",
+      "The parts left over after eating",
+      "The number of whole pizzas"
+    ],
+    "correct_answer": "The total number of equal parts that make up the whole",
+    "hint": "Remember: The bottom number (denominator) tells you how many equal slices the whole was divided into.",
+    "step_by_step": "1. Look at the fraction top/bottom. 2. The top is the numerator (parts counted). 3. The bottom is the denominator (total parts in the whole)."
+  },
+  {
+    "id": "q2_basics_2",
+    "concept_id": "c1_fraction_basics",
+    "difficulty": "medium",
+    "prompt": "A chocolate bar is broken into 8 equal pieces. Alex eats 3 pieces. What fraction of the chocolate bar remains?",
+    "type": "multiple_choice",
+    "options": [
+      "3/8",
+      "5/8",
+      "8/5",
+      "5/3"
+    ],
+    "correct_answer": "5/8",
+    "hint": "Check how many pieces are left over after Alex eats 3 out of the 8 pieces.",
+    "step_by_step": "1. Total pieces = 8. 2. Pieces eaten = 3. 3. Remaining pieces = 8 - 3 = 5. 4. Fraction remaining = 5/8."
+  },
+  {
+    "id": "q3_division_1",
+    "concept_id": "c3_fraction_as_division",
+    "difficulty": "easy",
+    "prompt": "Four friends want to share 3 personal pizzas equally. How much pizza does each friend get?",
+    "type": "multiple_choice",
+    "options": [
+      "3/4 of a pizza",
+      "4/3 of a pizza",
+      "1/3 of a pizza",
+      "1/4 of a pizza"
+    ],
+    "correct_answer": "3/4 of a pizza",
+    "hint": "Think of sharing: items to divide (3) goes on top, people sharing (4) goes on the bottom.",
+    "step_by_step": "1. Total pizzas = 3. 2. Total friends = 4. 3. Sharing equally means dividing: 3 ÷ 4. 4. As a fraction, 3 ÷ 4 is written as 3/4."
+  },
+  {
+    "id": "q4_division_2",
+    "concept_id": "c3_fraction_as_division",
+    "difficulty": "medium",
+    "prompt": "Which division problem is represented by the fraction 7/10?",
+    "type": "multiple_choice",
+    "options": [
+      "10 ÷ 7",
+      "7 ÷ 10",
+      "7 × 10",
+      "10 - 7"
+    ],
+    "correct_answer": "7 ÷ 10",
+    "hint": "A fraction a/b always equals numerator divided by denominator (a ÷ b).",
+    "step_by_step": "1. Look at the fraction 7/10. 2. The top number 7 is the dividend. 3. The bottom number 10 is the divisor. 4. So 7/10 = 7 ÷ 10."
+  },
+  {
+    "id": "q5_division_3",
+    "concept_id": "c3_fraction_as_division",
+    "difficulty": "hard",
+    "prompt": "If 5 liters of juice are poured equally into 2 large pitchers, how many liters are in each pitcher?",
+    "type": "multiple_choice",
+    "options": [
+      "2/5 liters",
+      "5/2 liters (or 2 1/2 liters)",
+      "3/2 liters",
+      "10 liters"
+    ],
+    "correct_answer": "5/2 liters (or 2 1/2 liters)",
+    "hint": "Divide the total liters (5) by the number of pitchers (2).",
+    "step_by_step": "1. Quantity being split = 5 liters. 2. Containers = 2. 3. Division: 5 ÷ 2 = 5/2 = 2.5 liters."
+  },
+  {
+    "id": "q6_equiv_1",
+    "concept_id": "c4_equivalent_fractions",
+    "difficulty": "easy",
+    "prompt": "Which fraction is equivalent to 1/2?",
+    "type": "multiple_choice",
+    "options": [
+      "2/3",
+      "2/4",
+      "3/5",
+      "1/4"
+    ],
+    "correct_answer": "2/4",
+    "hint": "Multiply both top and bottom of 1/2 by 2.",
+    "step_by_step": "1. Start with 1/2. 2. Multiply numerator by 2: 1 × 2 = 2. 3. Multiply denominator by 2: 2 × 2 = 4. 4. Equivalent fraction is 2/4."
+  },
+  {
+    "id": "q7_equiv_2",
+    "concept_id": "c4_equivalent_fractions",
+    "difficulty": "medium",
+    "prompt": "Find the missing number to make the fractions equivalent: 3/4 = ?/12",
+    "type": "multiple_choice",
+    "options": [
+      "6",
+      "8",
+      "9",
+      "10"
+    ],
+    "correct_answer": "9",
+    "hint": "Notice that 4 was multiplied by 3 to get 12. Do the exact same to 3 on top!",
+    "step_by_step": "1. 12 ÷ 4 = 3, so denominator was multiplied by 3. 2. Multiply numerator by 3: 3 × 3 = 9. 3. So 3/4 = 9/12."
+  },
+  {
+    "id": "q8_compare_1",
+    "concept_id": "c5_comparing_fractions",
+    "difficulty": "medium",
+    "prompt": "Which statement is true when comparing 2/5 and 3/5?",
+    "type": "multiple_choice",
+    "options": [
+      "2/5 > 3/5",
+      "2/5 = 3/5",
+      "2/5 < 3/5",
+      "Cannot be determined without a common denominator"
+    ],
+    "correct_answer": "2/5 < 3/5",
+    "hint": "When denominators are identical, the fraction with the larger numerator is bigger.",
+    "step_by_step": "1. Both fractions have denominator 5. 2. Compare numerators: 2 is less than 3. 3. Therefore, 2/5 < 3/5."
+  },
+  {
+    "id": "q9_add_1",
+    "concept_id": "c6_adding_fractions",
+    "difficulty": "medium",
+    "prompt": "What is 1/6 + 3/6 in simplest form?",
+    "type": "multiple_choice",
+    "options": [
+      "4/12",
+      "4/6",
+      "2/3",
+      "1/2"
+    ],
+    "correct_answer": "2/3",
+    "hint": "Add the numerators together keeping denominator 6: 4/6, then simplify by dividing top and bottom by 2.",
+    "step_by_step": "1. Common denominator is 6. 2. Add numerators: 1 + 3 = 4. 3. Result: 4/6. 4. Simplify: divide top and bottom by 2 -> 2/3."
+  }
+]

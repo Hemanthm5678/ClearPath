@@ -1,0 +1,36 @@
+# ClearPath Configuration
+llm:
+  # Primary model chain with fallback order
+  models:
+    - "llama-3.3-70b-versatile"
+    - "llama-3.1-8b-instant"
+  # Maximum tokens per completion
+  max_tokens: 500
+  temperature: 0.2
+  # Timeout in seconds before attempting fallback or offline bank
+  timeout_seconds: 4.0
+  # Rate limit throttle: max requests per minute per IP/session
+  rate_limit_rpm: 30
+  # Cache TTL in seconds (86400 = 24 hours)
+  cache_ttl_seconds: 86400
+
+detector:
+  # Confusion probability thresholds
+  threshold_confused: 0.70
+  threshold_hesitant: 0.40
+  # Rule fallback heuristic triggers
+  rules:
+    dwell_time_trigger_ms: 25000       # 25 seconds without submission
+    pause_trigger_ms: 15000            # 15 seconds pause between keystrokes
+    edit_count_trigger: 4              # 4 or more text edits/backspaces
+    option_switch_trigger: 3           # 3 or more option switches
+    lost_click_trigger: 1              # Tapped 'I am lost' button
+    hint_click_trigger: 1              # Tapped hint
+
+bkt:
+  # Bayesian Knowledge Tracing default parameters
+  p_l0: 0.20   # Prior probability of mastery
+  p_t: 0.15    # Transition probability (learning rate)
+  p_g: 0.20    # Guess probability (chance of getting correct without mastery)
+  p_s: 0.10    # Slip probability (chance of making mistake despite mastery)
+  mastery_threshold: 0.85
