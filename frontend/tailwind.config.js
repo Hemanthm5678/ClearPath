@@ -8,27 +8,59 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: {
+          DEFAULT: '#6A35D8',
+          50: '#f5f3ff',
+          100: '#ede9fe',
+          200: '#ddd6fe',
+          300: '#c4b5fd',
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#6A35D8',
+          700: '#5827b5',
+          800: '#471f92',
+          900: '#381974',
+        },
+        accent: {
+          DEFAULT: '#F25C1E',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#F25C1E',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
+        },
         brand: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
+          DEFAULT: '#6A35D8',
+          50: '#f5f3ff',
+          100: '#ede9fe',
+          200: '#ddd6fe',
+          300: '#c4b5fd',
+          400: '#a78bfa',
+          500: '#6A35D8',
+          600: '#6A35D8',
+          700: '#5827b5',
+          800: '#471f92',
+          900: '#381974',
         },
         confusion: {
-          focused: '#10b981',  // Emerald green
-          hesitant: '#f59e0b', // Amber
-          confused: '#ef4444', // Rose red
+          calm: '#22c55e',
+          focused: '#22c55e',
+          mild: '#84cc16',
+          uncertain: '#eab308',
+          hesitant: '#f97316',
+          confused: '#ef4444',
+          lost: '#ef4444',
         }
       },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
-        dyslexic: ['OpenDyslexic', 'Comic Sans MS', 'sans-serif'],
+        lexend: ['Lexend', 'OpenDyslexic', 'sans-serif'],
+        dyslexic: ['Lexend', 'OpenDyslexic', 'sans-serif'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

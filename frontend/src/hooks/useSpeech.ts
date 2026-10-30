@@ -1,89 +1,51 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from "react";
 
 export function useSpeech(initialRate: number = 1.0) {
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [rate, setRate] = useState(initialRate);
-  const [isSupported, setIsSupported] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      setIsSupported(true);
-    }
-  }, []);
-
   const cancel = useCallback(() => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      setIsPaused(false);
+      setSpeaking(false);
     }
   }, []);
 
   const speak = useCallback(
-    (text: string) => {
-      if (!text || typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    (text: string, customRate?: number) => {
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+        console.warn("Speech Synthesis is not supported in this browser.");
         return;
       }
 
       window.speechSynthesis.cancel();
 
-      // Clean markdown tags or bullets from text for natural speech
-      const cleanText = text.replace(/[*_#`\\]/g, ' ').replace(/\s+/g, ' ').trim();
-
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.rate = rate;
-      utterance.pitch = 1.0;
-
-      // Select friendly English voice if available
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(
-        (v) => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha'))
-      );
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
+      if (!text || text.trim() === "") {
+        setSpeaking(false);
+        return;
       }
 
-      utterance.onstart = () => {
-        setIsSpeaking(true);
-        setIsPaused(false);
-      };
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = customRate ?? rate;
+      utterance.pitch = 1.0;
 
-      utterance.onend = () => {
-        setIsSpeaking(false);
-        setIsPaused(false);
-      };
-
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-        setIsPaused(false);
-      };
+      utterance.onstart = () => setSpeaking(true);
+      utterance.onend = () => setSpeaking(false);
+      utterance.onerror = () => setSpeaking(false);
+      utterance.onpause = () => setSpeaking(false);
+      utterance.onresume = () => setSpeaking(true);
 
       utteranceRef.current = utterance;
+      setSpeaking(true);
       window.speechSynthesis.speak(utterance);
     },
     [rate]
   );
 
-  const pause = useCallback(() => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window && isSpeaking) {
-      window.speechSynthesis.pause();
-      setIsPaused(true);
-    }
-  }, [isSpeaking]);
-
-  const resume = useCallback(() => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window && isPaused) {
-      window.speechSynthesis.resume();
-      setIsPaused(false);
-    }
-  }, [isPaused]);
-
-  // Clean up speech when component unmounts
   useEffect(() => {
     return () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
     };
@@ -92,12 +54,10 @@ export function useSpeech(initialRate: number = 1.0) {
   return {
     speak,
     cancel,
-    pause,
-    resume,
-    isSpeaking,
-    isPaused,
+    stop: cancel,
+    isSpeaking: speaking,
+    speaking,
     rate,
     setRate,
-    isSupported,
   };
 }

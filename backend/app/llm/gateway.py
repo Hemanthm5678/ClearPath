@@ -43,8 +43,15 @@ logger = logging.getLogger("clearpath.gateway")
 _request_timestamps: List[float] = []
 _offline_bank: Dict[str, Any] = {}
 
-PRIMARY_MODEL = "llama-3.1-8b-instant"
-FALLBACK_MODEL = "llama-3.3-70b-versatile"
+DEFAULT_MODELS = [
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-120b",
+    "qwen/qwen3.8-27b",
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+]
+PRIMARY_MODEL = "openai/gpt-oss-20b"
+FALLBACK_MODEL = "openai/gpt-oss-120b"
 
 
 def _resolve_explanations_file() -> Path:
@@ -114,14 +121,22 @@ def get_offline_explanation(
     concept_id: str,
     style: str = "visual",
     level: Union[int, str] = 1,
+    question_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    Retrieves guaranteed offline explanation from data/explanations.json based on concept ID.
+    Retrieves guaranteed offline explanation from data/explanations.json based on question ID or concept ID.
     Ensures output JSON schema: {explanation, check_question, visual_description}.
     """
     bank = load_offline_bank()
-    cid = _normalize_concept_id(concept_id)
-    concept_entry = bank.get(cid) or bank.get("c3_fraction_as_division", {})
+    concept_entry = None
+
+    # Prioritize exact question entry in bank if available
+    if question_id and question_id in bank:
+        concept_entry = bank[question_id]
+
+    if not concept_entry:
+        cid = _normalize_concept_id(concept_id)
+        concept_entry = bank.get(cid) or bank.get("c3_fraction_as_division", {})
 
     # Map style
     style_norm = str(style).lower()
@@ -290,7 +305,7 @@ def ask(
 
     if client is not None and not _is_rate_limited():
         system_prompt, user_prompt, response_format = build_prompt_payload(prompt_name, context_dict)
-        models_to_try = [PRIMARY_MODEL, FALLBACK_MODEL]
+        models_to_try = DEFAULT_MODELS
 
         for model in models_to_try:
             try:
@@ -302,7 +317,7 @@ def ask(
                     ],
                     temperature=settings.TEMPERATURE,
                     max_tokens=settings.MAX_TOKENS,
-                    timeout=settings.TIMEOUT_SECONDS,
+                    timeout=min(6.0, settings.TIMEOUT_SECONDS),
                     response_format=response_format,
                 )
                 raw_text = completion.choices[0].message.content or "{}"
@@ -335,7 +350,7 @@ def ask(
         set_cached_llm(cache_key, prompt_name, groq_success)
         return groq_success
 
-    # 2. If rate limited or groq throws error, fetch from data/explanations.json (offline bank) based on concept ID.
+    # 2. If rate limited or groq throws error, fetch from data/explanations.json (offline bank) based on question or concept ID.
     increment_stat("offline_used")
     if prompt_name == "chat_reply":
         student_msg = str(context_dict.get("student_message") or context_dict.get("message") or "")
@@ -343,7 +358,8 @@ def ask(
     else:
         style = str(context_dict.get("style", "visual"))
         level = context_dict.get("level", 1)
-        result = get_offline_explanation(str(concept_id), style=style, level=level)
+        qid = context_dict.get("question_id")
+        result = get_offline_explanation(str(concept_id), style=style, level=level, question_id=qid)
 
     result["source"] = "offline_bank"
 
@@ -359,7 +375,7 @@ def get_health_status() -> Dict[str, Any]:
     client = get_groq_client()
     if client is not None:
         try:
-            client.models.list()
+            client.models.list(timeout=2.0)
             groq_ok = True
         except Exception:
             groq_ok = False
@@ -367,7 +383,7 @@ def get_health_status() -> Dict[str, Any]:
     return {
         "mode": settings.DEMO_MODE,
         "groq_ok": groq_ok,
-        "models": [PRIMARY_MODEL, FALLBACK_MODEL],
+        "models": DEFAULT_MODELS[:2],
         "cache_hits": stats.get("cache_hits", 0),
         "offline_used": stats.get("offline_used", 0),
     }

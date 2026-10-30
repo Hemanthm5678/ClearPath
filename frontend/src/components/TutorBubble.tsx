@@ -1,333 +1,467 @@
-import React, { useState } from 'react';
-import { TutorData } from '../types/api';
-import { 
-  Bot, 
-  Volume2, 
-  VolumeX, 
-  Eye, 
-  Lightbulb, 
-  ListOrdered, 
-  Smile, 
-  Send, 
-  CheckCircle2, 
-  XCircle,
-  Database,
-  CloudLightning,
-  Sparkles
-} from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { TutorData } from "../types/api";
+import { VisualDiagram } from "./VisualDiagram";
+import {
+  Send,
+  Volume2,
+  VolumeX,
+  Layers,
+  BookOpen,
+  ListOrdered,
+  Smile,
+  HelpCircle,
+  Cpu,
+  Bot,
+  Lightbulb,
+  CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 interface TutorBubbleProps {
-  tutor: TutorData;
+  tutor?: TutorData | null;
+  explanation?: string;
+  source?: string;
   sessionId: string;
   conceptId?: string;
-  onStyleSelect: (style: 'visual' | 'analogy' | 'step_by_step' | 'simple_language') => void;
-  currentStyle: string;
-  onSpeak: (text: string) => void;
-  isSpeaking: boolean;
-  onCancelSpeech: () => void;
+  questionId?: string;
+  currentStyle?: string;
+  onStyleSelect?: (style: "visual" | "analogy" | "step_by_step" | "simple_language") => void;
+  onSpeak?: (text: string) => void;
+  isSpeaking?: boolean;
+  onCancelSpeech?: () => void;
+  onReply?: (reply: string) => void;
+}
+
+interface ChatMessage {
+  id: string;
+  role: "tutor" | "student";
+  text: string;
+  source?: string;
 }
 
 export const TutorBubble: React.FC<TutorBubbleProps> = ({
   tutor,
+  explanation: propExplanation,
+  source: propSource,
   sessionId,
   conceptId,
+  questionId,
+  currentStyle = "visual",
   onStyleSelect,
-  currentStyle,
   onSpeak,
-  isSpeaking,
+  isSpeaking = false,
   onCancelSpeech,
+  onReply,
 }) => {
-  const [checkAnswerInput, setCheckAnswerInput] = useState('');
-  const [checkStatus, setCheckStatus] = useState<'idle' | 'correct' | 'try_again'>('idle');
+  // Normalize style ('worked' -> 'step_by_step')
+  const activeStyle = currentStyle === "worked" ? "step_by_step" : (currentStyle || "visual");
 
-  // Follow-up chat state
-  const [chatMessage, setChatMessage] = useState('');
-  const [chatReplies, setChatReplies] = useState<Array<{ sender: 'user' | 'tutor'; text: string }>>([]);
-  const [isSendingChat, setIsSendingChat] = useState(false);
+  const activeExplanation = tutor?.explanation || propExplanation || "";
+  const activeSource = tutor?.source || propSource || "offline_bank";
+  const checkQuestion = tutor?.check_question;
+  const visualDescription = tutor?.visual_description;
 
-  const handleCheckAnswer = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!checkAnswerInput.trim()) return;
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showCheckAnswer, setShowCheckAnswer] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
-    // Simple heuristic validation for demo
-    const clean = checkAnswerInput.trim().toLowerCase();
-    if (clean.includes('3/4') || clean.includes('numerator') || clean.includes('whole') || clean.includes('denominator') || clean.includes('yes') || clean.includes('no') || clean.includes('equal') || clean.includes('same')) {
-      setCheckStatus('correct');
+  // Initialize or reset chat when active explanation or question changes
+  useEffect(() => {
+    setShowCheckAnswer(false);
+    if (activeExplanation) {
+      setChatHistory([
+        {
+          id: `initial_tutor_${questionId || "curr"}_${activeStyle}_${Date.now()}`,
+          role: "tutor",
+          text: activeExplanation,
+          source: activeSource,
+        },
+      ]);
     } else {
-      setCheckStatus('try_again');
+      setChatHistory([]);
     }
-  };
+  }, [questionId, activeStyle, activeExplanation, activeSource]);
 
-  const handleSendChat = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatMessage.trim() || isSendingChat) return;
+  // Scroll to bottom of chat
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory, isLoading]);
 
-    const userText = chatMessage;
-    setChatMessage('');
-    setChatReplies((prev) => [...prev, { sender: 'user', text: userText }]);
-    setIsSendingChat(true);
+  // Handle follow-up chat submit
+  const handleSendMessage = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const msg = inputMessage.trim();
+    if (!msg || isLoading || !sessionId) return;
+
+    const userMsgId = `user_${Date.now()}`;
+    setChatHistory((prev) => [
+      ...prev,
+      { id: userMsgId, role: "student", text: msg },
+    ]);
+    setInputMessage("");
+    setIsLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_id: sessionId,
-          message: userText,
+          message: msg,
+          question_id: questionId,
         }),
       });
+
       if (res.ok) {
         const data = await res.json();
-        setChatReplies((prev) => [...prev, { sender: 'tutor', text: data.reply }]);
-        onSpeak(data.reply);
+        const replyText =
+          data.reply || "Good thinking! Try to consider how many parts fit into the whole.";
+        const replySource = data.source || "offline_bank";
+
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            id: `tutor_${Date.now()}`,
+            role: "tutor",
+            text: replyText,
+            source: replySource,
+          },
+        ]);
+
+        if (onReply) onReply(replyText);
+      } else {
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            id: `tutor_err_${Date.now()}`,
+            role: "tutor",
+            text: "I had a moment of trouble retrieving that. Could you try rephrasing your question?",
+            source: "offline_bank",
+          },
+        ]);
       }
     } catch (err) {
-      setChatReplies((prev) => [
+      setChatHistory((prev) => [
         ...prev,
         {
-          sender: 'tutor',
-          text: 'Remember: look closely at the numerator (parts you have) versus denominator (total parts in the whole).',
+          id: `tutor_err_${Date.now()}`,
+          role: "tutor",
+          text: "I'm currently running in offline fallback mode. Keep going, you're doing great!",
+          source: "offline_bank",
         },
       ]);
     } finally {
-      setIsSendingChat(false);
+      setIsLoading(false);
     }
   };
 
-  // Source badge config
-  const sourceBadges = {
-    groq: {
-      label: 'Groq LLaMA 3.3',
-      bg: 'bg-indigo-50 dark:bg-indigo-950/60',
-      text: 'text-indigo-600 dark:text-indigo-400',
-      icon: CloudLightning,
-    },
-    cache: {
-      label: 'Fast Cache Hit',
-      bg: 'bg-emerald-50 dark:bg-emerald-950/60',
-      text: 'text-emerald-600 dark:text-emerald-400',
-      icon: Sparkles,
-    },
-    offline_bank: {
-      label: 'Guaranteed Offline Bank',
-      bg: 'bg-amber-50 dark:bg-amber-950/60',
-      text: 'text-amber-600 dark:text-amber-400',
-      icon: Database,
-    },
+  const handleReadAloud = (textToRead: string) => {
+    if (isSpeaking && onCancelSpeech) {
+      onCancelSpeech();
+    } else if (onSpeak) {
+      onSpeak(textToRead);
+    }
   };
 
-  const sourceConfig = sourceBadges[tutor.source] || sourceBadges.offline_bank;
-  const SourceIcon = sourceConfig.icon;
+  const modalities = [
+    {
+      id: "visual",
+      label: "Visual Diagram",
+      icon: Layers,
+      description: "Interactive visual diagrams & models",
+    },
+    {
+      id: "analogy",
+      label: "Analogy",
+      icon: BookOpen,
+      description: "Real-world stories & relatable comparisons",
+    },
+    {
+      id: "step_by_step",
+      label: "Step-by-Step",
+      icon: ListOrdered,
+      description: "Logical sequence & calculation procedures",
+    },
+    {
+      id: "simple_language",
+      label: "Simple Language",
+      icon: Smile,
+      description: "Plain English, easy words & rules of thumb",
+    },
+  ] as const;
 
   return (
-    <div className="bg-gradient-to-b from-white to-indigo-50/40 dark:from-slate-900 dark:to-slate-900/90 rounded-2xl border-2 border-brand-200 dark:border-brand-900/50 p-6 shadow-xl relative overflow-hidden animate-slide-up">
-      {/* Top Banner & Source Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center shadow-md shadow-brand-500/20">
-            <Bot className="w-6 h-6" />
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md overflow-hidden flex flex-col">
+      {/* Header with Modality Selector */}
+      <div className="bg-slate-50 dark:bg-slate-950/60 p-3.5 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between gap-2 mb-2.5">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#6A35D8] text-white flex items-center justify-center shadow-sm shadow-[#6A35D8]/30">
+              <Bot className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                Adaptive AI Tutor
+                <span className="text-[10px] font-semibold text-[#6A35D8] bg-[#6A35D8]/10 px-2 py-0.5 rounded-full">
+                  Multimodal Scaffolding
+                </span>
+              </h3>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
-              ClearPath Adaptive Tutor
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Personalized scaffolding based on real-time cognitive cues
-            </p>
-          </div>
+
+          {/* Read Aloud button for active explanation */}
+          {activeExplanation && (
+            <button
+              type="button"
+              onClick={() => handleReadAloud(activeExplanation)}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${
+                isSpeaking
+                  ? "bg-[#F25C1E] text-white animate-pulse shadow-sm shadow-[#F25C1E]/30"
+                  : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 border border-slate-200 dark:border-slate-700"
+              }`}
+              title={isSpeaking ? "Stop reading aloud" : "Read explanation aloud"}
+            >
+              {isSpeaking ? (
+                <>
+                  <VolumeX className="w-3.5 h-3.5" />
+                  <span>Stop</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-3.5 h-3.5 text-[#6A35D8]" />
+                  <span>Read Aloud</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Source Badge */}
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${sourceConfig.bg} ${sourceConfig.text} border border-current/20`}>
-            <SourceIcon className="w-3.5 h-3.5" />
-            {sourceConfig.label}
-          </span>
-
-          {/* Text to Speech Button */}
-          <button
-            onClick={() => {
-              if (isSpeaking) {
-                onCancelSpeech();
-              } else {
-                onSpeak(`${tutor.explanation}. Check question: ${tutor.check_question}`);
-              }
-            }}
-            className={`p-2 rounded-xl flex items-center gap-1.5 text-xs font-semibold transition-all ${
-              isSpeaking
-                ? 'bg-rose-500 text-white shadow-md shadow-rose-500/30 animate-pulse'
-                : 'bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900'
-            }`}
-            title={isSpeaking ? 'Stop Voice' : 'Listen with Audio'}
-          >
-            {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-            <span>{isSpeaking ? 'Stop Voice' : 'Read Aloud'}</span>
-          </button>
-        </div>
+        {/* Modality switcher pills with clear active highlighting */}
+        {onStyleSelect && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
+            {modalities.map((m) => {
+              const Icon = m.icon;
+              const isActive = activeStyle === m.id;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => onStyleSelect(m.id)}
+                  title={m.description}
+                  className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-xl text-[11px] font-bold transition-all ${
+                    isActive
+                      ? "bg-[#6A35D8] text-white shadow-md shadow-[#6A35D8]/30 scale-[1.02]"
+                      : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 hover:text-slate-900"
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="truncate">{m.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Style Modality Selector Tabs */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-          Modality:
-        </span>
-        {[
-          { id: 'visual', label: 'Visual Diagram', icon: Eye },
-          { id: 'analogy', label: 'Real-world Analogy', icon: Lightbulb },
-          { id: 'step_by_step', label: 'Step-by-Step', icon: ListOrdered },
-          { id: 'simple_language', label: 'Simple Terms', icon: Smile },
-        ].map((tab) => {
-          const TabIcon = tab.icon;
-          const isActive = currentStyle === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => onStyleSelect(tab.id as any)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                isActive
-                  ? 'bg-brand-500 text-white shadow-md shadow-brand-500/25 scale-105'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+      {/* Main Conversation & Messages Area */}
+      <div className="p-4 space-y-3.5 max-h-[460px] overflow-y-auto">
+        {chatHistory.map((msg) => (
+          <div
+            key={msg.id}
+            className={`flex flex-col ${
+              msg.role === "tutor" ? "items-start" : "items-end"
+            }`}
+          >
+            <div
+              className={`max-w-[95%] w-full rounded-2xl px-4 py-3.5 text-sm leading-relaxed ${
+                msg.role === "tutor"
+                  ? "bg-[#f5f3ff] dark:bg-purple-950/40 text-slate-800 dark:text-slate-100 rounded-tl-sm border border-purple-100 dark:border-purple-900/50 shadow-sm"
+                  : "bg-[#fff7ed] dark:bg-orange-950/40 text-slate-900 dark:text-slate-100 rounded-tr-sm border border-orange-200 dark:border-orange-900/50"
               }`}
             >
-              <TabIcon className="w-3.5 h-3.5" />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
+              {/* Specialized Features Header per Modality */}
+              {msg.id.startsWith("initial_tutor") && (
+                <div className="mb-2.5 pb-2 border-b border-purple-200/60 dark:border-purple-800/60 flex items-center justify-between text-xs">
+                  <span className="font-extrabold text-[#6A35D8] dark:text-purple-300 flex items-center gap-1.5">
+                    {activeStyle === "visual" && <Layers className="w-3.5 h-3.5" />}
+                    {activeStyle === "analogy" && <BookOpen className="w-3.5 h-3.5" />}
+                    {activeStyle === "step_by_step" && <ListOrdered className="w-3.5 h-3.5" />}
+                    {activeStyle === "simple_language" && <Smile className="w-3.5 h-3.5" />}
+                    <span className="capitalize">
+                      {activeStyle === "step_by_step" ? "Step-by-Step Procedure" : `${activeStyle} Scaffold`}
+                    </span>
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    Targeted Guidance
+                  </span>
+                </div>
+              )}
 
-      {/* Primary Tutor Explanation */}
-      <div className="bg-white dark:bg-slate-800/90 rounded-xl p-4 border border-brand-100 dark:border-brand-900/30 mb-4 shadow-sm">
-        <p className="text-slate-800 dark:text-slate-200 text-sm leading-relaxed whitespace-pre-line font-medium">
-          {tutor.explanation}
-        </p>
-      </div>
+              {/* 1. VISUAL DIAGRAM MODALITY: Render tailored SVG Model */}
+              {msg.id.startsWith("initial_tutor") && activeStyle === "visual" && (
+                <div className="my-2.5 animate-fade-in">
+                  <VisualDiagram questionId={questionId} conceptId={conceptId} />
+                </div>
+              )}
 
-      {/* Interactive Visual Canvas / Diagram representation */}
-      {tutor.visual_description && (
-        <div className="bg-slate-900 text-white rounded-xl p-4 mb-4 border border-slate-800 shadow-inner">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-400 flex items-center gap-1.5">
-              <Eye className="w-3.5 h-3.5" />
-              Mental Model Visualizer
-            </span>
-          </div>
+              {/* 2. ANALOGY MODALITY: Metaphor Storytelling Card */}
+              {msg.id.startsWith("initial_tutor") && activeStyle === "analogy" && (
+                <div className="my-2.5 p-3 rounded-xl bg-orange-50/70 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/60 text-xs">
+                  <div className="flex items-center gap-1.5 text-[#F25C1E] font-bold mb-1">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Real-World Story Analogy</span>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-300 leading-normal">
+                    Connect this math problem to everyday life. When you share items among friends or divide portions, you are creating fractions!
+                  </p>
+                </div>
+              )}
 
-          <p className="text-xs text-slate-300 mb-3 italic">
-            "{tutor.visual_description}"
-          </p>
+              {/* 3. STEP-BY-STEP MODALITY: Structured Math Steps Checklist */}
+              {msg.id.startsWith("initial_tutor") && activeStyle === "step_by_step" && (
+                <div className="my-2.5 p-3 rounded-xl bg-purple-100/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-xs">
+                  <div className="flex items-center gap-1.5 text-[#6A35D8] font-bold mb-2">
+                    <ListOrdered className="w-3.5 h-3.5" />
+                    <span>Structured Problem-Solving Sequence</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
+                    <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
+                      1. Identify Values
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
+                      2. Set Up Fraction
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
+                      3. Solve & Simplify
+                    </div>
+                  </div>
+                </div>
+              )}
 
-          {/* Dynamic Interactive SVG Graphics for Fractions */}
-          <div className="bg-slate-950/80 rounded-lg p-3 flex flex-wrap items-center justify-center gap-4">
-            {/* 3 Pizzas Cut into Quarters */}
-            {[1, 2, 3].map((pizzaNum) => (
-              <div key={pizzaNum} className="flex flex-col items-center gap-1">
-                <svg className="w-16 h-16 drop-shadow-md" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="45" fill="#f59e0b" stroke="#d97706" strokeWidth="4" />
-                  {/* 4 Quadrant Slices */}
-                  <line x1="50" y1="5" x2="50" y2="95" stroke="#78350f" strokeWidth="2.5" />
-                  <line x1="5" y1="50" x2="95" y2="50" stroke="#78350f" strokeWidth="2.5" />
-                  {/* Pepperoni dots */}
-                  <circle cx="30" cy="30" r="4" fill="#dc2626" />
-                  <circle cx="70" cy="30" r="4" fill="#dc2626" />
-                  <circle cx="30" cy="70" r="4" fill="#dc2626" />
-                  <circle cx="70" cy="70" r="4" fill="#dc2626" />
-                </svg>
-                <span className="text-[11px] font-bold text-slate-400">Pizza #{pizzaNum}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-2 text-center text-[11px] font-mono text-emerald-400">
-            3 pizzas × 4 slices each = 12 slices total ÷ 4 friends = 3 slices each (3/4 of a pizza)
-          </div>
-        </div>
-      )}
+              {/* 4. SIMPLE LANGUAGE MODALITY: Rule of Thumb Banner */}
+              {msg.id.startsWith("initial_tutor") && activeStyle === "simple_language" && (
+                <div className="my-2.5 p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-xs">
+                  <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-300 font-bold mb-1">
+                    <Smile className="w-3.5 h-3.5" />
+                    <span>Plain English / Rule of Thumb</span>
+                  </div>
+                  <p className="text-emerald-900 dark:text-emerald-200 font-medium">
+                    "Top number = What you have. Bottom number = What makes a whole."
+                  </p>
+                </div>
+              )}
 
-      {/* Comprehension Check Question */}
-      {tutor.check_question && (
-        <div className="bg-brand-500/10 dark:bg-brand-950/40 rounded-xl p-4 border border-brand-500/20 mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-brand-500"></span>
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-700 dark:text-brand-300">
-              Quick Check Question
-            </span>
-          </div>
-          <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-3">
-            {tutor.check_question}
-          </p>
+              {/* Core Text Body */}
+              <p className="whitespace-pre-line text-slate-800 dark:text-slate-100 text-sm leading-relaxed">
+                {msg.text}
+              </p>
 
-          <form onSubmit={handleCheckAnswer} className="flex items-center gap-2">
-            <input
-              type="text"
-              value={checkAnswerInput}
-              onChange={(e) => setCheckAnswerInput(e.target.value)}
-              placeholder="Type your brief answer here..."
-              className="flex-1 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white"
-            />
-            <button
-              type="submit"
-              className="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs transition-colors"
-            >
-              Verify
-            </button>
-          </form>
+              {/* Visual description callout if tutor explanation has visual details */}
+              {msg.id.startsWith("initial_tutor") && visualDescription && activeStyle !== "visual" && (
+                <div className="mt-3 p-2.5 bg-white/80 dark:bg-slate-900/80 rounded-xl border border-purple-200 dark:border-purple-800 text-xs text-slate-600 dark:text-slate-300 flex items-start gap-2">
+                  <Layers className="w-4 h-4 text-[#6A35D8] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-slate-700 dark:text-slate-200 block text-[11px]">
+                      Mental Model Diagram:
+                    </span>
+                    <span>{visualDescription}</span>
+                  </div>
+                </div>
+              )}
 
-          {checkStatus === 'correct' && (
-            <div className="flex items-center gap-2 mt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 animate-fade-in">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Spot on! You’ve got the core concept nailed.</span>
+              {/* Interactive Check Question Feature */}
+              {msg.id.startsWith("initial_tutor") && checkQuestion && (
+                <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 font-bold text-emerald-800 dark:text-emerald-300">
+                      <HelpCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                      <span>Comprehension Check:</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowCheckAnswer(!showCheckAnswer)}
+                      className="text-[10px] font-bold text-emerald-700 hover:text-emerald-900 dark:text-emerald-400 flex items-center gap-0.5"
+                    >
+                      <span>{showCheckAnswer ? "Hide Reflection" : "Check Understanding"}</span>
+                      {showCheckAnswer ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                    </button>
+                  </div>
+                  <p className="mt-1 font-medium">{checkQuestion}</p>
+
+                  {showCheckAnswer && (
+                    <div className="mt-2 pt-2 border-t border-emerald-200 dark:border-emerald-800/60 text-[11px] text-emerald-800 dark:text-emerald-300 animate-fade-in flex items-start gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <span>
+                        Think through how the parts relate to the whole. You can type your answer in the box below to ask the tutor!
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Source Badge & Inline Listen */}
+              {msg.source && (
+                <div className="mt-2.5 pt-2 border-t border-purple-100/60 dark:border-purple-900/40 flex items-center justify-between text-[10px] text-slate-400">
+                  <span className="inline-flex items-center gap-1 font-mono">
+                    <Cpu className="w-3 h-3 text-[#6A35D8]" />
+                    Source: {msg.source}
+                  </span>
+                  {msg.role === "tutor" && (
+                    <button
+                      type="button"
+                      onClick={() => handleReadAloud(msg.text)}
+                      className="hover:text-slate-700 dark:hover:text-slate-200 text-[10px] font-medium flex items-center gap-1 ml-2 text-slate-500"
+                    >
+                      <Volume2 className="w-3 h-3 text-[#6A35D8]" />
+                      Listen
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
-          )}
-          {checkStatus === 'try_again' && (
-            <div className="flex items-center gap-2 mt-2 text-xs font-semibold text-amber-600 dark:text-amber-400 animate-fade-in">
-              <XCircle className="w-4 h-4" />
-              <span>Good try! Think of how 3 items divide into 4 equal shares (3/4).</span>
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        ))}
 
-      {/* Follow-up Chat with Tutor */}
-      <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
-        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">
-          Ask a Follow-Up Question
-        </span>
-
-        {chatReplies.length > 0 && (
-          <div className="space-y-2 mb-3 max-h-40 overflow-y-auto pr-1">
-            {chatReplies.map((c, i) => (
-              <div
-                key={i}
-                className={`text-xs p-2.5 rounded-xl ${
-                  c.sender === 'user'
-                    ? 'bg-brand-500 text-white ml-6 text-right'
-                    : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 mr-6 border border-slate-200 dark:border-slate-700'
-                }`}
-              >
-                {c.text}
-              </div>
-            ))}
+        {/* Loading Thinking Indicator */}
+        {isLoading && (
+          <div className="flex items-center gap-2 text-xs text-slate-500 italic p-2 animate-pulse">
+            <span className="w-2 h-2 rounded-full bg-[#6A35D8]"></span>
+            <span>Tutor is formulating pedagogical response...</span>
           </div>
         )}
 
-        <form onSubmit={handleSendChat} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={chatMessage}
-            onChange={(e) => setChatMessage(e.target.value)}
-            placeholder="Still unsure? Type: 'Why isn't it 4/3?' or anything else..."
-            className="flex-1 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white"
-          />
-          <button
-            type="submit"
-            disabled={isSendingChat || !chatMessage.trim()}
-            className="p-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white disabled:opacity-50 transition-colors"
-          >
-            <Send className="w-4 h-4" />
-          </button>
-        </form>
+        <div ref={chatEndRef} />
       </div>
+
+      {/* Input area for student follow-up questions (marked with data-chat-input to avoid polluting problem edits) */}
+      <form
+        onSubmit={handleSendMessage}
+        className="p-3 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2"
+      >
+        <input
+          type="text"
+          data-chat-input="true"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          placeholder="Ask a follow-up question or ask for another example..."
+          disabled={isLoading}
+          className="flex-1 px-3.5 py-2 rounded-xl text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-[#6A35D8] text-slate-900 dark:text-white"
+        />
+        <button
+          type="submit"
+          disabled={isLoading || !inputMessage.trim()}
+          className="px-3.5 py-2 rounded-xl text-white text-xs font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-95 shadow-sm shadow-[#6A35D8]/25 flex items-center gap-1.5"
+          style={{ backgroundColor: "#6A35D8" }}
+        >
+          <Send className="w-3.5 h-3.5" />
+          <span>Reply</span>
+        </button>
+      </form>
     </div>
   );
 };
+
+export default TutorBubble;

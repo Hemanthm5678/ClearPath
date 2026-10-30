@@ -1,4 +1,4 @@
-export type ConfusionState = 'focused' | 'hesitant' | 'confused';
+export type ConfusionState = 'calm' | 'focused' | 'mild' | 'uncertain' | 'hesitant' | 'confused' | 'lost' | string;
 
 export interface ConfusionData {
   score: number;
@@ -9,21 +9,21 @@ export interface ConfusionData {
 export interface ActionWhy {
   signals: string[];
   decision: string;
-  prereq: string | null;
+  prereq?: string | null;
 }
 
 export interface ActionData {
-  type: 'continue' | 'hint' | 're_explain' | 'prereq_scaffold' | 'encourage';
-  style: 'visual' | 'analogy' | 'step_by_step' | 'simple_language' | 'none';
-  level: number;
+  type: 'continue' | 'hint' | 're_explain' | 'prereq_scaffold' | 'encourage' | 'break' | string;
+  style?: 'visual' | 'analogy' | 'step_by_step' | 'simple_language' | 'none' | string;
+  level?: number;
   why: ActionWhy;
 }
 
 export interface TutorData {
   explanation: string;
-  check_question: string;
-  visual_description: string;
-  source: 'groq' | 'cache' | 'offline_bank';
+  check_question?: string;
+  visual_description?: string;
+  source: 'groq' | 'cache' | 'offline_bank' | string;
 }
 
 export interface EventResponse {
@@ -36,9 +36,9 @@ export interface EventResponse {
 export interface Question {
   id: string;
   concept_id: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'easy' | 'medium' | 'hard' | string;
   prompt: string;
-  type: 'multiple_choice' | 'numeric';
+  type: 'multiple_choice' | 'numeric' | string;
   options?: string[];
   correct_answer: string;
   hint?: string;
@@ -79,8 +79,8 @@ export interface ChatResponse {
 
 export interface HeatmapCell {
   confusion: number;
-  state: ConfusionState;
   why: string;
+  state?: ConfusionState;
 }
 
 export interface StudentSummary {

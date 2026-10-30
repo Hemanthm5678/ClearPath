@@ -1,18 +1,23 @@
 import sqlite3
 import json
 import time
+from contextlib import contextmanager
 from typing import Any, Dict, List, Optional
 from backend.app.config import settings
 
-def get_connection() -> sqlite3.Connection:
-    conn = sqlite3.connect(str(settings.DB_PATH), timeout=30.0)
-    conn.execute("PRAGMA journal_mode=WAL;")
+@contextmanager
+def get_connection():
+    conn = sqlite3.connect(str(settings.DB_PATH), timeout=10.0)
     conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 def init_db() -> None:
     settings.DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     with get_connection() as conn:
+        conn.execute("PRAGMA journal_mode=WAL;")
         cursor = conn.cursor()
         
         # Sessions

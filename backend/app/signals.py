@@ -34,47 +34,51 @@ def extract_signals_dict(raw_features: Dict[str, Any]) -> Dict[str, float]:
         raw_features = {}
 
     # 1. Latency (seconds)
-    if "latency_s" in raw_features:
+    if "latency_s" in raw_features and raw_features["latency_s"] is not None:
         latency_s = float(raw_features["latency_s"])
-    elif "dwell_time_ms" in raw_features:
+    elif "dwell_time_ms" in raw_features and raw_features["dwell_time_ms"] is not None:
         latency_s = float(raw_features["dwell_time_ms"]) / 1000.0
-    elif "dwell_time_sec" in raw_features:
+    elif "dwell_time_sec" in raw_features and raw_features["dwell_time_sec"] is not None:
         latency_s = float(raw_features["dwell_time_sec"])
+    elif "idle_time" in raw_features and raw_features["idle_time"] is not None:
+        latency_s = float(raw_features["idle_time"])
     else:
         latency_s = 0.0
 
     # 2. Think time / Pause duration (seconds)
-    if "think_time_s" in raw_features:
+    if "think_time_s" in raw_features and raw_features["think_time_s"] is not None:
         think_time_s = float(raw_features["think_time_s"])
-    elif "pause_duration_ms" in raw_features:
+    elif "pause_duration_ms" in raw_features and raw_features["pause_duration_ms"] is not None:
         think_time_s = float(raw_features["pause_duration_ms"]) / 1000.0
-    elif "pause_duration_sec" in raw_features:
+    elif "pause_duration_sec" in raw_features and raw_features["pause_duration_sec"] is not None:
         think_time_s = float(raw_features["pause_duration_sec"])
+    elif "idle_time" in raw_features and raw_features["idle_time"] is not None:
+        think_time_s = float(raw_features["idle_time"])
     else:
         think_time_s = 0.0
 
     # 3. Edit count
     edit_count = float(
-        raw_features.get("edit_count",
-        raw_features.get("backspaces", 0))
+        raw_features.get("edit_count") or
+        raw_features.get("backspaces") or 0.0
     )
 
     # 4. Hint count
     hint_count = float(
-        raw_features.get("hint_count",
-        raw_features.get("hint_clicks",
-        raw_features.get("hints", 0)))
+        raw_features.get("hint_count") or
+        raw_features.get("hint_clicks") or
+        raw_features.get("hints") or 0.0
     )
 
     # 5. Retry count / option switches
     retry_count = float(
-        raw_features.get("retry_count",
-        raw_features.get("retries",
-        raw_features.get("option_switches", 0)))
+        raw_features.get("retry_count") or
+        raw_features.get("retries") or
+        raw_features.get("option_switches") or 0.0
     )
 
     # 6. Idle ratio (think_time_s / latency_s, clamped to [0.0, 1.0])
-    if "idle_ratio" in raw_features:
+    if "idle_ratio" in raw_features and raw_features["idle_ratio"] is not None:
         idle_ratio = float(raw_features["idle_ratio"])
     else:
         if latency_s > 0.0:
@@ -83,10 +87,19 @@ def extract_signals_dict(raw_features: Dict[str, Any]) -> Dict[str, float]:
             idle_ratio = 0.0
 
     # 7. Recent accuracy ([0.0, 1.0])
-    recent_accuracy = float(
-        raw_features.get("recent_accuracy",
-        raw_features.get("accuracy", 1.0))
-    )
+    if "recent_accuracy" in raw_features and raw_features["recent_accuracy"] is not None:
+        recent_accuracy = float(raw_features["recent_accuracy"])
+    elif "accuracy" in raw_features and raw_features["accuracy"] is not None:
+        recent_accuracy = float(raw_features["accuracy"])
+    else:
+        # Infer from retries and lost clicks if not explicitly passed
+        lost = float(raw_features.get("lost_clicks") or 0.0)
+        if lost > 0 or retry_count >= 2:
+            recent_accuracy = 0.0
+        elif retry_count == 1:
+            recent_accuracy = 0.5
+        else:
+            recent_accuracy = 1.0
     recent_accuracy = min(1.0, max(0.0, recent_accuracy))
 
     return {

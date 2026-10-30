@@ -101,7 +101,7 @@
       "level_3": {
         "explanation": "Area conservation in partitioning: Even if pieces have different geometric shapes (like triangles and rectangles), they represent equal fractions only if their calculated areas are strictly identical.",
         "check_question": "Can two differently shaped pieces both represent 1/4 of the same whole?",
-        "visual_description": "A square partitioned into two triangles and two rectangles, each verified with equal computed area of 4 cm²."
+        "visual_description": "A square partitioned into two triangles and two rectangles, each verified with equal computed area of 4 cm\u00b2."
       }
     },
     "analogy": {
@@ -186,7 +186,7 @@
         "visual_description": "Draw 3 long rectangles side by side. Draw lines splitting each into 4 segments. Color in one segment per rectangle in blue: 3 blocks out of 4-unit whole."
       },
       "level_3": {
-        "explanation": "On a number line spanning [0, 3], divide the entire length into 4 equal segments. Each segment has length 3/4 (0.75). The fraction bar directly represents the algebraic division operator: a/b is identical to a ÷ b.",
+        "explanation": "On a number line spanning [0, 3], divide the entire length into 4 equal segments. Each segment has length 3/4 (0.75). The fraction bar directly represents the algebraic division operator: a/b is identical to a \u00f7 b.",
         "check_question": "What is the length of each segment when the interval [0, 5] is divided into 2 equal parts?",
         "visual_description": "A continuous number line from 0 to 3 divided into 4 equal intervals of length 3/4."
       }
@@ -198,7 +198,7 @@
         "visual_description": "Imagine 3 pies lined up, with arrows pointing into 4 empty banquet plates."
       },
       "level_2": {
-        "explanation": "Think of a music band splitting cash earnings after a gig. If the band earned $300 and has 4 members, each gets $300 ÷ 4 = $75. Similarly, if they share 3 gold coins, each gets 3/4 of a coin.",
+        "explanation": "Think of a music band splitting cash earnings after a gig. If the band earned $300 and has 4 members, each gets $300 \u00f7 4 = $75. Similarly, if they share 3 gold coins, each gets 3/4 of a coin.",
         "check_question": "What mathematical operation does the fraction line '/' represent?",
         "visual_description": "A fraction bar acting like a seesaw with total items on top and receivers balanced on the bottom."
       },
@@ -215,9 +215,9 @@
         "visual_description": "A vertical layout highlighting 'Items (3)' -> numerator over 'People (4)' -> denominator."
       },
       "level_2": {
-        "explanation": "Step 1: State the division problem: a ÷ b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 ÷ 4 = 3/4.",
+        "explanation": "Step 1: State the division problem: a \u00f7 b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 \u00f7 4 = 3/4.",
         "check_question": "How do you write 5 divided by 8 as a fraction?",
-        "visual_description": "An arrow transforming 3 ÷ 4 directly into the fraction 3/4."
+        "visual_description": "An arrow transforming 3 \u00f7 4 directly into the fraction 3/4."
       },
       "level_3": {
         "explanation": "Step 1: Set up quotient equation: q = a / b.\\nStep 2: Recognize that for any integers a and b (b != 0), a/b is the exact value that satisfies q * b = a.\\nStep 3: Verify: (3/4) * 4 = 3.",
@@ -232,9 +232,9 @@
         "visual_description": "A vertical layout highlighting 'Items (3)' -> numerator over 'People (4)' -> denominator."
       },
       "level_2": {
-        "explanation": "Step 1: State the division problem: a ÷ b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 ÷ 4 = 3/4.",
+        "explanation": "Step 1: State the division problem: a \u00f7 b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 \u00f7 4 = 3/4.",
         "check_question": "How do you write 5 divided by 8 as a fraction?",
-        "visual_description": "An arrow transforming 3 ÷ 4 directly into the fraction 3/4."
+        "visual_description": "An arrow transforming 3 \u00f7 4 directly into the fraction 3/4."
       },
       "level_3": {
         "explanation": "Step 1: Set up quotient equation: q = a / b.\\nStep 2: Recognize that for any integers a and b (b != 0), a/b is the exact value that satisfies q * b = a.\\nStep 3: Verify: (3/4) * 4 = 3.",
@@ -251,7 +251,7 @@
       "level_2": {
         "explanation": "The fraction line is just another way to write a division sign. 3/4 literally means 3 divided by 4.",
         "check_question": "What sign does the middle line in a fraction stand for?",
-        "visual_description": "A division sign ÷ transforming into a fraction bar."
+        "visual_description": "A division sign \u00f7 transforming into a fraction bar."
       },
       "level_3": {
         "explanation": "Whenever division doesn't give a whole number, fractions give the exact answer without needing messy rounded decimals.",
@@ -297,34 +297,34 @@
     },
     "worked": {
       "level_1": {
-        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 × 2 = 4, so 1 × 2 = 2. The equivalent fraction is 2/4.",
+        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 \u00d7 2 = 4, so 1 \u00d7 2 = 2. The equivalent fraction is 2/4.",
         "check_question": "What must you do to the top number if you multiply the bottom number by 3?",
-        "visual_description": "1/2 with ×2 on top and ×2 on bottom leading to 2/4."
+        "visual_description": "1/2 with \u00d72 on top and \u00d72 on bottom leading to 2/4."
       },
       "level_2": {
         "explanation": "Step 1: To find an equivalent fraction for 3/5 with denominator 15, divide 15 by 5 = 3.\\nStep 2: Multiply numerator 3 by 3 = 9.\\nStep 3: Write 9/15. Therefore, 3/5 = 9/15.",
         "check_question": "What is the equivalent fraction for 2/3 with denominator 12?",
-        "visual_description": "Step-by-step arrows showing 5 × 3 = 15 and 3 × 3 = 9."
+        "visual_description": "Step-by-step arrows showing 5 \u00d7 3 = 15 and 3 \u00d7 3 = 9."
       },
       "level_3": {
-        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 ÷ 4 = 3.\\nStep 3: Divide denominator by 4: 16 ÷ 4 = 4.\\nStep 4: Result is 3/4.",
+        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 \u00f7 4 = 3.\\nStep 3: Divide denominator by 4: 16 \u00f7 4 = 4.\\nStep 4: Result is 3/4.",
         "check_question": "What is 8/10 in simplest form?",
         "visual_description": "Division arrows showing top and bottom divided by GCD 4 to yield 3/4."
       }
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 × 2 = 4, so 1 × 2 = 2. The equivalent fraction is 2/4.",
+        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 \u00d7 2 = 4, so 1 \u00d7 2 = 2. The equivalent fraction is 2/4.",
         "check_question": "What must you do to the top number if you multiply the bottom number by 3?",
-        "visual_description": "1/2 with ×2 on top and ×2 on bottom leading to 2/4."
+        "visual_description": "1/2 with \u00d72 on top and \u00d72 on bottom leading to 2/4."
       },
       "level_2": {
         "explanation": "Step 1: To find an equivalent fraction for 3/5 with denominator 15, divide 15 by 5 = 3.\\nStep 2: Multiply numerator 3 by 3 = 9.\\nStep 3: Write 9/15. Therefore, 3/5 = 9/15.",
         "check_question": "What is the equivalent fraction for 2/3 with denominator 12?",
-        "visual_description": "Step-by-step arrows showing 5 × 3 = 15 and 3 × 3 = 9."
+        "visual_description": "Step-by-step arrows showing 5 \u00d7 3 = 15 and 3 \u00d7 3 = 9."
       },
       "level_3": {
-        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 ÷ 4 = 3.\\nStep 3: Divide denominator by 4: 16 ÷ 4 = 4.\\nStep 4: Result is 3/4.",
+        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 \u00f7 4 = 3.\\nStep 3: Divide denominator by 4: 16 \u00f7 4 = 4.\\nStep 4: Result is 3/4.",
         "check_question": "What is 8/10 in simplest form?",
         "visual_description": "Division arrows showing top and bottom divided by GCD 4 to yield 3/4."
       }
@@ -394,9 +394,9 @@
         "visual_description": "A comparison chart showing inverse relation between denominator and piece size."
       },
       "level_3": {
-        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a × d with b × c.\\nStep 2: For 3/5 and 4/7: 3 × 7 = 21 and 5 × 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
+        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a \u00d7 d with b \u00d7 c.\\nStep 2: For 3/5 and 4/7: 3 \u00d7 7 = 21 and 5 \u00d7 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
         "check_question": "Using cross-multiplication, is 2/3 greater than 3/5?",
-        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3×7=21 on left and 5×4=20 on right."
+        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3\u00d77=21 on left and 5\u00d74=20 on right."
       }
     },
     "step_by_step": {
@@ -411,9 +411,9 @@
         "visual_description": "A comparison chart showing inverse relation between denominator and piece size."
       },
       "level_3": {
-        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a × d with b × c.\\nStep 2: For 3/5 and 4/7: 3 × 7 = 21 and 5 × 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
+        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a \u00d7 d with b \u00d7 c.\\nStep 2: For 3/5 and 4/7: 3 \u00d7 7 = 21 and 5 \u00d7 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
         "check_question": "Using cross-multiplication, is 2/3 greater than 3/5?",
-        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3×7=21 on left and 5×4=20 on right."
+        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3\u00d77=21 on left and 5\u00d74=20 on right."
       }
     },
     "simple_language": {
@@ -518,6 +518,276 @@
         "explanation": "You can only add fractions if their slice sizes match. If bottom numbers are different, change them to matching slices first, then add the tops.",
         "check_question": "What must match before you can add fraction numerators?",
         "visual_description": "Two unequal puzzle pieces being sliced so they fit together."
+      }
+    }
+  },
+  "q1_basics_1": {
+    "visual": {
+      "level_1": {
+        "explanation": "Look closely at 3/5. Picture a chocolate bar cut into 5 equal pieces in total. You are holding 3 of them. The bottom number 5 is the denominator\u2014it always represents the total number of equal parts that make up the whole.",
+        "check_question": "What does the top number 3 count in 3/5?",
+        "visual_description": "A rectangle divided into 5 equal squares. 3 squares are highlighted purple, and 2 squares are empty, showing 5 total parts in the whole."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a basketball team with 5 players on the court. If 3 players are wearing purple jerseys, 3/5 of the team has purple jerseys. The 5 is the entire team on the floor, while 3 is the group wearing purple.",
+        "check_question": "Why is the total team count placed on the bottom?",
+        "visual_description": "5 player silhouettes on a court; 3 colored in vibrant purple and 2 in gray."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: In any fraction, identify the top number (numerator) and bottom number (denominator).\\nStep 2: The numerator (3) tells you how many parts you have.\\nStep 3: The denominator (5) tells you the total number of equal parts that make up the complete whole.",
+        "check_question": "Is the total number of parts on the top or the bottom?",
+        "visual_description": "Diagram showing 3 labeled as Numerator (Parts Counted) and 5 labeled as Denominator (Total Equal Parts in Whole)."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "The bottom number 5 is called the denominator. It simply counts how many equal parts the whole thing was sliced into.",
+        "check_question": "Does 5 mean parts you have, or total parts in the whole?",
+        "visual_description": "A whole divided into 5 equal slices."
+      }
+    }
+  },
+  "q2_basics_2": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture a chocolate bar with 8 equal pieces. If Alex eats 3 pieces, take them away. That leaves 8 - 3 = 5 pieces remaining out of the 8 total pieces. So 5/8 of the bar remains.",
+        "check_question": "If Alex ate 4 pieces instead, what fraction would remain?",
+        "visual_description": "A chocolate bar grid of 8 squares (2x4). 3 squares have bite marks (eaten), leaving 5 intact chocolate squares (5/8 remaining)."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine a pizza box with 8 slices. If 3 slices get eaten at lunch, count what is left in the box for dinner: 5 slices. So 5 out of 8 slices (5/8) remain.",
+        "check_question": "How many slices were in the whole pizza initially?",
+        "visual_description": "A round pizza with 3 missing slices and 5 slices still in the box."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Find the total number of pieces: 8 pieces.\\nStep 2: Subtract the eaten pieces: 8 - 3 = 5 pieces remaining.\\nStep 3: Form the remaining fraction: Remaining pieces over Total pieces = 5/8.",
+        "check_question": "Why is the answer 5/8 and not 3/8?",
+        "visual_description": "Subtraction equation: 8 total - 3 eaten = 5 remaining, leading to 5/8."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Alex starts with 8 pieces and eats 3. 8 minus 3 is 5. So 5 pieces are left out of 8, which is 5/8.",
+        "check_question": "What does the 5 in 5/8 tell us?",
+        "visual_description": "5 shiny chocolate pieces remaining out of 8."
+      }
+    }
+  },
+  "q3_division_1": {
+    "visual": {
+      "level_1": {
+        "explanation": "Take the 3 personal pizzas. Slice each pizza into 4 equal quarters (total 12 quarters). Distribute the quarters equally among the 4 friends. Each friend gets 3 quarters, which is 3/4 of a pizza.",
+        "check_question": "If there were 5 pizzas shared among 4 friends, how much would each get?",
+        "visual_description": "3 circular pizzas, each divided into 4 quarters. Arrows show 3 quarters heading to each friend plate, totaling 3/4."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a fraction bar as a sharing symbol. The items to be shared (3 pizzas) sit on top as the numerator. The number of people sharing (4 friends) sits on the bottom as the denominator. Sharing 3 items among 4 people gives 3/4.",
+        "check_question": "In 3/4, does 3 represent the friends or the pizzas?",
+        "visual_description": "3 pizzas sitting above a dividing table with 4 waiting friends below."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Identify what is being divided: 3 pizzas (dividend).\\nStep 2: Identify how many groups or people are sharing: 4 friends (divisor).\\nStep 3: Write the division as a fraction: 3 \u00f7 4 = 3/4 of a pizza.",
+        "check_question": "What operation connects 3 items shared among 4 people?",
+        "visual_description": "Mathematical formula showing: Items (3) \u00f7 Sharers (4) = 3/4."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When 4 friends share 3 pizzas, each person gets less than 1 whole pizza. They each get 3 out of 4 pieces, which is 3/4.",
+        "check_question": "Does each friend get more or less than 1 whole pizza?",
+        "visual_description": "A plate with 3 quarters of pizza."
+      }
+    }
+  },
+  "q4_division_2": {
+    "visual": {
+      "level_1": {
+        "explanation": "In the fraction 7/10, the horizontal fraction bar literally means division (\u00f7). The top number 7 is divided by the bottom number 10. That means 7/10 is exactly 7 \u00f7 10.",
+        "check_question": "What division problem does 4/5 represent?",
+        "visual_description": "A diagram showing 7/10 with an arrow pointing from the line to a \u00f7 sign, transforming 7/10 into 7 \u00f7 10."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine sharing  equally among 10 students. You take the  you have and divide it among 10 people: 7 \u00f7 10. Each student receives 7/10 of a dollar (70 cents).",
+        "check_question": "In 7 \u00f7 10, which number goes on top of the fraction?",
+        "visual_description": "7 one-dollar bills being split evenly across 10 piggy banks, representing 7 \u00f7 10 = 7/10."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: In any fraction a/b, the numerator (a) is the number being divided (dividend).\\nStep 2: The denominator (b) is the number dividing it (divisor).\\nStep 3: Replace the fraction bar with the division sign \u00f7 : 7/10 = 7 \u00f7 10.",
+        "check_question": "Why is 7/10 equal to 7 \u00f7 10 and NOT 10 \u00f7 7?",
+        "visual_description": "Comparison showing: Numerator 7 on left \u00f7 Denominator 10 on right = 7 \u00f7 10."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Every fraction is a division problem in disguise! The fraction bar means divided by. Read it from top to bottom: 7 divided by 10, or 7 \u00f7 10.",
+        "check_question": "Does top \u00f7 bottom mean 7 \u00f7 10 or 10 \u00f7 7?",
+        "visual_description": "Top number 7 sliding down past the \u00f7 bar to meet 10."
+      }
+    }
+  },
+  "q5_division_3": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture 5 one-liter juice bottles. Pour them equally into 2 pitchers. Each pitcher gets 2 whole liters, and the 5th bottle is split evenly in half (1/2 liter). Each pitcher holds 5/2 liters (or 2 1/2 liters).",
+        "check_question": "How many whole liters fit into each pitcher before splitting the last liter?",
+        "visual_description": "5 juice bottles pouring into 2 large glass pitchers. 2.5 liters of orange juice visible in each pitcher."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of sharing 5 chocolate bars between 2 friends. You each get 2 whole bars, and you snap the 5th bar in half. That is 2 and 1/2 bars each, or 5/2.",
+        "check_question": "How is 2 1/2 written as an improper fraction?",
+        "visual_description": "Two trays each holding 2 whole bars and one half bar."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Total juice to divide = 5 liters.\\nStep 2: Total pitchers sharing = 2 pitchers.\\nStep 3: Set up division: 5 \u00f7 2.\\nStep 4: Express as fraction: 5/2 liters (which equals 2 1/2 or 2.5 liters).",
+        "check_question": "What is 5 \u00f7 2 expressed as a fraction?",
+        "visual_description": "Equation: 5 liters \u00f7 2 pitchers = 5/2 liters = 2 1/2 liters."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "You have 5 liters and 2 pitchers. 5 divided by 2 is 5/2. In each pitcher, there are 2 whole liters plus half a liter.",
+        "check_question": "Is 5/2 equal to 2.5 liters?",
+        "visual_description": "A pitcher with a measure mark at 2.5 L."
+      }
+    }
+  },
+  "q6_equiv_1": {
+    "visual": {
+      "level_1": {
+        "explanation": "Look at a circle split into 2 halves with 1 half shaded (1/2). Now draw a horizontal line through the middle to make 4 equal slices. Now 2 slices out of 4 are shaded (2/4). The shaded area is identical! So 1/2 = 2/4.",
+        "check_question": "If you split the circle into 6 pieces, how many pieces equal 1/2?",
+        "visual_description": "Side-by-side circles: left circle has 1 out of 2 halves shaded purple; right circle has 2 out of 4 quarters shaded purple. Shaded sizes match."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine folding a paper towel in half (1/2). If you fold it in half again, you have 4 sections, and 2 sections equal the first half (2/4). You haven't changed the amount of paper, just the number of folds.",
+        "check_question": "Does cutting a slice into smaller pieces change how much food you have?",
+        "visual_description": "A square paper folded into 2 halves, then unfolded showing 4 quarters."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Start with fraction 1/2.\\nStep 2: To find an equivalent fraction, multiply the numerator and denominator by the same number (e.g., 2).\\nStep 3: 1 \u00d7 2 = 2 (new numerator); 2 \u00d7 2 = 4 (new denominator).\\nStep 4: The equivalent fraction is 2/4.",
+        "check_question": "What do you multiply 1/2 by to get 3/6?",
+        "visual_description": "Multiplication arrows: 1 \u00d7 2 = 2 over 2 \u00d7 2 = 4."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Equivalent means equal in value. 2 out of 4 slices (2/4) is the exact same amount as half a pizza (1/2).",
+        "check_question": "Is 2/4 equal to 1/2?",
+        "visual_description": "Two matching halves of pizza."
+      }
+    }
+  },
+  "q7_equiv_2": {
+    "visual": {
+      "level_1": {
+        "explanation": "Look at the denominators: 4 becomes 12. Because 4 \u00d7 3 = 12, each of the 4 original pieces was cut into 3 smaller pieces. That means the 3 shaded pieces also become 3 \u00d7 3 = 9 pieces. So 3/4 = 9/12.",
+        "check_question": "What number did we multiply the denominator 4 by to reach 12?",
+        "visual_description": "Two tape diagrams of equal length: top tape divided into 4 parts with 3 shaded; bottom tape divided into 12 parts with 9 shaded."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Whatever you do to the bottom of a fraction, you MUST do to the top to keep the balance! If the denominator grew by multiplying by 3 (4 \u00d7 3 = 12), the numerator must also multiply by 3: 3 \u00d7 3 = 9.",
+        "check_question": "If the bottom had been multiplied by 2, what would the top be multiplied by?",
+        "visual_description": "A balance scale with \u00d7 3 on top balancing \u00d7 3 on bottom."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Compare denominators: 12 \u00f7 4 = 3 (the multiplier is 3).\\nStep 2: Multiply the numerator by that same multiplier: 3 \u00d7 3 = 9.\\nStep 3: Replace the question mark: 3/4 = 9/12. The missing number is 9.",
+        "check_question": "What is 3 multiplied by 3?",
+        "visual_description": "Step-by-step arithmetic arrows: 4 \u00d7 3 = 12 on bottom, 3 \u00d7 3 = 9 on top."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "To keep fractions equal, multiply top and bottom by the same number. 4 times 3 is 12, so 3 times 3 is 9. The missing number is 9.",
+        "check_question": "What is 3/4 with denominator 12?",
+        "visual_description": "Fraction 9/12 glowing green next to 3/4."
+      }
+    }
+  },
+  "q8_compare_1": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture two strips of identical length divided into 5 equal boxes. Strip A has 2 boxes filled. Strip B has 3 boxes filled. Clearly, 3 filled boxes is more than 2 filled boxes. Therefore, 2/5 < 3/5 (2/5 is less than 3/5).",
+        "check_question": "When denominators are the same, do we look at the numerators or denominators?",
+        "visual_description": "Two horizontal bars of equal length partitioned into 5 segments: the first has 2 purple blocks, the second has 3 purple blocks."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine two identical chocolate bars each divided into 5 equal squares. If you have 2 squares and your friend has 3 squares, your friend has more chocolate. So 2/5 < 3/5.",
+        "check_question": "Does the inequality sign < open toward the bigger number?",
+        "visual_description": "An alligator mouth opening wide toward the 3/5 chocolate pieces."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Check if denominators are identical: both are 5.\\nStep 2: Because piece sizes are identical, compare the numerators: 2 vs 3.\\nStep 3: Since 2 is less than 3, the fraction 2/5 is less than 3/5 (2/5 < 3/5).",
+        "check_question": "Which is greater: 4/5 or 2/5?",
+        "visual_description": "Number line from 0 to 1 with marks at 2/5 and 3/5 showing 2/5 is to the left of 3/5."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Both fractions have slices of the exact same size (fifths). Having 2 slices is less than having 3 slices. So 2/5 is smaller than 3/5 (2/5 < 3/5).",
+        "check_question": "Is 3/5 bigger than 2/5?",
+        "visual_description": "3 slices of pie next to 2 slices of pie."
+      }
+    }
+  },
+  "q9_add_1": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture a hexagonal cake cut into 6 equal slices. Take 1 slice (1/6) and add 3 more slices (3/6). Now you have 1 + 3 = 4 slices out of 6 (4/6). You can group those 4 slices into 2 large slices out of 3, which simplifies to 2/3.",
+        "check_question": "What do you get before simplifying when you add 1/6 and 3/6?",
+        "visual_description": "A circle partitioned into 6 sectors. 1 blue sector + 3 purple sectors = 4 shaded sectors (4/6), which simplifies to 2/3."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of 6-cup muffin tins. If tin 1 has 1 muffin and tin 2 has 3 muffins, putting them together gives 4 muffins out of 6 (4/6). Dividing 4 and 6 in half gives 2 out of 3 groups (2/3).",
+        "check_question": "Why does the denominator 6 stay the same when adding?",
+        "visual_description": "A 6-cup muffin tin holding 4 freshly baked muffins."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Keep the common denominator (6).\\nStep 2: Add the numerators: 1 + 3 = 4, giving 4/6.\\nStep 3: Simplify by finding the greatest common factor of 4 and 6, which is 2.\\nStep 4: Divide top and bottom by 2: (4 \u00f7 2) / (6 \u00f7 2) = 2/3.",
+        "check_question": "What is 4 \u00f7 2 over 6 \u00f7 2?",
+        "visual_description": "Equation: 1/6 + 3/6 = 4/6 = (4\u00f72)/(6\u00f72) = 2/3."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When the bottom numbers are the same, just add the tops: 1 + 3 = 4, so you have 4/6. Then reduce it by dividing both numbers by 2 to get 2/3.",
+        "check_question": "Can 4/6 be simplified to 2/3?",
+        "visual_description": "Fraction 4/6 transforming into 2/3."
       }
     }
   }

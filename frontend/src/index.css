@@ -9,9 +9,10 @@
 }
 
 /* Accessibility Modes */
+body.font-lexend,
 body.font-dyslexic {
-  font-family: 'OpenDyslexic', 'Comic Sans MS', cursive, sans-serif !important;
-  letter-spacing: 0.05em;
+  font-family: 'Lexend', 'OpenDyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+  letter-spacing: 0.04em;
   line-height: 1.8;
 }
 

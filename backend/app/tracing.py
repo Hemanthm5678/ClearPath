@@ -157,6 +157,28 @@ class BayesianKnowledgeTracing:
 
         return new_mastery
 
+    def set_mastery(self, session_id: str, concept_id: str, p_l: float) -> float:
+        """Explicitly sets latent mastery P(L) for a student and concept."""
+        clamped = float(min(1.0, max(0.0, p_l)))
+        if session_id not in self._memory_store:
+            self._memory_store[session_id] = {}
+        self._memory_store[session_id][concept_id] = clamped
+
+        if get_connection is not None:
+            try:
+                with get_connection() as conn:
+                    conn.execute(
+                        """
+                        INSERT OR REPLACE INTO mastery (session_id, concept_id, p_mastery, updated_at)
+                        VALUES (?, ?, ?, ?)
+                        """,
+                        (session_id, concept_id, clamped, time.time()),
+                    )
+                    conn.commit()
+            except Exception:
+                pass
+        return clamped
+
 
 # Global BKT instance with exact parameters
 bkt = BayesianKnowledgeTracing(

@@ -124,6 +124,11 @@ def render_explain_prompt(
     question_prompt = kwargs.get("question_prompt", "")
     q_line = f'Current problem being attempted: "{question_prompt}"\n' if question_prompt else ""
 
+    prompt_focus = (
+        f'CRITICAL INSTRUCTION: Your explanation, analogy, and visual diagram MUST specifically focus on the current problem: "{question_prompt}". Use the exact numbers and items from this problem. Do NOT use numbers, items, or examples from unrelated questions.\n'
+        if question_prompt else ""
+    )
+
     return f"""The student is learning math concept: "{concept_name}".
 Student Age: {student_age} years old.
 {q_line}Detected confusion indicators: [{reasons_str}].
@@ -132,7 +137,7 @@ Pedagogical intervention parameters:
 - Explanation Style: {style_desc}
 - Depth Level: {level_desc}
 
-Provide a targeted intervention strictly in JSON with keys:
+{prompt_focus}Provide a targeted intervention strictly in JSON with keys:
 - "explanation": clear explanation matching student age, style, and depth level
 - "check_question": a quick low-stakes check question to verify comprehension
 - "visual_description": a concrete mental picture or diagram description
@@ -165,10 +170,13 @@ def render_chat_prompt(
     if history_lines:
         history_block = "Recent Conversation History:\n" + "\n".join(history_lines) + "\n\n"
 
-    return f"""The student is learning about math concept: "{concept}".
-{history_block}Student asks: "{student_message}"
+    question_prompt = kwargs.get("question_prompt", "")
+    q_line = f'Current problem being attempted: "{question_prompt}"\n' if question_prompt else ""
 
-Provide a friendly, conversational, and encouraging response that directly addresses their confusion without giving away final test answers immediately.
+    return f"""The student is learning about math concept: "{concept}".
+{q_line}{history_block}Student asks: "{student_message}"
+
+Provide a friendly, conversational, and encouraging response that directly addresses their confusion in relation to their current problem without giving away final test answers immediately.
 Return strictly valid JSON with key:
 - "reply": helpful, conversational, encouraging explanation
 """

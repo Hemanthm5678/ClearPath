@@ -1,149 +1,168 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Type, 
-  Contrast, 
-  Volume2, 
-  Sun, 
-  Moon, 
-  ShieldCheck, 
-  Sparkles,
-  ZoomIn
-} from 'lucide-react';
+import React, { useState } from "react";
+import { Volume2, VolumeX, Type, Eye, Sparkles } from "lucide-react";
 
 interface A11yBarProps {
-  speechRate: number;
-  onSpeechRateChange: (rate: number) => void;
+  onReadAloud?: (enabled: boolean) => void;
+  speechRate?: number;
+  onSpeechRateChange?: (rate: number) => void;
+  isSpeaking?: boolean;
+  onStopSpeech?: () => void;
 }
 
-export const A11yBar: React.FC<A11yBarProps> = ({ speechRate, onSpeechRateChange }) => {
-  const [isDyslexic, setIsDyslexic] = useState(false);
-  const [isHighContrast, setIsHighContrast] = useState(false);
-  const [isLargeText, setIsLargeText] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+export const A11yBar: React.FC<A11yBarProps> = ({
+  onReadAloud,
+  speechRate = 1.0,
+  onSpeechRateChange,
+  isSpeaking = false,
+  onStopSpeech,
+}) => {
+  const [lexendActive, setLexendActive] = useState<boolean>(false);
+  const [readAloudActive, setReadAloudActive] = useState<boolean>(false);
+  const [highContrastActive, setHighContrastActive] = useState<boolean>(false);
 
-  // Toggle Dyslexic Font
-  const toggleDyslexic = () => {
-    const next = !isDyslexic;
-    setIsDyslexic(next);
-    if (next) {
-      document.body.classList.add('font-dyslexic');
-    } else {
-      document.body.classList.remove('font-dyslexic');
+  const toggleLexend = () => {
+    const next = !lexendActive;
+    setLexendActive(next);
+    if (typeof document !== "undefined") {
+      if (next) {
+        document.body.classList.add("font-lexend");
+      } else {
+        document.body.classList.remove("font-lexend");
+      }
     }
   };
 
-  // Toggle High Contrast
-  const toggleContrast = () => {
-    const next = !isHighContrast;
-    setIsHighContrast(next);
-    if (next) {
-      document.body.classList.add('high-contrast');
-    } else {
-      document.body.classList.remove('high-contrast');
+  const toggleReadAloud = () => {
+    const next = !readAloudActive;
+    setReadAloudActive(next);
+    if (onReadAloud) {
+      onReadAloud(next);
+    }
+    if (!next && onStopSpeech) {
+      onStopSpeech();
     }
   };
 
-  // Toggle Large Text
-  const toggleLargeText = () => {
-    const next = !isLargeText;
-    setIsLargeText(next);
-    if (next) {
-      document.body.classList.add('text-lg-mode');
-    } else {
-      document.body.classList.remove('text-lg-mode');
-    }
-  };
-
-  // Toggle Dark Mode
-  const toggleDark = () => {
-    const next = !isDarkMode;
-    setIsDarkMode(next);
-    if (next) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+  const toggleHighContrast = () => {
+    const next = !highContrastActive;
+    setHighContrastActive(next);
+    if (typeof document !== "undefined") {
+      if (next) {
+        document.body.classList.add("high-contrast");
+      } else {
+        document.body.classList.remove("high-contrast");
+      }
     }
   };
 
   return (
-    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
-      {/* Privacy guarantee badge */}
-      <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 font-medium">
-        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-        <span className="hidden sm:inline">Privacy First:</span>
-        <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[11px] font-mono text-slate-700 dark:text-slate-300">
-          No Camera • No Mic • Only Timing & Counts
+    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      {/* Title / Badge */}
+      <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium">
+        <Sparkles className="w-3.5 h-3.5 text-[#6A35D8]" />
+        <span className="font-semibold text-slate-700 dark:text-slate-300">
+          Accessibility Suite
         </span>
       </div>
 
-      {/* Accessibility Controls */}
-      <div className="flex items-center gap-2">
-        {/* Dyslexia font button */}
+      {/* Main Toggles Row */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        {/* Toggle 1: Lexend font (dyslexia friendly) */}
         <button
-          onClick={toggleDyslexic}
-          title="Toggle Dyslexia-friendly Font"
-          className={`px-2.5 py-1 rounded-lg border font-medium flex items-center gap-1.5 transition-colors ${
-            isDyslexic 
-              ? 'bg-brand-500 text-white border-brand-600' 
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200'
+          type="button"
+          onClick={toggleLexend}
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-semibold transition-all shadow-sm ${
+            lexendActive
+              ? "text-white shadow-[#6A35D8]/20 scale-105"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
           }`}
+          style={{
+            backgroundColor: lexendActive ? "#6A35D8" : undefined,
+          }}
+          aria-pressed={lexendActive}
+          title="Toggle Lexend font (dyslexia friendly)"
         >
           <Type className="w-3.5 h-3.5" />
-          <span>Dyslexia Font</span>
+          <span>Lexend Font (Dyslexia Friendly)</span>
+          <span
+            className={`w-2 h-2 rounded-full ${
+              lexendActive ? "bg-white" : "bg-slate-300 dark:bg-slate-600"
+            }`}
+          />
         </button>
 
-        {/* High contrast button */}
+        {/* Toggle 2: Read Aloud (Web Speech API) */}
         <button
-          onClick={toggleContrast}
-          title="Toggle High Contrast"
-          className={`px-2.5 py-1 rounded-lg border font-medium flex items-center gap-1.5 transition-colors ${
-            isHighContrast 
-              ? 'bg-brand-500 text-white border-brand-600' 
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200'
+          type="button"
+          onClick={toggleReadAloud}
+          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full font-semibold transition-all shadow-sm ${
+            readAloudActive
+              ? "text-white shadow-[#F25C1E]/20 scale-105"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
           }`}
+          style={{
+            backgroundColor: readAloudActive ? "#F25C1E" : undefined,
+          }}
+          aria-pressed={readAloudActive}
+          title="Toggle Read Aloud using Web Speech API"
         >
-          <Contrast className="w-3.5 h-3.5" />
-          <span>Contrast</span>
+          {isSpeaking ? (
+            <Volume2 className="w-3.5 h-3.5 animate-pulse text-white" />
+          ) : readAloudActive ? (
+            <Volume2 className="w-3.5 h-3.5" />
+          ) : (
+            <VolumeX className="w-3.5 h-3.5" />
+          )}
+          <span>Read Aloud</span>
+          <span
+            className={`w-2 h-2 rounded-full ${
+              readAloudActive
+                ? isSpeaking
+                  ? "bg-white animate-ping"
+                  : "bg-white"
+                : "bg-slate-300 dark:bg-slate-600"
+            }`}
+          />
         </button>
 
-        {/* Larger Text button */}
+        {/* Speed Selector (if onSpeechRateChange provided) */}
+        {onSpeechRateChange && (
+          <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 rounded-full px-2 py-1 border border-slate-200 dark:border-slate-700">
+            <span className="text-[10px] text-slate-400 font-medium ml-1">Speed:</span>
+            {[0.8, 1.0, 1.2].map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => onSpeechRateChange(r)}
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-colors ${
+                  speechRate === r
+                    ? "bg-[#6A35D8] text-white"
+                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                }`}
+              >
+                {r}x
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* High Contrast Toggle */}
         <button
-          onClick={toggleLargeText}
-          title="Toggle Larger Text"
-          className={`px-2.5 py-1 rounded-lg border font-medium flex items-center gap-1.5 transition-colors ${
-            isLargeText 
-              ? 'bg-brand-500 text-white border-brand-600' 
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200'
+          type="button"
+          onClick={toggleHighContrast}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all ${
+            highContrastActive
+              ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-700"
           }`}
+          title="Toggle High Contrast Mode"
         >
-          <ZoomIn className="w-3.5 h-3.5" />
-          <span>Text+</span>
-        </button>
-
-        {/* Speech Rate Selector */}
-        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
-          <Volume2 className="w-3.5 h-3.5 text-slate-500" />
-          <span className="text-[11px] text-slate-500">Voice:</span>
-          <select
-            value={speechRate}
-            onChange={(e) => onSpeechRateChange(parseFloat(e.target.value))}
-            className="bg-transparent text-slate-700 dark:text-slate-200 text-xs font-medium focus:outline-none cursor-pointer"
-          >
-            <option value={0.8} className="dark:bg-slate-900">0.8x (Gentle)</option>
-            <option value={1.0} className="dark:bg-slate-900">1.0x (Normal)</option>
-            <option value={1.2} className="dark:bg-slate-900">1.2x (Fast)</option>
-          </select>
-        </div>
-
-        {/* Dark Mode Toggle */}
-        <button
-          onClick={toggleDark}
-          title="Toggle Dark Mode"
-          className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-        >
-          {isDarkMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-600" />}
+          <Eye className="w-3.5 h-3.5" />
+          <span className="text-[11px]">Contrast</span>
         </button>
       </div>
     </div>
   );
 };
+
+export default A11yBar;
