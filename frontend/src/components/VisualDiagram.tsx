@@ -6,9 +6,242 @@ interface VisualDiagramProps {
   conceptId?: string;
 }
 
-export const VisualDiagram: React.FC<VisualDiagramProps> = ({ questionId = "q3_division_1" }) => {
+export const VisualDiagram: React.FC<VisualDiagramProps> = ({ questionId = "q_quad_roots_top", conceptId }) => {
   // Render tailored pedagogical SVGs based on the active question
   switch (questionId) {
+    case "q_quad_roots_top":
+      // Solve 2x² - 9x + 4 = 0 -> x = 4, x = 1/2
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Parabola Roots & Factor Breakdown: 2x² - 9x + 4 = 0
+            </span>
+            <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+              Roots: x = 1/2, x = 4
+            </span>
+          </div>
+
+          <svg viewBox="0 0 420 160" className="w-full h-auto max-h-44 mx-auto">
+            {/* Coordinate Grid */}
+            <line x1="30" y1="95" x2="390" y2="95" stroke="#94a3b8" strokeWidth="1.5" />
+            <line x1="80" y1="20" x2="80" y2="150" stroke="#94a3b8" strokeWidth="1.5" />
+            <text x="385" y="90" fill="#64748b" fontSize="10" fontWeight="bold">x</text>
+            <text x="75" y="25" fill="#64748b" fontSize="10" fontWeight="bold" textAnchor="end">y</text>
+
+            {/* Parabola Curve y = 2x^2 - 9x + 4 */}
+            <path
+              d="M 50 30 Q 215 220 370 30"
+              fill="none"
+              stroke="#6A35D8"
+              strokeWidth="2.5"
+            />
+
+            {/* Root Points on Axis */}
+            <circle cx="115" cy="95" r="5" fill="#F25C1E" stroke="#ffffff" strokeWidth="1.5" />
+            <text x="115" y="82" fill="#F25C1E" fontSize="11" fontWeight="bold" textAnchor="middle">x = 1/2 (0.5)</text>
+
+            <circle cx="320" cy="95" r="5" fill="#F25C1E" stroke="#ffffff" strokeWidth="1.5" />
+            <text x="320" y="82" fill="#F25C1E" fontSize="11" fontWeight="bold" textAnchor="middle">x = 4</text>
+
+            {/* Factoring equation box */}
+            <rect x="50" y="115" width="320" height="36" rx="6" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
+            <text x="210" y="130" fill="#334155" fontSize="11" fontWeight="bold" textAnchor="middle">
+              Factoring: (2x - 1)(x - 4) = 0
+            </text>
+            <text x="210" y="144" fill="#6A35D8" fontSize="10" fontWeight="semibold" textAnchor="middle">
+              Setting each factor to 0 → 2x - 1 = 0 (x = 1/2) & x - 4 = 0 (x = 4)
+            </text>
+          </svg>
+        </div>
+      );
+
+    case "q_code_mutable_top":
+      // def add_item(val, box=[]): box.append(val); return box
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Python Memory Reference Trace: box=[] Default Argument
+            </span>
+            <span className="text-[10px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">
+              Output: [10, 20]
+            </span>
+          </div>
+
+          <svg viewBox="0 0 420 155" className="w-full h-auto max-h-44 mx-auto">
+            {/* Function Definition / Scope Box */}
+            <rect x="15" y="15" width="165" height="125" rx="8" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1.5" />
+            <text x="25" y="35" fill="#6A35D8" fontSize="11" fontWeight="bold">def add_item(val, box=[]):</text>
+            
+            <rect x="25" y="48" width="145" height="32" rx="4" fill="#ede9fe" stroke="#c4b5fd" strokeWidth="1" />
+            <text x="32" y="68" fill="#4c1d95" fontSize="10" fontWeight="bold">Call 1: add_item(10)</text>
+
+            <rect x="25" y="90" width="145" height="32" rx="4" fill="#ffedd5" stroke="#fed7aa" strokeWidth="1" />
+            <text x="32" y="110" fill="#9a3412" fontSize="10" fontWeight="bold">Call 2: add_item(20)</text>
+
+            {/* Arrow from Call 1 & 2 pointing to the same Heap Object */}
+            <line x1="170" y1="64" x2="230" y2="78" stroke="#6A35D8" strokeWidth="2" strokeDasharray="3,2" />
+            <line x1="170" y1="106" x2="230" y2="86" stroke="#F25C1E" strokeWidth="2" strokeDasharray="3,2" />
+
+            {/* Heap Memory Box (Single Shared Object) */}
+            <rect x="235" y="35" width="170" height="90" rx="8" fill="#ffffff" stroke="#6A35D8" strokeWidth="2" />
+            <text x="320" y="55" fill="#6A35D8" fontSize="11" fontWeight="extrabold" textAnchor="middle">Shared Heap Object</text>
+            <text x="320" y="70" fill="#64748b" fontSize="9" textAnchor="middle">id: 0x7f8a (reused across calls)</text>
+
+            {/* List representation */}
+            <rect x="250" y="80" width="60" height="32" rx="4" fill="#6A35D8" />
+            <text x="280" y="101" fill="#ffffff" fontSize="12" fontWeight="bold" textAnchor="middle">[10,</text>
+
+            <rect x="315" y="80" width="60" height="32" rx="4" fill="#F25C1E" />
+            <text x="345" y="101" fill="#ffffff" fontSize="12" fontWeight="bold" textAnchor="middle">20]</text>
+
+            {/* Callout beneath */}
+            <text x="210" y="145" fill="#e11d48" fontSize="9.5" fontWeight="bold" textAnchor="middle">
+              ⚠ Default argument box=[] is instantiated ONCE. Both calls mutate the SAME list!
+            </text>
+          </svg>
+        </div>
+      );
+
+    case "q_quad_param_top":
+      // x² - kx + 25 = 0 single repeated root -> k = 10, root x = 5
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Discriminant Zero Condition: x² - kx + 25 = 0
+            </span>
+            <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+              k = 10, Root: x = 5
+            </span>
+          </div>
+
+          <svg viewBox="0 0 420 155" className="w-full h-auto max-h-44 mx-auto">
+            {/* Coordinate Axis */}
+            <line x1="30" y1="105" x2="390" y2="105" stroke="#94a3b8" strokeWidth="1.5" />
+            <line x1="70" y1="20" x2="70" y2="145" stroke="#94a3b8" strokeWidth="1.5" />
+
+            {/* Parabola Tangent to x-axis at x=5 */}
+            <path
+              d="M 120 25 Q 230 185 340 25"
+              fill="none"
+              stroke="#6A35D8"
+              strokeWidth="2.5"
+            />
+
+            {/* Tangent point on x-axis */}
+            <circle cx="230" cy="105" r="6" fill="#10b981" stroke="#ffffff" strokeWidth="2" />
+            <text x="230" y="125" fill="#10b981" fontSize="11" fontWeight="extrabold" textAnchor="middle">
+              Tangent Point: (5, 0)
+            </text>
+
+            {/* Discriminant Equation Box */}
+            <rect x="50" y="25" width="140" height="55" rx="6" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
+            <text x="120" y="42" fill="#6A35D8" fontSize="10.5" fontWeight="bold" textAnchor="middle">Δ = b² - 4ac = 0</text>
+            <text x="120" y="58" fill="#334155" fontSize="10" textAnchor="middle">k² - 4(1)(25) = 0</text>
+            <text x="120" y="73" fill="#F25C1E" fontSize="10.5" fontWeight="bold" textAnchor="middle">k² = 100 → k = 10</text>
+
+            {/* Root summary */}
+            <text x="290" y="55" fill="#6A35D8" fontSize="11" fontWeight="bold" textAnchor="middle">
+              (x - 5)² = 0
+            </text>
+            <text x="290" y="72" fill="#334155" fontSize="10" textAnchor="middle">
+              Double root at x = 5
+            </text>
+          </svg>
+        </div>
+      );
+
+    case "q_code_recursion_top":
+      // def compute(n): if n<=1: return 1; return n * compute(n - 2)
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Recursion Call Stack & Value Unwinding: compute(5)
+            </span>
+            <span className="text-[10px] font-mono bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">
+              Output: 15
+            </span>
+          </div>
+
+          <svg viewBox="0 0 420 155" className="w-full h-auto max-h-44 mx-auto">
+            {/* Call 1: compute(5) */}
+            <rect x="30" y="20" width="160" height="32" rx="6" fill="#ede9fe" stroke="#8b5cf6" strokeWidth="1.5" />
+            <text x="110" y="40" fill="#5b21b6" fontSize="11" fontWeight="bold" textAnchor="middle">
+              compute(5) = 5 * compute(3)
+            </text>
+
+            {/* Call 2: compute(3) */}
+            <rect x="50" y="60" width="160" height="32" rx="6" fill="#ddd6fe" stroke="#7c3aed" strokeWidth="1.5" />
+            <text x="130" y="80" fill="#4c1d95" fontSize="11" fontWeight="bold" textAnchor="middle">
+              compute(3) = 3 * compute(1)
+            </text>
+
+            {/* Call 3: compute(1) Base Case */}
+            <rect x="70" y="100" width="160" height="32" rx="6" fill="#bbf7d0" stroke="#16a34a" strokeWidth="1.5" />
+            <text x="150" y="120" fill="#14532d" fontSize="11" fontWeight="extrabold" textAnchor="middle">
+              compute(1) = 1 (Base Case)
+            </text>
+
+            {/* Upward Unwinding Box */}
+            <rect x="250" y="25" width="150" height="100" rx="8" fill="#ffffff" stroke="#F25C1E" strokeWidth="1.5" />
+            <text x="325" y="48" fill="#F25C1E" fontSize="11" fontWeight="bold" textAnchor="middle">Unwinding Multiply:</text>
+            <text x="325" y="70" fill="#334155" fontSize="11" textAnchor="middle">compute(1) = 1</text>
+            <text x="325" y="90" fill="#334155" fontSize="11" textAnchor="middle">compute(3) = 3 × 1 = 3</text>
+            <text x="325" y="112" fill="#6A35D8" fontSize="12" fontWeight="extrabold" textAnchor="middle">5 × 3 = 15</text>
+          </svg>
+        </div>
+      );
+
+    case "q_math_slope_intercept":
+      // 3x + 2y = 8 -> y = -1.5x + 4
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Linear Equation Form: 3x + 2y = 8 → y = (-3/2)x + 4
+            </span>
+            <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+              m = -3/2, b = 4
+            </span>
+          </div>
+
+          <svg viewBox="0 0 420 155" className="w-full h-auto max-h-44 mx-auto">
+            {/* Coordinate Grid */}
+            <line x1="40" y1="120" x2="380" y2="120" stroke="#94a3b8" strokeWidth="1.5" />
+            <line x1="120" y1="15" x2="120" y2="145" stroke="#94a3b8" strokeWidth="1.5" />
+            <text x="375" y="115" fill="#64748b" fontSize="10" fontWeight="bold">x</text>
+            <text x="115" y="25" fill="#64748b" fontSize="10" fontWeight="bold" textAnchor="end">y</text>
+
+            {/* Line with slope -1.5 through (0, 4) */}
+            <line x1="60" y1="30" x2="260" y2="150" stroke="#6A35D8" strokeWidth="2.5" />
+
+            {/* Y-intercept (0, 4) at x=120, y=55 */}
+            <circle cx="120" cy="65" r="5" fill="#F25C1E" stroke="#ffffff" strokeWidth="1.5" />
+            <text x="135" y="65" fill="#F25C1E" fontSize="10.5" fontWeight="bold">y-intercept (0, 4)</text>
+
+            {/* Slope triangle */}
+            <line x1="120" y1="65" x2="120" y2="105" stroke="#64748b" strokeWidth="1.5" strokeDasharray="3,2" />
+            <line x1="120" y1="105" x2="175" y2="105" stroke="#64748b" strokeWidth="1.5" strokeDasharray="3,2" />
+            <text x="100" y="88" fill="#64748b" fontSize="9.5" fontWeight="bold" textAnchor="end">Δy = -3</text>
+            <text x="148" y="118" fill="#64748b" fontSize="9.5" fontWeight="bold" textAnchor="middle">Δx = +2</text>
+
+            {/* Summary card */}
+            <rect x="250" y="25" width="150" height="65" rx="6" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1" />
+            <text x="325" y="45" fill="#6A35D8" fontSize="11" fontWeight="bold" textAnchor="middle">Standard Form y = mx + b</text>
+            <text x="325" y="62" fill="#F25C1E" fontSize="10.5" fontWeight="bold" textAnchor="middle">Slope m = -3/2</text>
+            <text x="325" y="78" fill="#334155" fontSize="10" textAnchor="middle">y-intercept b = 4</text>
+          </svg>
+        </div>
+      );
+
     case "q1_basics_1":
       // In 3/5, what does 5 represent? (5 total equal parts)
       return (
@@ -104,6 +337,82 @@ export const VisualDiagram: React.FC<VisualDiagramProps> = ({ questionId = "q3_d
             {/* Summary */}
             <text x="200" y="104" fill="#6A35D8" fontSize="11" fontWeight="bold" textAnchor="middle">
               8 Total Pieces - 3 Eaten = 5 Remaining → Fraction: 5/8
+            </text>
+          </svg>
+        </div>
+      );
+
+    case "q_equal_parts_1":
+      // 4 equal quadrants vs unequal partition
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Equal Partitioning: All 4 Sections Must Be Equal Size
+            </span>
+            <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+              Strictly Equal Area
+            </span>
+          </div>
+
+          <svg viewBox="0 0 400 120" className="w-full h-auto max-h-36 mx-auto">
+            {/* Square 1: True Fourths (Equal) */}
+            <rect x="50" y="15" width="80" height="80" rx="4" fill="#f8fafc" stroke="#6A35D8" strokeWidth="2" />
+            <line x1="90" y1="15" x2="90" y2="95" stroke="#6A35D8" strokeWidth="1.5" />
+            <line x1="50" y1="55" x2="130" y2="55" stroke="#6A35D8" strokeWidth="1.5" />
+            <rect x="50" y="15" width="40" height="40" rx="2" fill="#6A35D8" opacity="0.3" />
+            <text x="70" y="38" fill="#6A35D8" fontSize="11" fontWeight="bold" textAnchor="middle">1/4</text>
+            <text x="90" y="112" fill="#16a34a" fontSize="10.5" fontWeight="bold" textAnchor="middle">✓ True Fourths (Equal)</text>
+
+            {/* Square 2: Unequal Partitions (NOT Fourths) */}
+            <rect x="230" y="15" width="80" height="80" rx="4" fill="#f8fafc" stroke="#e11d48" strokeWidth="2" />
+            <line x1="250" y1="15" x2="250" y2="95" stroke="#e11d48" strokeWidth="1.5" />
+            <line x1="230" y1="75" x2="310" y2="75" stroke="#e11d48" strokeWidth="1.5" />
+            <rect x="230" y="15" width="20" height="60" rx="2" fill="#e11d48" opacity="0.3" />
+            <text x="240" y="50" fill="#e11d48" fontSize="9" fontWeight="bold" textAnchor="middle">?</text>
+            <text x="270" y="112" fill="#e11d48" fontSize="10.5" fontWeight="bold" textAnchor="middle">✕ NOT Fourths (Unequal)</text>
+          </svg>
+        </div>
+      );
+
+    case "q_equal_parts_2":
+      // Uneven 50cm, 25cm, 25cm bar -> Piece A is 1/2, not 1/3
+      return (
+        <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5" />
+              Unequal Partition Bar: 50cm² + 25cm² + 25cm²
+            </span>
+            <span className="text-[10px] font-mono bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold">
+              Piece A = 1/2, NOT 1/3
+            </span>
+          </div>
+
+          <svg viewBox="0 0 400 125" className="w-full h-auto max-h-36 mx-auto">
+            {/* 100cm total bar */}
+            <rect x="30" y="25" width="340" height="45" rx="6" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="2" />
+            
+            {/* Piece A (50%) */}
+            <rect x="30" y="25" width="170" height="45" rx="4" fill="#F25C1E" />
+            <text x="115" y="47" fill="#ffffff" fontSize="12" fontWeight="bold" textAnchor="middle">Piece A (50cm²)</text>
+            <text x="115" y="62" fill="#fed7aa" fontSize="10" textAnchor="middle">50/100 = 1/2 of bar!</text>
+
+            {/* Piece B (25%) */}
+            <rect x="200" y="25" width="85" height="45" fill="#6A35D8" />
+            <text x="242" y="52" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Piece B (25cm²)</text>
+
+            {/* Piece C (25%) */}
+            <rect x="285" y="25" width="85" height="45" rx="4" fill="#8b5cf6" />
+            <text x="327" y="52" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">Piece C (25cm²)</text>
+
+            {/* Conclusion */}
+            <text x="200" y="98" fill="#e11d48" fontSize="11" fontWeight="bold" textAnchor="middle">
+              Piece A is HALF the whole bar, so it cannot represent 1/3!
+            </text>
+            <text x="200" y="115" fill="#64748b" fontSize="10" textAnchor="middle">
+              To be 1/3, each of the 3 pieces would have to be exactly 33.3cm².
             </text>
           </svg>
         </div>
@@ -424,6 +733,61 @@ export const VisualDiagram: React.FC<VisualDiagramProps> = ({ questionId = "q3_d
       );
 
     default:
+      if (conceptId === "c7_python_tracing" || (questionId && questionId.includes("code"))) {
+        return (
+          <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" />
+                Python Execution Stack & State Diagram
+              </span>
+              <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+                Trace Model
+              </span>
+            </div>
+            <svg viewBox="0 0 400 110" className="w-full h-auto max-h-36 mx-auto">
+              <rect x="30" y="15" width="160" height="80" rx="6" fill="#ffffff" stroke="#6A35D8" strokeWidth="1.5" />
+              <text x="110" y="35" fill="#6A35D8" fontSize="11" fontWeight="bold" textAnchor="middle">Stack Frame</text>
+              <text x="110" y="55" fill="#64748b" fontSize="10" textAnchor="middle">Local Scope & Variables</text>
+              <text x="110" y="75" fill="#334155" fontSize="10" textAnchor="middle">Return Address</text>
+
+              <line x1="190" y1="55" x2="230" y2="55" stroke="#F25C1E" strokeWidth="2" strokeDasharray="3,2" />
+
+              <rect x="230" y="15" width="140" height="80" rx="6" fill="#ffffff" stroke="#F25C1E" strokeWidth="1.5" />
+              <text x="300" y="35" fill="#F25C1E" fontSize="11" fontWeight="bold" textAnchor="middle">Heap Memory</text>
+              <text x="300" y="55" fill="#64748b" fontSize="10" textAnchor="middle">Persistent Objects</text>
+              <text x="300" y="75" fill="#334155" fontSize="10" textAnchor="middle">Mutable References</text>
+            </svg>
+          </div>
+        );
+      }
+
+      if (conceptId === "c8_quadratic_algebra" || (questionId && (questionId.includes("quad") || questionId.includes("math")))) {
+        return (
+          <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-[#6A35D8] flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5" />
+                Quadratic & Algebraic Coordinate Model
+              </span>
+              <span className="text-[10px] font-mono bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">
+                Curve Model
+              </span>
+            </div>
+            <svg viewBox="0 0 400 110" className="w-full h-auto max-h-36 mx-auto">
+              <line x1="20" y1="65" x2="380" y2="65" stroke="#94a3b8" strokeWidth="1.5" />
+              <line x1="200" y1="10" x2="200" y2="100" stroke="#94a3b8" strokeWidth="1.5" />
+              <path d="M 80 20 Q 200 120 320 20" fill="none" stroke="#6A35D8" strokeWidth="2" />
+              <circle cx="130" cy="65" r="4" fill="#F25C1E" />
+              <circle cx="270" cy="65" r="4" fill="#F25C1E" />
+              <text x="200" y="100" fill="#6A35D8" fontSize="10" fontWeight="bold" textAnchor="middle">
+                Parabola Roots where y = 0
+              </text>
+            </svg>
+          </div>
+        );
+      }
+
       // Generic fraction model fallback
       return (
         <div className="bg-purple-50/70 dark:bg-purple-950/30 p-3.5 rounded-xl border border-purple-200 dark:border-purple-800 space-y-2">

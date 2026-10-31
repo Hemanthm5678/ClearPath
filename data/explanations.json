@@ -101,7 +101,7 @@
       "level_3": {
         "explanation": "Area conservation in partitioning: Even if pieces have different geometric shapes (like triangles and rectangles), they represent equal fractions only if their calculated areas are strictly identical.",
         "check_question": "Can two differently shaped pieces both represent 1/4 of the same whole?",
-        "visual_description": "A square partitioned into two triangles and two rectangles, each verified with equal computed area of 4 cm\u00b2."
+        "visual_description": "A square partitioned into two triangles and two rectangles, each verified with equal computed area of 4 cm²."
       }
     },
     "analogy": {
@@ -186,7 +186,7 @@
         "visual_description": "Draw 3 long rectangles side by side. Draw lines splitting each into 4 segments. Color in one segment per rectangle in blue: 3 blocks out of 4-unit whole."
       },
       "level_3": {
-        "explanation": "On a number line spanning [0, 3], divide the entire length into 4 equal segments. Each segment has length 3/4 (0.75). The fraction bar directly represents the algebraic division operator: a/b is identical to a \u00f7 b.",
+        "explanation": "On a number line spanning [0, 3], divide the entire length into 4 equal segments. Each segment has length 3/4 (0.75). The fraction bar directly represents the algebraic division operator: a/b is identical to a ÷ b.",
         "check_question": "What is the length of each segment when the interval [0, 5] is divided into 2 equal parts?",
         "visual_description": "A continuous number line from 0 to 3 divided into 4 equal intervals of length 3/4."
       }
@@ -198,7 +198,7 @@
         "visual_description": "Imagine 3 pies lined up, with arrows pointing into 4 empty banquet plates."
       },
       "level_2": {
-        "explanation": "Think of a music band splitting cash earnings after a gig. If the band earned $300 and has 4 members, each gets $300 \u00f7 4 = $75. Similarly, if they share 3 gold coins, each gets 3/4 of a coin.",
+        "explanation": "Think of a music band splitting cash earnings after a gig. If the band earned $300 and has 4 members, each gets $300 ÷ 4 = $75. Similarly, if they share 3 gold coins, each gets 3/4 of a coin.",
         "check_question": "What mathematical operation does the fraction line '/' represent?",
         "visual_description": "A fraction bar acting like a seesaw with total items on top and receivers balanced on the bottom."
       },
@@ -215,9 +215,9 @@
         "visual_description": "A vertical layout highlighting 'Items (3)' -> numerator over 'People (4)' -> denominator."
       },
       "level_2": {
-        "explanation": "Step 1: State the division problem: a \u00f7 b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 \u00f7 4 = 3/4.",
+        "explanation": "Step 1: State the division problem: a ÷ b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 ÷ 4 = 3/4.",
         "check_question": "How do you write 5 divided by 8 as a fraction?",
-        "visual_description": "An arrow transforming 3 \u00f7 4 directly into the fraction 3/4."
+        "visual_description": "An arrow transforming 3 ÷ 4 directly into the fraction 3/4."
       },
       "level_3": {
         "explanation": "Step 1: Set up quotient equation: q = a / b.\\nStep 2: Recognize that for any integers a and b (b != 0), a/b is the exact value that satisfies q * b = a.\\nStep 3: Verify: (3/4) * 4 = 3.",
@@ -232,9 +232,9 @@
         "visual_description": "A vertical layout highlighting 'Items (3)' -> numerator over 'People (4)' -> denominator."
       },
       "level_2": {
-        "explanation": "Step 1: State the division problem: a \u00f7 b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 \u00f7 4 = 3/4.",
+        "explanation": "Step 1: State the division problem: a ÷ b.\\nStep 2: Write dividend 'a' as numerator.\\nStep 3: Write divisor 'b' as denominator.\\nStep 4: Understand that 3 ÷ 4 = 3/4.",
         "check_question": "How do you write 5 divided by 8 as a fraction?",
-        "visual_description": "An arrow transforming 3 \u00f7 4 directly into the fraction 3/4."
+        "visual_description": "An arrow transforming 3 ÷ 4 directly into the fraction 3/4."
       },
       "level_3": {
         "explanation": "Step 1: Set up quotient equation: q = a / b.\\nStep 2: Recognize that for any integers a and b (b != 0), a/b is the exact value that satisfies q * b = a.\\nStep 3: Verify: (3/4) * 4 = 3.",
@@ -251,7 +251,7 @@
       "level_2": {
         "explanation": "The fraction line is just another way to write a division sign. 3/4 literally means 3 divided by 4.",
         "check_question": "What sign does the middle line in a fraction stand for?",
-        "visual_description": "A division sign \u00f7 transforming into a fraction bar."
+        "visual_description": "A division sign ÷ transforming into a fraction bar."
       },
       "level_3": {
         "explanation": "Whenever division doesn't give a whole number, fractions give the exact answer without needing messy rounded decimals.",
@@ -297,34 +297,34 @@
     },
     "worked": {
       "level_1": {
-        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 \u00d7 2 = 4, so 1 \u00d7 2 = 2. The equivalent fraction is 2/4.",
+        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 × 2 = 4, so 1 × 2 = 2. The equivalent fraction is 2/4.",
         "check_question": "What must you do to the top number if you multiply the bottom number by 3?",
-        "visual_description": "1/2 with \u00d72 on top and \u00d72 on bottom leading to 2/4."
+        "visual_description": "1/2 with ×2 on top and ×2 on bottom leading to 2/4."
       },
       "level_2": {
         "explanation": "Step 1: To find an equivalent fraction for 3/5 with denominator 15, divide 15 by 5 = 3.\\nStep 2: Multiply numerator 3 by 3 = 9.\\nStep 3: Write 9/15. Therefore, 3/5 = 9/15.",
         "check_question": "What is the equivalent fraction for 2/3 with denominator 12?",
-        "visual_description": "Step-by-step arrows showing 5 \u00d7 3 = 15 and 3 \u00d7 3 = 9."
+        "visual_description": "Step-by-step arrows showing 5 × 3 = 15 and 3 × 3 = 9."
       },
       "level_3": {
-        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 \u00f7 4 = 3.\\nStep 3: Divide denominator by 4: 16 \u00f7 4 = 4.\\nStep 4: Result is 3/4.",
+        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 ÷ 4 = 3.\\nStep 3: Divide denominator by 4: 16 ÷ 4 = 4.\\nStep 4: Result is 3/4.",
         "check_question": "What is 8/10 in simplest form?",
         "visual_description": "Division arrows showing top and bottom divided by GCD 4 to yield 3/4."
       }
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 \u00d7 2 = 4, so 1 \u00d7 2 = 2. The equivalent fraction is 2/4.",
+        "explanation": "Step 1: Check what you multiply or divide the bottom number by.\\nStep 2: Multiply or divide the top number by the exact same value.\\nStep 3: If 1/2 becomes ?/4, 2 × 2 = 4, so 1 × 2 = 2. The equivalent fraction is 2/4.",
         "check_question": "What must you do to the top number if you multiply the bottom number by 3?",
-        "visual_description": "1/2 with \u00d72 on top and \u00d72 on bottom leading to 2/4."
+        "visual_description": "1/2 with ×2 on top and ×2 on bottom leading to 2/4."
       },
       "level_2": {
         "explanation": "Step 1: To find an equivalent fraction for 3/5 with denominator 15, divide 15 by 5 = 3.\\nStep 2: Multiply numerator 3 by 3 = 9.\\nStep 3: Write 9/15. Therefore, 3/5 = 9/15.",
         "check_question": "What is the equivalent fraction for 2/3 with denominator 12?",
-        "visual_description": "Step-by-step arrows showing 5 \u00d7 3 = 15 and 3 \u00d7 3 = 9."
+        "visual_description": "Step-by-step arrows showing 5 × 3 = 15 and 3 × 3 = 9."
       },
       "level_3": {
-        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 \u00f7 4 = 3.\\nStep 3: Divide denominator by 4: 16 \u00f7 4 = 4.\\nStep 4: Result is 3/4.",
+        "explanation": "Step 1: To simplify 12/16 to simplest terms, find greatest common factor: GCD(12, 16) = 4.\\nStep 2: Divide numerator by 4: 12 ÷ 4 = 3.\\nStep 3: Divide denominator by 4: 16 ÷ 4 = 4.\\nStep 4: Result is 3/4.",
         "check_question": "What is 8/10 in simplest form?",
         "visual_description": "Division arrows showing top and bottom divided by GCD 4 to yield 3/4."
       }
@@ -394,9 +394,9 @@
         "visual_description": "A comparison chart showing inverse relation between denominator and piece size."
       },
       "level_3": {
-        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a \u00d7 d with b \u00d7 c.\\nStep 2: For 3/5 and 4/7: 3 \u00d7 7 = 21 and 5 \u00d7 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
+        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a × d with b × c.\\nStep 2: For 3/5 and 4/7: 3 × 7 = 21 and 5 × 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
         "check_question": "Using cross-multiplication, is 2/3 greater than 3/5?",
-        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3\u00d77=21 on left and 5\u00d74=20 on right."
+        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3×7=21 on left and 5×4=20 on right."
       }
     },
     "step_by_step": {
@@ -411,9 +411,9 @@
         "visual_description": "A comparison chart showing inverse relation between denominator and piece size."
       },
       "level_3": {
-        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a \u00d7 d with b \u00d7 c.\\nStep 2: For 3/5 and 4/7: 3 \u00d7 7 = 21 and 5 \u00d7 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
+        "explanation": "Step 1: To compare a/b and c/d with different denominators, cross-multiply: compare a × d with b × c.\\nStep 2: For 3/5 and 4/7: 3 × 7 = 21 and 5 × 4 = 20.\\nStep 3: Since 21 > 20, 3/5 > 4/7.",
         "check_question": "Using cross-multiplication, is 2/3 greater than 3/5?",
-        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3\u00d77=21 on left and 5\u00d74=20 on right."
+        "visual_description": "A cross-multiplication diagram showing diagonal arrows: 3×7=21 on left and 5×4=20 on right."
       }
     },
     "simple_language": {
@@ -524,7 +524,7 @@
   "q1_basics_1": {
     "visual": {
       "level_1": {
-        "explanation": "Look closely at 3/5. Picture a chocolate bar cut into 5 equal pieces in total. You are holding 3 of them. The bottom number 5 is the denominator\u2014it always represents the total number of equal parts that make up the whole.",
+        "explanation": "Look closely at 3/5. Picture a chocolate bar cut into 5 equal pieces in total. You are holding 3 of them. The bottom number 5 is the denominator—it always represents the total number of equal parts that make up the whole.",
         "check_question": "What does the top number 3 count in 3/5?",
         "visual_description": "A rectangle divided into 5 equal squares. 3 squares are highlighted purple, and 2 squares are empty, showing 5 total parts in the whole."
       }
@@ -598,9 +598,9 @@
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Identify what is being divided: 3 pizzas (dividend).\\nStep 2: Identify how many groups or people are sharing: 4 friends (divisor).\\nStep 3: Write the division as a fraction: 3 \u00f7 4 = 3/4 of a pizza.",
+        "explanation": "Step 1: Identify what is being divided: 3 pizzas (dividend).\\nStep 2: Identify how many groups or people are sharing: 4 friends (divisor).\\nStep 3: Write the division as a fraction: 3 ÷ 4 = 3/4 of a pizza.",
         "check_question": "What operation connects 3 items shared among 4 people?",
-        "visual_description": "Mathematical formula showing: Items (3) \u00f7 Sharers (4) = 3/4."
+        "visual_description": "Mathematical formula showing: Items (3) ÷ Sharers (4) = 3/4."
       }
     },
     "simple_language": {
@@ -614,30 +614,30 @@
   "q4_division_2": {
     "visual": {
       "level_1": {
-        "explanation": "In the fraction 7/10, the horizontal fraction bar literally means division (\u00f7). The top number 7 is divided by the bottom number 10. That means 7/10 is exactly 7 \u00f7 10.",
+        "explanation": "In the fraction 7/10, the horizontal fraction bar literally means division (÷). The top number 7 is divided by the bottom number 10. That means 7/10 is exactly 7 ÷ 10.",
         "check_question": "What division problem does 4/5 represent?",
-        "visual_description": "A diagram showing 7/10 with an arrow pointing from the line to a \u00f7 sign, transforming 7/10 into 7 \u00f7 10."
+        "visual_description": "A diagram showing 7/10 with an arrow pointing from the line to a ÷ sign, transforming 7/10 into 7 ÷ 10."
       }
     },
     "analogy": {
       "level_1": {
-        "explanation": "Imagine sharing  equally among 10 students. You take the  you have and divide it among 10 people: 7 \u00f7 10. Each student receives 7/10 of a dollar (70 cents).",
-        "check_question": "In 7 \u00f7 10, which number goes on top of the fraction?",
-        "visual_description": "7 one-dollar bills being split evenly across 10 piggy banks, representing 7 \u00f7 10 = 7/10."
+        "explanation": "Imagine sharing  equally among 10 students. You take the  you have and divide it among 10 people: 7 ÷ 10. Each student receives 7/10 of a dollar (70 cents).",
+        "check_question": "In 7 ÷ 10, which number goes on top of the fraction?",
+        "visual_description": "7 one-dollar bills being split evenly across 10 piggy banks, representing 7 ÷ 10 = 7/10."
       }
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: In any fraction a/b, the numerator (a) is the number being divided (dividend).\\nStep 2: The denominator (b) is the number dividing it (divisor).\\nStep 3: Replace the fraction bar with the division sign \u00f7 : 7/10 = 7 \u00f7 10.",
-        "check_question": "Why is 7/10 equal to 7 \u00f7 10 and NOT 10 \u00f7 7?",
-        "visual_description": "Comparison showing: Numerator 7 on left \u00f7 Denominator 10 on right = 7 \u00f7 10."
+        "explanation": "Step 1: In any fraction a/b, the numerator (a) is the number being divided (dividend).\\nStep 2: The denominator (b) is the number dividing it (divisor).\\nStep 3: Replace the fraction bar with the division sign ÷ : 7/10 = 7 ÷ 10.",
+        "check_question": "Why is 7/10 equal to 7 ÷ 10 and NOT 10 ÷ 7?",
+        "visual_description": "Comparison showing: Numerator 7 on left ÷ Denominator 10 on right = 7 ÷ 10."
       }
     },
     "simple_language": {
       "level_1": {
-        "explanation": "Every fraction is a division problem in disguise! The fraction bar means divided by. Read it from top to bottom: 7 divided by 10, or 7 \u00f7 10.",
-        "check_question": "Does top \u00f7 bottom mean 7 \u00f7 10 or 10 \u00f7 7?",
-        "visual_description": "Top number 7 sliding down past the \u00f7 bar to meet 10."
+        "explanation": "Every fraction is a division problem in disguise! The fraction bar means divided by. Read it from top to bottom: 7 divided by 10, or 7 ÷ 10.",
+        "check_question": "Does top ÷ bottom mean 7 ÷ 10 or 10 ÷ 7?",
+        "visual_description": "Top number 7 sliding down past the ÷ bar to meet 10."
       }
     }
   },
@@ -658,9 +658,9 @@
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Total juice to divide = 5 liters.\\nStep 2: Total pitchers sharing = 2 pitchers.\\nStep 3: Set up division: 5 \u00f7 2.\\nStep 4: Express as fraction: 5/2 liters (which equals 2 1/2 or 2.5 liters).",
-        "check_question": "What is 5 \u00f7 2 expressed as a fraction?",
-        "visual_description": "Equation: 5 liters \u00f7 2 pitchers = 5/2 liters = 2 1/2 liters."
+        "explanation": "Step 1: Total juice to divide = 5 liters.\\nStep 2: Total pitchers sharing = 2 pitchers.\\nStep 3: Set up division: 5 ÷ 2.\\nStep 4: Express as fraction: 5/2 liters (which equals 2 1/2 or 2.5 liters).",
+        "check_question": "What is 5 ÷ 2 expressed as a fraction?",
+        "visual_description": "Equation: 5 liters ÷ 2 pitchers = 5/2 liters = 2 1/2 liters."
       }
     },
     "simple_language": {
@@ -688,9 +688,9 @@
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Start with fraction 1/2.\\nStep 2: To find an equivalent fraction, multiply the numerator and denominator by the same number (e.g., 2).\\nStep 3: 1 \u00d7 2 = 2 (new numerator); 2 \u00d7 2 = 4 (new denominator).\\nStep 4: The equivalent fraction is 2/4.",
+        "explanation": "Step 1: Start with fraction 1/2.\\nStep 2: To find an equivalent fraction, multiply the numerator and denominator by the same number (e.g., 2).\\nStep 3: 1 × 2 = 2 (new numerator); 2 × 2 = 4 (new denominator).\\nStep 4: The equivalent fraction is 2/4.",
         "check_question": "What do you multiply 1/2 by to get 3/6?",
-        "visual_description": "Multiplication arrows: 1 \u00d7 2 = 2 over 2 \u00d7 2 = 4."
+        "visual_description": "Multiplication arrows: 1 × 2 = 2 over 2 × 2 = 4."
       }
     },
     "simple_language": {
@@ -704,23 +704,23 @@
   "q7_equiv_2": {
     "visual": {
       "level_1": {
-        "explanation": "Look at the denominators: 4 becomes 12. Because 4 \u00d7 3 = 12, each of the 4 original pieces was cut into 3 smaller pieces. That means the 3 shaded pieces also become 3 \u00d7 3 = 9 pieces. So 3/4 = 9/12.",
+        "explanation": "Look at the denominators: 4 becomes 12. Because 4 × 3 = 12, each of the 4 original pieces was cut into 3 smaller pieces. That means the 3 shaded pieces also become 3 × 3 = 9 pieces. So 3/4 = 9/12.",
         "check_question": "What number did we multiply the denominator 4 by to reach 12?",
         "visual_description": "Two tape diagrams of equal length: top tape divided into 4 parts with 3 shaded; bottom tape divided into 12 parts with 9 shaded."
       }
     },
     "analogy": {
       "level_1": {
-        "explanation": "Whatever you do to the bottom of a fraction, you MUST do to the top to keep the balance! If the denominator grew by multiplying by 3 (4 \u00d7 3 = 12), the numerator must also multiply by 3: 3 \u00d7 3 = 9.",
+        "explanation": "Whatever you do to the bottom of a fraction, you MUST do to the top to keep the balance! If the denominator grew by multiplying by 3 (4 × 3 = 12), the numerator must also multiply by 3: 3 × 3 = 9.",
         "check_question": "If the bottom had been multiplied by 2, what would the top be multiplied by?",
-        "visual_description": "A balance scale with \u00d7 3 on top balancing \u00d7 3 on bottom."
+        "visual_description": "A balance scale with × 3 on top balancing × 3 on bottom."
       }
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Compare denominators: 12 \u00f7 4 = 3 (the multiplier is 3).\\nStep 2: Multiply the numerator by that same multiplier: 3 \u00d7 3 = 9.\\nStep 3: Replace the question mark: 3/4 = 9/12. The missing number is 9.",
+        "explanation": "Step 1: Compare denominators: 12 ÷ 4 = 3 (the multiplier is 3).\\nStep 2: Multiply the numerator by that same multiplier: 3 × 3 = 9.\\nStep 3: Replace the question mark: 3/4 = 9/12. The missing number is 9.",
         "check_question": "What is 3 multiplied by 3?",
-        "visual_description": "Step-by-step arithmetic arrows: 4 \u00d7 3 = 12 on bottom, 3 \u00d7 3 = 9 on top."
+        "visual_description": "Step-by-step arithmetic arrows: 4 × 3 = 12 on bottom, 3 × 3 = 9 on top."
       }
     },
     "simple_language": {
@@ -778,9 +778,9 @@
     },
     "step_by_step": {
       "level_1": {
-        "explanation": "Step 1: Keep the common denominator (6).\\nStep 2: Add the numerators: 1 + 3 = 4, giving 4/6.\\nStep 3: Simplify by finding the greatest common factor of 4 and 6, which is 2.\\nStep 4: Divide top and bottom by 2: (4 \u00f7 2) / (6 \u00f7 2) = 2/3.",
-        "check_question": "What is 4 \u00f7 2 over 6 \u00f7 2?",
-        "visual_description": "Equation: 1/6 + 3/6 = 4/6 = (4\u00f72)/(6\u00f72) = 2/3."
+        "explanation": "Step 1: Keep the common denominator (6).\\nStep 2: Add the numerators: 1 + 3 = 4, giving 4/6.\\nStep 3: Simplify by finding the greatest common factor of 4 and 6, which is 2.\\nStep 4: Divide top and bottom by 2: (4 ÷ 2) / (6 ÷ 2) = 2/3.",
+        "check_question": "What is 4 ÷ 2 over 6 ÷ 2?",
+        "visual_description": "Equation: 1/6 + 3/6 = 4/6 = (4÷2)/(6÷2) = 2/3."
       }
     },
     "simple_language": {
@@ -788,6 +788,740 @@
         "explanation": "When the bottom numbers are the same, just add the tops: 1 + 3 = 4, so you have 4/6. Then reduce it by dividing both numbers by 2 to get 2/3.",
         "check_question": "Can 4/6 be simplified to 2/3?",
         "visual_description": "Fraction 4/6 transforming into 2/3."
+      }
+    }
+  },
+  "q_code_mutability": {
+    "visual": {
+      "level_1": {
+        "explanation": "In Python, default arguments are created ONCE when the function definition is executed, NOT each time you call the function. The variable 'target' points to a single list in memory. Call 1 appends 1 -> [1]. Call 2 appends 2 to the exact same list -> [1, 2]. Call 3 explicitly provides a brand-new list [] -> [3].",
+        "check_question": "Why didn't call 2 start with an empty list?",
+        "visual_description": "Memory diagram showing the function object with a default argument pointer to List Object @0x01. Calls 1 and 2 mutate @0x01, while Call 3 points to a newly allocated List Object @0x02."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of the default argument like a communal whiteboard in an office. If nobody brings their own notepad, everyone writes on the same shared whiteboard! Call 1 writes '1'. Call 2 writes '2' below it (so it reads [1, 2]). Only on Call 3 does someone bring their own fresh notepad ([]), writing just '3'.",
+        "check_question": "What happens when you bring your own notepad in call 3?",
+        "visual_description": "A shared office whiteboard accumulating notes '1' and '2', next to a student holding their own separate blank notepad with '3'."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Function definition evaluates `target=[]` once at definition time.\nStep 2: Call `append_to(1)` uses the default list -> adds 1 -> returns [1].\nStep 3: Call `append_to(2)` reuses that same mutated list -> adds 2 -> returns [1, 2].\nStep 4: Call `append_to(3, [])` passes an explicit new list -> adds 3 -> returns [3].",
+        "check_question": "What would be returned if we ran `append_to(4)` right after?",
+        "visual_description": "Four-step execution trace table: Call -> Argument Target -> Operation -> Result."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Python reuses the same default list over and over! So the first call makes [1], the second call adds to it making [1, 2]. The third call gives its own fresh list, so it gets just [3].",
+        "check_question": "Does Python make a new default list every call?",
+        "visual_description": "A single shared box that keeps getting items added until someone brings their own new box."
+      }
+    }
+  },
+  "q_code_recursion": {
+    "visual": {
+      "level_1": {
+        "explanation": "This function calculates a recursive sequence with XOR (^): mystery(n) = mystery(n-1) ^ mystery(n-2). Base cases: mystery(0)=0, mystery(1)=1. Tracing: mystery(2) = 1 ^ 0 = 1; mystery(3) = 1 ^ 1 = 0; mystery(4) = mystery(3) ^ mystery(2) = 0 ^ 1 = 1.",
+        "check_question": "What is 1 XOR 1 (1 ^ 1)?",
+        "visual_description": "A binary recursion tree branching from mystery(4) down to base cases mystery(1) and mystery(0), showing bitwise XOR evaluations at each node."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Bitwise XOR (^) works like a light switch with two toggles: if both switches match (1 and 1, or 0 and 0), the light is OFF (0). If they are different (1 and 0), the light is ON (1). mystery(2) = 1^0 = 1. mystery(3) = 1^1 = 0. mystery(4) = 0^1 = 1.",
+        "check_question": "What does XOR output when both inputs are identical?",
+        "visual_description": "A two-way hallway light switch diagram showing light on when switches differ and off when switches match."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Identify base cases: mystery(0) = 0, mystery(1) = 1.\nStep 2: Compute mystery(2) = mystery(1) ^ mystery(0) = 1 ^ 0 = 1.\nStep 3: Compute mystery(3) = mystery(2) ^ mystery(1) = 1 ^ 1 = 0.\nStep 4: Compute mystery(4) = mystery(3) ^ mystery(2) = 0 ^ 1 = 1.",
+        "check_question": "What is the value of mystery(3)?",
+        "visual_description": "Step-by-step evaluation stack: Base cases -> mystery(2)=1 -> mystery(3)=0 -> mystery(4)=1."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "The function uses XOR (^) on previous answers. Starting at 0 and 1: 1 ^ 0 gives 1. Next, 1 ^ 1 gives 0. Finally, 0 ^ 1 gives 1. The answer is 1.",
+        "check_question": "What does 0 ^ 1 equal?",
+        "visual_description": "A simple ladder climbing from step 0 to step 4."
+      }
+    }
+  },
+  "q_code_slicing": {
+    "visual": {
+      "level_1": {
+        "explanation": "Slice notation is text[start:stop:step]. String 'CLEARPATH' has indices: 0:'C', 1:'L', 2:'E', 3:'A', 4:'R', 5:'P', 6:'A', 7:'T', 8:'H'. Starting at index 1 ('L'), jumping by 2 steps until index 7: selects index 1 ('L'), index 3 ('A'), index 5 ('P') -> 'LAP'.",
+        "check_question": "Which character is at index 1 of 'CLEARPATH'?",
+        "visual_description": "A numbered grid showing characters 'C', 'L', 'E', 'A', 'R', 'P', 'A', 'T', 'H' with an arrow jumping from index 1 to 3 to 5."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine hopping along stepping stones labeled C-L-E-A-R-P-A-T-H. You start at stone 1 ('L') and hop every 2nd stone until stone 7. You land on 'L', then hop to 'A', then hop to 'P', spelling 'LAP'!",
+        "check_question": "How many stones do you skip on each hop when step is 2?",
+        "visual_description": "Stepping stones across a pond with feet landing on L, A, and P."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Parse start=1, stop=7, step=2.\nStep 2: Character at index 1 is 'L'.\nStep 3: Advance by step 2: 1 + 2 = index 3, which is 'A'.\nStep 4: Advance by step 2: 3 + 2 = index 5, which is 'P'.\nStep 5: Next would be 5 + 2 = 7, but stop=7 is exclusive. Result: 'LAP'.",
+        "check_question": "Is index 7 included in text[1:7:2]?",
+        "visual_description": "Index progression list: [1]='L' -> [3]='A' -> [5]='P' -> Stop at 7."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Start at letter 1 (the 'L' in CLEARPATH). Skip every other letter until letter 7. You pick up L, then A, then P. Put them together to get 'LAP'.",
+        "check_question": "What word is formed by L, A, and P?",
+        "visual_description": "Three highlighted letters L, A, P pulled out of CLEARPATH."
+      }
+    }
+  },
+  "q_math_quad_roots": {
+    "visual": {
+      "level_1": {
+        "explanation": "In 2x² - 7x + 3 = 0, coefficients are a=2, b=-7, c=3. Discriminant Δ = b² - 4ac = (-7)² - 4(2)(3) = 49 - 24 = 25. Since Δ = 25 > 0, the parabola crosses the x-axis at two distinct points: x = (7 ± √25)/4 = (7 ± 5)/4 -> x = 3 and x = 1/2.",
+        "check_question": "What does a positive discriminant (Δ > 0) tell us about the parabola?",
+        "visual_description": "A parabola y = 2x² - 7x + 3 plotted on Cartesian axes, clearly crossing the x-axis at x = 0.5 and x = 3."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of the discriminant Δ as the 'detector' for how many times a rocket path touches the ground. If Δ > 0, it punctures through the ground twice! Here Δ = 25, so there are two real touchdown spots at x = 3 and x = 1/2.",
+        "check_question": "If Δ was 0, how many times would the path touch the ground?",
+        "visual_description": "A trajectory curve crossing a ground line at two points marked 1/2 and 3."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Identify coefficients: a=2, b=-7, c=3.\nStep 2: Calculate discriminant: Δ = b² - 4ac = (-7)² - 4(2)(3) = 49 - 24 = 25.\nStep 3: Take square root: √Δ = √25 = 5.\nStep 4: Quadratic formula: x = (-b ± √Δ) / (2a) = (7 ± 5) / 4.\nStep 5: x₁ = (7 + 5)/4 = 3; x₂ = (7 - 5)/4 = 2/4 = 1/2.",
+        "check_question": "What is (-7)²?",
+        "visual_description": "Quadratic formula substitution box showing step-by-step simplification."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "First find Δ = b² - 4ac, which gives 25. Because 25 is greater than zero, there are two real answers. Use the formula (7 ± 5) / 4 to get x = 3 and x = 1/2.",
+        "check_question": "What are the two roots?",
+        "visual_description": "Two checkmark badges labeled x = 3 and x = 1/2."
+      }
+    }
+  },
+  "q_math_quad_param": {
+    "visual": {
+      "level_1": {
+        "explanation": "For x² + kx + 48 = 0, roots are α and β = 3α. By Vieta's formulas: Product of roots α · β = 3α² = 48 -> α² = 16 -> α = 4, so β = 12. Sum of roots: α + β = 16 = -k -> k = -16. Sum of squares: α² + β² = 4² + 12² = 16 + 144 = 160.",
+        "check_question": "If α² = 16, what is positive root α?",
+        "visual_description": "A root relationship diagram showing α = 4, β = 12, product = 48, sum = 16, and squares sum = 160."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine two rectangular garden plots where one is 3 times longer than the other (length α and 3α). Their combined area product is 3α² = 48, meaning α = 4 and the other is 12. The perimeter sum gives k = -16, and sum of squared sides is 16 + 144 = 160.",
+        "check_question": "What is 3 times 4?",
+        "visual_description": "Two proportional rectangles of side 4 and side 12."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Set roots as α and β = 3α.\nStep 2: Product of roots in x² + kx + c = 0 is c: α · (3α) = 3α² = 48.\nStep 3: Solve for α: α² = 16 => α = 4, β = 12.\nStep 4: Sum of roots is -k: α + β = 4 + 12 = 16 => k = -16.\nStep 5: Calculate α² + β² = 4² + 12² = 16 + 144 = 160.",
+        "check_question": "What is 4² + 12²?",
+        "visual_description": "Vieta's formula step flowchart: Product -> α -> Sum -> k -> α² + β²."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "One number is three times bigger than the other, and when multiplied they make 48. Those numbers are 4 and 12! Add them to get 16, so k = -16. Square both (16 and 144) and add them to get 160.",
+        "check_question": "What is 4 multiplied by 12?",
+        "visual_description": "Numbers 4 and 12 highlighted with addition and multiplication operations."
+      }
+    }
+  },
+  "q_math_slope_intercept": {
+    "visual": {
+      "level_1": {
+        "explanation": "To find slope m and y-intercept b, rearrange 3x + 2y = 8 into standard form y = mx + b. Subtract 3x from both sides: 2y = -3x + 8. Divide every term by 2: y = (-3/2)x + 4. Therefore, slope m = -3/2 (drops 3 for every 2 right), and y-intercept b = 4 (crosses y-axis at (0, 4)).",
+        "check_question": "At what point does the line cross the y-axis?",
+        "visual_description": "A line plotted on a 2D grid with y-intercept highlighted at (0, 4) and a right-triangle showing rise of -3 over run of +2."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of the y-intercept b as your starting height on a ski slope (elevation 4). The slope m = -3/2 tells you how steep the descent is: for every 2 meters forward, you drop 3 meters down.",
+        "check_question": "Does a negative slope mean the line goes uphill or downhill?",
+        "visual_description": "A skier starting at height 4 going down a ramp that drops 3 units for every 2 units forward."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Start with linear equation: 3x + 2y = 8.\nStep 2: Isolate y-term by subtracting 3x: 2y = -3x + 8.\nStep 3: Divide entire equation by 2: y = (-3/2)x + 4.\nStep 4: Identify slope m = -3/2 and y-intercept b = 4.",
+        "check_question": "What is 8 divided by 2?",
+        "visual_description": "Equation rearrangement arrows transforming 3x + 2y = 8 into y = mx + b."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Put y by itself! Subtract 3x to get 2y = -3x + 8, then divide by 2 to get y = -3/2 x + 4. The number in front of x is the slope (-3/2) and the standalone number is the y-intercept (4).",
+        "check_question": "What number is in front of x after dividing by 2?",
+        "visual_description": "Highlighted slope -3/2 and intercept 4 in the equation."
+      }
+    }
+  },
+  "q_quad_roots_top": {
+    "step_by_step": {
+      "level_1": {
+        "explanation": "To solve 2x² - 9x + 4 = 0 by factoring: multiply a × c = 2 × 4 = 8. Find two numbers that multiply to 8 and add to -9: those are -8 and -1. Split the middle term: 2x² - 8x - x + 4 = 0 → 2x(x - 4) - 1(x - 4) = 0 → (2x - 1)(x - 4) = 0. Setting each factor to 0 gives x = 4 and x = 1/2.",
+        "check_question": "What do the factors (2x - 1) and (x - 4) equal when you set each to zero?",
+        "visual_description": "Factoring grid showing 2x² split with -8x and -x, factoring out 2x and -1 to yield (2x - 1)(x - 4) = 0."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "To solve 2x² - 9x + 4 = 0 by factoring: multiply a × c = 2 × 4 = 8. Find two numbers that multiply to 8 and add to -9: those are -8 and -1. Split the middle term: 2x² - 8x - x + 4 = 0 → 2x(x - 4) - 1(x - 4) = 0 → (2x - 1)(x - 4) = 0. Setting each factor to 0 gives x = 4 and x = 1/2.",
+        "check_question": "What do the factors (2x - 1) and (x - 4) equal when you set each to zero?",
+        "visual_description": "Factoring grid showing 2x² split with -8x and -x, factoring out 2x and -1 to yield (2x - 1)(x - 4) = 0."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Look at the coefficients: a = 2, b = -9, c = 4. Can you think of two numbers that multiply to +8 (a × c) and add up to -9 (b)? Once you find them, try splitting -9x into two terms!",
+        "check_question": "Which two numbers multiply to +8 and sum to -9?",
+        "visual_description": "A number pair scale balancing multiplication to +8 on one side and addition to -9 on the other."
+      }
+    },
+    "visual": {
+      "level_1": {
+        "explanation": "Think of a quadratic as a parabola crossing the x-axis twice. Or use quick back-substitution: plug x = 4 into 2(4)² - 9(4) + 4 → 32 - 36 + 4 = 0! That immediately proves x = 4 is a valid root.",
+        "check_question": "What is the value of 2(4)² - 9(4) + 4?",
+        "visual_description": "A parabola y = 2x² - 9x + 4 plotted on Cartesian coordinates, dipping below the x-axis and crossing cleanly at x = 0.5 and x = 4."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Use the Quadratic Formula: x = [-b ± √(b² - 4ac)] / (2a). Here: x = [9 ± √((-9)² - 4(2)(4))] / 4 = [9 ± √(81 - 32)] / 4 = (9 ± 7) / 4. So x = 16/4 = 4, or x = 2/4 = 1/2.",
+        "check_question": "What is 9 plus 7 divided by 4?",
+        "visual_description": "The quadratic formula with a=2, b=-9, c=4 substituted in, simplifying step by step to 4 and 1/2."
+      }
+    }
+  },
+  "q_code_mutable_top": {
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Python evaluates default arguments like box=[] only once when the function is defined, creating a single persistent list object in memory.\nStep 2: The first call add_item(10) appends 10 into this default list, making it [10].\nStep 3: The second call add_item(20) is called without a custom box, so it reuses the exact same persistent list, appending 20 to make it [10, 20].\nStep 4: The function returns box, so print(add_item(20)) outputs [10, 20].",
+        "check_question": "What is inside the shared default list after the first call add_item(10)?",
+        "visual_description": "A memory allocation diagram showing function add_item pointing to a single heap list object that mutates from [] to [10] to [10, 20]."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "Step 1: Python evaluates default arguments like box=[] only once when the function is defined, creating a single persistent list object in memory.\nStep 2: The first call add_item(10) appends 10 into this default list, making it [10].\nStep 3: The second call add_item(20) is called without a custom box, so it reuses the exact same persistent list, appending 20 to make it [10, 20].\nStep 4: The function returns box, so print(add_item(20)) outputs [10, 20].",
+        "check_question": "What is inside the shared default list after the first call add_item(10)?",
+        "visual_description": "A memory allocation diagram showing function add_item pointing to a single heap list object that mutates from [] to [10] to [10, 20]."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of box as a communal donation box placed in the classroom when the class was founded. If a student brings an item without bringing their own backpack, it goes into the communal classroom box! Student 1 drops in 10. Student 2 drops in 20. When you open the communal box, both items 10 and 20 are inside: [10, 20].",
+        "check_question": "Why didn't the second call get a brand new, empty box?",
+        "visual_description": "A communal physical donation box holding a block labeled '10' and a block labeled '20'."
+      }
+    },
+    "visual": {
+      "level_1": {
+        "explanation": "A trace table showing function calls and memory state:\nCall 1: add_item(10) -> box @ 0x7FA = [10]\nCall 2: add_item(20) -> box @ 0x7FA = [10, 20]\nPrint statement references 0x7FA, displaying [10, 20].",
+        "check_question": "Does the memory address of the default list change between calls?",
+        "visual_description": "Two call frames pointing to the same shared memory box containing [10, 20]."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "In Python, default lists don't reset between calls! The first call adds 10 to the list. The second call adds 20 to that exact same list. So the final list has both: [10, 20].",
+        "check_question": "What number was added first to the list?",
+        "visual_description": "A single list growing from [10] to [10, 20]."
+      }
+    }
+  },
+  "q_quad_param_top": {
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: A quadratic equation ax² + bx + c = 0 has exactly one real repeated root if and only if its discriminant Δ = b² - 4ac = 0.\nStep 2: Here, a = 1, b = -k, c = 25.\nStep 3: Δ = (-k)² - 4(1)(25) = k² - 100 = 0.\nStep 4: Solving for positive k: k² = 100 → k = 10.\nStep 5: Substitute k = 10 into the original equation: x² - 10x + 25 = 0.\nStep 6: Factor as a perfect square: (x - 5)² = 0, which yields the repeated root x = 5.",
+        "check_question": "What is the square root of 100 when solving k² = 100 for positive k?",
+        "visual_description": "Step-by-step algebraic breakdown from discriminant Δ = 0 to k = 10 and (x - 5)² = 0."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "Step 1: A quadratic equation ax² + bx + c = 0 has exactly one real repeated root if and only if its discriminant Δ = b² - 4ac = 0.\nStep 2: Here, a = 1, b = -k, c = 25.\nStep 3: Δ = (-k)² - 4(1)(25) = k² - 100 = 0.\nStep 4: Solving for positive k: k² = 100 → k = 10.\nStep 5: Substitute k = 10 into the original equation: x² - 10x + 25 = 0.\nStep 6: Factor as a perfect square: (x - 5)² = 0, which yields the repeated root x = 5.",
+        "check_question": "What is the square root of 100 when solving k² = 100 for positive k?",
+        "visual_description": "Step-by-step algebraic breakdown from discriminant Δ = 0 to k = 10 and (x - 5)² = 0."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine setting a bouncy ball's trajectory so that its lowest point just barely kisses the grass without digging underground or hovering above. That delicate balance happens when the discriminant Δ is exactly zero! When k = 10, the parabola touches the grass at x = 5.",
+        "check_question": "What happens to the discriminant when a trajectory touches the ground at exactly one point?",
+        "visual_description": "A ball trajectory touching the ground line at a single tangent point x = 5."
+      }
+    },
+    "visual": {
+      "level_1": {
+        "explanation": "Graphically, having one repeated root means the vertex of parabola y = x² - 10x + 25 lies directly on the x-axis. Vertex coordinates are (k/2, 25 - k²/4). Setting the y-coordinate to 0 gives 25 = k²/4 → k = 10, giving vertex (5, 0).",
+        "check_question": "What are the coordinates of the vertex on the x-axis?",
+        "visual_description": "A parabola y = x² - 10x + 25 tangent to the x-axis at vertex (5, 0)."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "For one repeated root, Δ = b² - 4ac must equal 0. Here, (-k)² - 4(1)(25) = 0, so k² = 100. Because k is positive, k = 10. The equation becomes (x - 5)² = 0, so the root is x = 5.",
+        "check_question": "What is (-k) squared?",
+        "visual_description": "The perfect square trinomial x² - 10x + 25 = (x - 5)²."
+      }
+    }
+  },
+  "q_code_recursion_top": {
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: compute(5) checks n <= 1 (False), returns 5 * compute(3).\nStep 2: compute(3) checks n <= 1 (False), returns 3 * compute(1).\nStep 3: compute(1) checks n <= 1 (True), hits base case and returns 1.\nStep 4: Unwind stack: compute(3) = 3 * 1 = 3.\nStep 5: Unwind stack: compute(5) = 5 * 3 = 15.\nStep 6: print(compute(5)) prints 15.",
+        "check_question": "What does compute(1) return when it hits the base case?",
+        "visual_description": "Call stack trace showing compute(5) -> compute(3) -> compute(1) returning values back up to 15."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "Step 1: compute(5) checks n <= 1 (False), returns 5 * compute(3).\nStep 2: compute(3) checks n <= 1 (False), returns 3 * compute(1).\nStep 3: compute(1) checks n <= 1 (True), hits base case and returns 1.\nStep 4: Unwind stack: compute(3) = 3 * 1 = 3.\nStep 5: Unwind stack: compute(5) = 5 * 3 = 15.\nStep 6: print(compute(5)) prints 15.",
+        "check_question": "What does compute(1) return when it hits the base case?",
+        "visual_description": "Call stack trace showing compute(5) -> compute(3) -> compute(1) returning values back up to 15."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of walking down a flight of stairs skipping every other step. You start at step 5, leap down to step 3, then leap down to step 1. At step 1 you collect a base score of 1, and on your way back up you multiply: 1 × 3 × 5 = 15!",
+        "check_question": "Why is 4 not included in the multiplication?",
+        "visual_description": "A staircase with footsteps on steps 5, 3, and 1."
+      }
+    },
+    "visual": {
+      "level_1": {
+        "explanation": "A tree/stack diagram:\ncompute(5) = 5 * compute(3)\n               compute(3) = 3 * compute(1)\n                              compute(1) = 1 (Base Case)\nResult: 5 * 3 * 1 = 15.",
+        "check_question": "What is 5 times 3 times 1?",
+        "visual_description": "A tree diagram unwinding the recursion to compute 15."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "The code multiplies odd numbers countdown style by skipping 2 each step: 5 * 3 * 1 = 15. When it reaches 1, it stops and multiplies them all together. The answer is 15.",
+        "check_question": "What are the numbers being multiplied together?",
+        "visual_description": "Multiplication expression 5 × 3 × 1 = 15 highlighted."
+      }
+    }
+  },
+  "c7_python_tracing": {
+    "visual": {
+      "level_1": {
+        "explanation": "A trace diagram showing function call frames and memory state: Call 1: add_item(10) -> box is [10]. Call 2: add_item(20) -> reuses same box memory -> [10, 20].",
+        "check_question": "Does box point to a newly created list or the existing list in memory?",
+        "visual_description": "A call-frame diagram showing a pointer from box to list [10, 20] in heap memory."
+      },
+      "level_2": {
+        "explanation": "A call stack diagram: execution enters function, creates stack frame, mutates shared heap object, and returns reference.",
+        "check_question": "When are default parameter expressions evaluated in Python?",
+        "visual_description": "Call stack frame diagram showing variables, heap objects, and return values."
+      },
+      "level_3": {
+        "explanation": "Execution flow and memory addresses: def statement binds default arguments once in __defaults__. Every call without arguments shares that exact list object id.",
+        "check_question": "What Python attribute stores the default argument objects?",
+        "visual_description": "Function object layout showing __defaults__ tuple containing mutable list reference."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a communal donation box placed in a room. When someone puts in 10, the box has 10. When the next person arrives with 20, they do not get an empty box; they see 10 and add 20 to it, resulting in [10, 20]!",
+        "check_question": "Why wasn't the donation box emptied before the second person arrived?",
+        "visual_description": "A clear box labeled 'box' sitting on a table with number tokens 10 and 20 placed inside."
+      },
+      "level_2": {
+        "explanation": "Imagine a shared whiteboard in an office. Anyone who writes on it modifies the same board rather than creating a new whiteboard.",
+        "check_question": "Does each function call get a new whiteboard or share the existing one?",
+        "visual_description": "A single whiteboard with markers writing consecutive lines."
+      },
+      "level_3": {
+        "explanation": "Think of passing a house address rather than building a new house. Every visitor who enters modifies the same physical building.",
+        "check_question": "Does passing by reference duplicate the underlying object in memory?",
+        "visual_description": "Multiple pointers converging on a single memory location."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Python evaluates default arguments like box=[] once when the function is defined.\nStep 2: add_item(10) appends 10 into box -> [10].\nStep 3: add_item(20) reuses the same box list and appends 20 -> [10, 20].\nStep 4: print() displays [10, 20].",
+        "check_question": "What would be the output after a 3rd call add_item(30)?",
+        "visual_description": "Numbered step cards tracing each call step by step."
+      },
+      "level_2": {
+        "explanation": "Step 1: Check function header def add_item(val, box=[]).\nStep 2: Default argument box=[] created at import/definition time.\nStep 3: Call 1 mutates box to [10].\nStep 4: Call 2 mutates box to [10, 20].",
+        "check_question": "What is the standard idiom in Python to avoid mutable default arguments?",
+        "visual_description": "Execution timeline showing function creation vs invocation steps."
+      },
+      "level_3": {
+        "explanation": "Step 1: Inspect bytecode and __defaults__.\nStep 2: Note that mutable objects in __defaults__ persist.\nStep 3: Follow list.append() in-place mutation.\nStep 4: Output is [10, 20].",
+        "check_question": "Does list.append return a new list or None?",
+        "visual_description": "Bytecode disassembly trace showing LOAD_FAST and LIST_APPEND."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "Step 1: Python evaluates default arguments like box=[] once when the function is defined.\nStep 2: add_item(10) appends 10 into box -> [10].\nStep 3: add_item(20) reuses the same box list and appends 20 -> [10, 20].\nStep 4: print() displays [10, 20].",
+        "check_question": "What would be the output after a 3rd call add_item(30)?",
+        "visual_description": "Numbered step cards tracing each call step by step."
+      },
+      "level_2": {
+        "explanation": "Step 1: Check function header def add_item(val, box=[]).\nStep 2: Default argument box=[] created at import/definition time.\nStep 3: Call 1 mutates box to [10].\nStep 4: Call 2 mutates box to [10, 20].",
+        "check_question": "What is the standard idiom in Python to avoid mutable default arguments?",
+        "visual_description": "Execution timeline showing function creation vs invocation steps."
+      },
+      "level_3": {
+        "explanation": "Step 1: Inspect bytecode and __defaults__.\nStep 2: Note that mutable objects in __defaults__ persist.\nStep 3: Follow list.append() in-place mutation.\nStep 4: Output is [10, 20].",
+        "check_question": "Does list.append return a new list or None?",
+        "visual_description": "Bytecode disassembly trace showing LOAD_FAST and LIST_APPEND."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "In Python, default lists do NOT reset between function calls! The first call puts 10 inside the list. The second call adds 20 to that same list. So the final output is [10, 20].",
+        "check_question": "Do default lists reset back to empty [] on every call?",
+        "visual_description": "A sticky note stating: 'Default lists never reset! They accumulate items across calls.'"
+      },
+      "level_2": {
+        "explanation": "Rule of thumb: Never use empty list [] as a default parameter unless you intentionally want items to pile up. Use None instead and check if box is None: box = [].",
+        "check_question": "What default value should you use instead of []?",
+        "visual_description": "A code comparison showing buggy box=[] vs safe box=None."
+      },
+      "level_3": {
+        "explanation": "Python function default parameters are created only once when the file is read, not every time the function runs.",
+        "check_question": "When are default values initialized in Python?",
+        "visual_description": "Definition time vs execution time contrast diagram."
+      }
+    }
+  },
+  "c8_quadratic_algebra": {
+    "visual": {
+      "level_1": {
+        "explanation": "Picture a U-shaped parabola on the coordinate plane. Where the parabola dips down and cuts the x-axis are the real roots! For 2x^2 - 9x + 4 = 0, it crosses at x = 1/2 and x = 4.",
+        "check_question": "At what value of y does a parabola cross the x-axis to reveal its roots?",
+        "visual_description": "A coordinate graph showing the parabola y = 2x^2 - 9x + 4 dipping below the x-axis and intersecting at (0.5, 0) and (4, 0)."
+      },
+      "level_2": {
+        "explanation": "Discriminant visualization: If Delta = b^2 - 4ac > 0, the curve crosses twice. If Delta = 0, the vertex touches the axis exactly once. If Delta < 0, it floats above.",
+        "check_question": "How many x-axis intersections occur when discriminant is zero?",
+        "visual_description": "Three side-by-side parabolas showing two cuts (Delta > 0), one touch (Delta = 0), and floating (Delta < 0)."
+      },
+      "level_3": {
+        "explanation": "Parabola vertex form y = a(x - h)^2 + k. Vertex is at x = -b/(2a). Roots are located symmetrically at -b/(2a) +/- sqrt(Delta)/(2a).",
+        "check_question": "What is the formula for the axis of symmetry of a quadratic parabola?",
+        "visual_description": "A parabola labeled with vertex (h, k), axis of symmetry, and symmetric root distances."
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of throwing a ball into the air: it starts at ground level (y=0), arcs up through the sky, and lands back down on the ground (y=0). The two ground points are the roots of the equation!",
+        "check_question": "What do the two points where the ball touches the ground represent?",
+        "visual_description": "A trajectory arc showing a ball launched from ground and landing back down."
+      },
+      "level_2": {
+        "explanation": "Imagine balancing two weights on a scale. To factor 2x^2 - 9x + 4, you need two mystery numbers that multiply to 8 and add up to -9. Those numbers are -8 and -1!",
+        "check_question": "What must the two numbers multiply to when factoring 2x^2 - 9x + 4?",
+        "visual_description": "A balance scale with product on one side and sum on the other."
+      },
+      "level_3": {
+        "explanation": "Think of finding the zero-voltage points in an alternating waveform circuit where power crosses equilibrium.",
+        "check_question": "Why are roots called zeros of the function?",
+        "visual_description": "An oscillatory curve showing zero-crossing nodes."
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Step 1: Identify coefficients in ax^2 + bx + c = 0: a = 2, b = -9, c = 4.\nStep 2: Multiply a * c = 2 * 4 = 8.\nStep 3: Find factors of 8 that add to -9: (-8) and (-1).\nStep 4: Split middle term: 2x^2 - 8x - x + 4 = 0.\nStep 5: Factor by grouping: 2x(x - 4) - 1(x - 4) = (2x - 1)(x - 4) = 0.\nStep 6: Roots are x = 4 and x = 1/2.",
+        "check_question": "What are the two factors that multiply to give zero?",
+        "visual_description": "Factor tree diagram leading to (2x - 1)(x - 4) = 0."
+      },
+      "level_2": {
+        "explanation": "Step 1: Check quadratic formula x = [-b +/- sqrt(b^2 - 4ac)] / (2a).\nStep 2: b^2 - 4ac = 81 - 32 = 49.\nStep 3: sqrt(49) = 7.\nStep 4: x = (9 +/- 7) / 4 -> x = 16/4 = 4 or x = 2/4 = 1/2.",
+        "check_question": "What is the square root of the discriminant 49?",
+        "visual_description": "Step-by-step formula substitution card."
+      },
+      "level_3": {
+        "explanation": "Step 1: Vieta's formulas: sum of roots = -b/a = 9/2 = 4.5. Product of roots = c/a = 4/2 = 2.\nStep 2: Verify candidate roots x=4, x=1/2: 4 + 0.5 = 4.5, 4 * 0.5 = 2. Confirmed.",
+        "check_question": "What does Vieta's formula give for the sum of roots?",
+        "visual_description": "Vieta relations summary table with sum and product checks."
+      }
+    },
+    "worked": {
+      "level_1": {
+        "explanation": "Step 1: Identify coefficients in ax^2 + bx + c = 0: a = 2, b = -9, c = 4.\nStep 2: Multiply a * c = 2 * 4 = 8.\nStep 3: Find factors of 8 that add to -9: (-8) and (-1).\nStep 4: Split middle term: 2x^2 - 8x - x + 4 = 0.\nStep 5: Factor by grouping: 2x(x - 4) - 1(x - 4) = (2x - 1)(x - 4) = 0.\nStep 6: Roots are x = 4 and x = 1/2.",
+        "check_question": "What are the two factors that multiply to give zero?",
+        "visual_description": "Factor tree diagram leading to (2x - 1)(x - 4) = 0."
+      },
+      "level_2": {
+        "explanation": "Step 1: Check quadratic formula x = [-b +/- sqrt(b^2 - 4ac)] / (2a).\nStep 2: b^2 - 4ac = 81 - 32 = 49.\nStep 3: sqrt(49) = 7.\nStep 4: x = (9 +/- 7) / 4 -> x = 16/4 = 4 or x = 2/4 = 1/2.",
+        "check_question": "What is the square root of the discriminant 49?",
+        "visual_description": "Step-by-step formula substitution card."
+      },
+      "level_3": {
+        "explanation": "Step 1: Vieta's formulas: sum of roots = -b/a = 9/2 = 4.5. Product of roots = c/a = 4/2 = 2.\nStep 2: Verify candidate roots x=4, x=1/2: 4 + 0.5 = 4.5, 4 * 0.5 = 2. Confirmed.",
+        "check_question": "What does Vieta's formula give for the sum of roots?",
+        "visual_description": "Vieta relations summary table with sum and product checks."
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Use the Quadratic Formula: x = [-b +/- sqrt(b^2 - 4ac)] / (2a). For 2x^2 - 9x + 4 = 0: a=2, b=-9, c=4. Plug them in: x = (9 +/- 7) / 4. That gives x = 4 and x = 1/2!",
+        "check_question": "What are the two root values?",
+        "visual_description": "Quadratic formula displayed with color-coded coefficients."
+      },
+      "level_2": {
+        "explanation": "The discriminant b^2 - 4ac tells you how many answers exist. Since 81 - 32 = 49 (positive), there are two distinct real answers: x = 4 and x = 1/2.",
+        "check_question": "Is the discriminant positive, negative, or zero?",
+        "visual_description": "Discriminant sign indicator showing positive -> 2 roots."
+      },
+      "level_3": {
+        "explanation": "To solve by factoring: find two numbers that multiply to 8 and add to -9 (-8 and -1). Factor into (2x - 1)(x - 4) = 0 to get x = 1/2 and x = 4.",
+        "check_question": "What does each factor equal when solving for roots?",
+        "visual_description": "Factored form (2x - 1)(x - 4) with zero-product property."
+      }
+    }
+  },
+  "q_equal_parts_1": {
+    "visual": {
+      "explanation": "Imagine a square divided by two straight perpendicular crosslines into 4 identical smaller squares. Each has the exact same area, representing 1/4.",
+      "check_question": "If one part was three times larger than the others, could it represent 1/4?",
+      "visual_description": "A large square partitioned into 4 identical quadrants of equal size and area."
+    },
+    "analogy": {
+      "explanation": "Think of sharing a pizza among 4 hungry people: if one person gets half the pizza and the other three share the rest, it is not an equal fourth!",
+      "check_question": "Why must all slices be the same size in an equal division?",
+      "visual_description": "A 4-slice pizza with 4 identical triangular slices."
+    },
+    "step_by_step": {
+      "explanation": "Step 1: Check total number of pieces (4).\nStep 2: Compare area of each piece.\nStep 3: Confirm all 4 pieces are congruent/equal in size to form unit fraction 1/4.",
+      "check_question": "What two things must you verify to confirm unit fraction fourths?",
+      "visual_description": "Checklist: 1. Count parts = 4. 2. Verify all areas are equal."
+    },
+    "simple_language": {
+      "explanation": "For a fraction to work, every single slice has to be the exact same size. 4 equal slices = fourths (1/4 each)!",
+      "check_question": "Do the slices have to be the exact same size?",
+      "visual_description": "A balance scale showing 4 identical blocks of equal weight."
+    },
+    "worked": {
+      "explanation": "Step 1: Check total number of pieces (4).\nStep 2: Compare area of each piece.\nStep 3: Confirm all 4 pieces are congruent/equal in size to form unit fraction 1/4.",
+      "check_question": "What two things must you verify to confirm unit fraction fourths?",
+      "visual_description": "Checklist: 1. Count parts = 4. 2. Verify all areas are equal."
+    }
+  },
+  "q_equal_parts_2": {
+    "visual": {
+      "explanation": "A rectangular strip of 100cm²: Piece A is 50cm², Piece B is 25cm², Piece C is 25cm². Piece A is 1/2 of the whole, not 1/3, because the parts are unequal.",
+      "check_question": "What fraction of the total 100cm² does Piece A actually represent?",
+      "visual_description": "A 100cm bar split into 50cm (half), 25cm (quarter), and 25cm (quarter)."
+    },
+    "analogy": {
+      "explanation": "If three friends order a chocolate bar and one takes half of it, they didn't split it into thirds! Having 3 pieces is not enough; the pieces must be equal.",
+      "check_question": "Why is having 3 pieces not enough to call each piece one-third?",
+      "visual_description": "A chocolate bar broken unevenly into one giant chunk and two small chunks."
+    },
+    "step_by_step": {
+      "explanation": "Step 1: Calculate whole: 50 + 25 + 25 = 100cm².\nStep 2: For true thirds, each piece must be 100/3 = 33.3cm².\nStep 3: Piece A is 50cm² (50/100 = 1/2). Not 1/3.",
+      "check_question": "What would each piece need to measure to be exactly 1/3?",
+      "visual_description": "Comparison bars showing 33.3cm² thirds vs the uneven 50-25-25 split."
+    },
+    "simple_language": {
+      "explanation": "Just having 3 pieces does NOT make each one a third! To be 1/3, all 3 pieces must be exactly the same size.",
+      "check_question": "Can different sized pieces represent equal fractions?",
+      "visual_description": "Unequal slices labeled with warning sign: 'Unequal portions cannot form unit fractions!'"
+    },
+    "worked": {
+      "explanation": "Step 1: Calculate whole: 50 + 25 + 25 = 100cm².\nStep 2: For true thirds, each piece must be 100/3 = 33.3cm².\nStep 3: Piece A is 50cm² (50/100 = 1/2). Not 1/3.",
+      "check_question": "What would each piece need to measure to be exactly 1/3?",
+      "visual_description": "Comparison bars showing 33.3cm² thirds vs the uneven 50-25-25 split."
+    }
+  },
+  "q_compare_fractions_2": {
+    "visual": {
+      "explanation": "Compare 3/4 and 3/8 on two identical circles: the 3 fourths cover 75% of the circle, while the 3 eighths cover only 37.5%. 3/4 > 3/8.",
+      "check_question": "Which fraction covers more than half of the circle?",
+      "visual_description": "Two circles side by side: left has 3 out of 4 quarters shaded (75%), right has 3 out of 8 slices shaded (37.5%)."
+    },
+    "analogy": {
+      "explanation": "Imagine sharing a cake with 4 people versus 8 people. In the group of 4, each slice is twice as big! So taking 3 big slices (3/4) is way more than 3 small slices (3/8).",
+      "check_question": "Why is a 1/4 slice bigger than a 1/8 slice?",
+      "visual_description": "One large 1/4 cake slice contrasted with a narrow 1/8 cake slice."
+    },
+    "step_by_step": {
+      "explanation": "Step 1: Notice matching numerators: both have 3 pieces.\nStep 2: Compare denominator size: 4 < 8, meaning fourths are twice the size of eighths.\nStep 3: Conclude 3/4 is larger than 3/8 (3/4 = 6/8 > 3/8).",
+      "check_question": "Convert 3/4 into eighths: what is the equivalent fraction?",
+      "visual_description": "Conversion step: 3/4 = 6/8, comparing 6/8 to 3/8."
+    },
+    "simple_language": {
+      "explanation": "When you have the same number of slices, bigger slices win! 3 huge fourths beat 3 tiny eighths every time.",
+      "check_question": "Does 3/4 beat 3/8?",
+      "visual_description": "Green checkmark on 3/4 showing 75% > 37.5%."
+    },
+    "worked": {
+      "explanation": "Step 1: Notice matching numerators: both have 3 pieces.\nStep 2: Compare denominator size: 4 < 8, meaning fourths are twice the size of eighths.\nStep 3: Conclude 3/4 is larger than 3/8 (3/4 = 6/8 > 3/8).",
+      "check_question": "Convert 3/4 into eighths: what is the equivalent fraction?",
+      "visual_description": "Conversion step: 3/4 = 6/8, comparing 6/8 to 3/8."
+    }
+  },
+  "q_add_fractions_2": {
+    "visual": {
+      "explanation": "A segmented strip with 5 equal blocks: shade 2 blocks (2/5), then shade 1 more block (1/5). Total shaded blocks = 3 out of 5 (3/5).",
+      "check_question": "How many total blocks are shaded out of 5?",
+      "visual_description": "A 5-block tape diagram with 2 purple blocks and 1 orange block, totaling 3 shaded fifths."
+    },
+    "analogy": {
+      "explanation": "Think of fifths like apples: 2 apples + 1 apple = 3 apples. The kind of fruit doesn't change into 'tenth-apples'!",
+      "check_question": "Why does the label 'fifths' stay the same when adding?",
+      "visual_description": "2 apple icons + 1 apple icon = 3 apple icons labeled 'fifths'."
+    },
+    "step_by_step": {
+      "explanation": "Step 1: Check denominators are identical (5).\nStep 2: Add numerators: 2 + 1 = 3.\nStep 3: Write sum over common denominator: 3/5.",
+      "check_question": "Do you add denominators when they are the same?",
+      "visual_description": "Addition formula: (2 + 1) / 5 = 3/5."
+    },
+    "simple_language": {
+      "explanation": "Never add the bottom numbers! 2 fifths plus 1 fifth equals 3 fifths (3/5). The bottom number just tells you what size the pieces are.",
+      "check_question": "What is 2/5 + 1/5?",
+      "visual_description": "A rule banner: 'Add top numbers, keep the bottom number identical!'"
+    },
+    "worked": {
+      "explanation": "Step 1: Check denominators are identical (5).\nStep 2: Add numerators: 2 + 1 = 3.\nStep 3: Write sum over common denominator: 3/5.",
+      "check_question": "Do you add denominators when they are the same?",
+      "visual_description": "Addition formula: (2 + 1) / 5 = 3/5."
+    }
+  },
+  "q_quadratic__fc8639": {
+    "concept_id": "c8_quadratic_algebra",
+    "visual": {
+      "level_1": {
+        "explanation": "Parabola Intersection Model: Picture the curve y = f(x) graphed on coordinate axes. The solutions correspond to the exact points where the parabola intersects the x-axis (y = 0): Δ = 1.",
+        "check_question": "What visual feature on the coordinate plane represents the roots?",
+        "visual_description": "Visual scaffolding diagram for Quadratics & Deep Algebra"
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine a balanced seesaw: when you plug the root values back into the equation, both sides balance out to exactly zero: 0 = 0. That confirms Δ = 1 is the equilibrium point.",
+        "check_question": "Why does substituting a valid root make the equation balance?",
+        "visual_description": "Real-world analogy for Quadratics & Deep Algebra"
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Worked Quadratic Procedure:\n1. Rearrange to standard form ax² + bx + c = 0.\n2. Apply root relationships or discriminant.\n3. Confirm roots: Δ = 1.",
+        "check_question": "What is the discriminant formula for ax² + bx + c = 0?",
+        "visual_description": "Step-by-step logic breakdown for Quadratics & Deep Algebra"
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Rule of Thumb: The roots are the values of x that make the equation equal 0. You can always double-check by plugging the option directly into the problem to verify: Δ = 1!",
+        "check_question": "How can you test if an answer choice is a true root in under 10 seconds?",
+        "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
+      }
+    }
+  },
+  "q_quadratic__5f91b5": {
+    "concept_id": "c8_quadratic_algebra",
+    "visual": {
+      "level_1": {
+        "explanation": "Parabola Intersection Model: Picture the curve y = f(x) graphed on coordinate axes. The solutions correspond to the exact points where the parabola intersects the x-axis (y = 0): Δ = 1.",
+        "check_question": "What visual feature on the coordinate plane represents the roots?",
+        "visual_description": "Visual scaffolding diagram for Quadratics & Deep Algebra"
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Imagine a balanced seesaw: when you plug the root values back into the equation, both sides balance out to exactly zero: 0 = 0. That confirms Δ = 1 is the equilibrium point.",
+        "check_question": "Why does substituting a valid root make the equation balance?",
+        "visual_description": "Real-world analogy for Quadratics & Deep Algebra"
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Worked Quadratic Procedure:\n1. Rearrange to standard form ax² + bx + c = 0.\n2. Apply root relationships or discriminant.\n3. Confirm roots: Δ = 1.",
+        "check_question": "What is the discriminant formula for ax² + bx + c = 0?",
+        "visual_description": "Step-by-step logic breakdown for Quadratics & Deep Algebra"
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "Rule of Thumb: The roots are the values of x that make the equation equal 0. You can always double-check by plugging the option directly into the problem to verify: Δ = 1!",
+        "check_question": "How can you test if an answer choice is a true root in under 10 seconds?",
+        "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
+      }
+    }
+  },
+  "q_quadratic__41bab0": {
+    "concept_id": "c8_quadratic_algebra",
+    "visual": {
+      "level_1": {
+        "explanation": "Picture the parabola y = 4x² - 12x + 9 opening upward. Because Δ = 0, the parabola just touches the x‑axis at a single point (its vertex). It never crosses the axis, so there is only one real intersection.",
+        "check_question": "Which of the following best describes the graph of y = 4x² - 12x + 9? 1) It never touches the x‑axis. 2) It crosses the x‑axis at two distinct points. 3) It touches the x‑axis at exactly one point. 4) It is a horizontal line.",
+        "visual_description": "Visual scaffolding diagram for Quadratics & Deep Algebra"
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a perfectly balanced seesaw that just touches the ground at its center. It doesn’t tip over or lift off; it stays in one place. Similarly, the parabola just kisses the x‑axis at one point.",
+        "check_question": "Which real‑world situation best matches a quadratic that has exactly one real root? 1) A seesaw that tips over. 2) A seesaw that stays level and touches the ground. 3) A seesaw that lifts off the ground. 4) A seesaw that moves randomly.",
+        "visual_description": "Real-world analogy for Quadratics & Deep Algebra"
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Discriminant Δ = (-12)² - 4·4·9 = 144 - 144 = 0. Since Δ = 0, the quadratic has a double root. The root is x = -(-12)/(2·4) = 12/8 = 1.5. Thus, the equation has one real root, x = 1.5.",
+        "check_question": "What is the value of the discriminant for 4x² - 12x + 9?",
+        "visual_description": "Step-by-step logic breakdown for Quadratics & Deep Algebra"
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "If the discriminant of a quadratic is zero, the parabola just touches the x‑axis, giving one real solution.",
+        "check_question": "If a quadratic equation has a discriminant of zero, how many real solutions does it have?",
+        "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
+      }
+    }
+  },
+  "q_quadratic__3e0fb4": {
+    "concept_id": "c8_quadratic_algebra",
+    "visual": {
+      "level_1": {
+        "explanation": "The parabola opens upward because a = 4 > 0. Its vertex is at x = -b/(2a) = 12/8 = 1.5. Plugging x = 1.5 into the equation gives y = 0, so the curve just touches the x‑axis at that point. Therefore it intersects the x‑axis at exactly one point.",
+        "check_question": "When you sketch y = 4x^2 - 12x + 9, does the curve cross the x‑axis, touch it, or stay entirely above it?",
+        "visual_description": "Visual scaffolding diagram for Quadratics & Deep Algebra"
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a perfectly balanced seesaw that just touches the ground at its center; it doesn’t tip over or go below the ground. The parabola behaves the same way, touching the x‑axis at one point.",
+        "check_question": "If a seesaw only touches the ground at its center, how many points of contact does it have with the ground?",
+        "visual_description": "Real-world analogy for Quadratics & Deep Algebra"
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Compute the discriminant: Δ = (-12)² - 4·4·9 = 144 - 144 = 0. Since Δ = 0, there is exactly one real root. The root is x = -b/(2a) = 12/(8) = 1.5.",
+        "check_question": "What is the discriminant of the equation 4x^2 - 12x + 9 = 0?",
+        "visual_description": "Step-by-step logic breakdown for Quadratics & Deep Algebra"
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "The equation has one real solution, x = 1.5, because the parabola just touches the x‑axis.",
+        "check_question": "How many real solutions does the equation have?",
+        "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
       }
     }
   }

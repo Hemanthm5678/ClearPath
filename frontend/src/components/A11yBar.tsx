@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Volume2, VolumeX, Type, Eye, Sparkles } from "lucide-react";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 interface A11yBarProps {
   onReadAloud?: (enabled: boolean) => void;
@@ -160,6 +161,9 @@ export const A11yBar: React.FC<A11yBarProps> = ({
           <Eye className="w-3.5 h-3.5" />
           <span className="text-[11px]">Contrast</span>
         </button>
+
+        {/* Theme Dark Mode Toggle */}
+        <DarkModeToggle showLabel={true} />
       </div>
     </div>
   );

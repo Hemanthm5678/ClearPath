@@ -312,30 +312,30 @@ export const TutorBubble: React.FC<TutorBubbleProps> = ({
                 <div className="my-2.5 p-3 rounded-xl bg-orange-50/70 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900/60 text-xs">
                   <div className="flex items-center gap-1.5 text-[#F25C1E] font-bold mb-1">
                     <BookOpen className="w-3.5 h-3.5" />
-                    <span>Real-World Story Analogy</span>
+                    <span>Real-World Intuition & Analogy</span>
                   </div>
                   <p className="text-slate-600 dark:text-slate-300 leading-normal">
-                    Connect this math problem to everyday life. When you share items among friends or divide portions, you are creating fractions!
+                    Connecting abstract symbols and operations to concrete physical mental models.
                   </p>
                 </div>
               )}
 
-              {/* 3. STEP-BY-STEP MODALITY: Structured Math Steps Checklist */}
+              {/* 3. STEP-BY-STEP MODALITY: Structured Problem-Solving Sequence */}
               {msg.id.startsWith("initial_tutor") && activeStyle === "step_by_step" && (
                 <div className="my-2.5 p-3 rounded-xl bg-purple-100/50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 text-xs">
                   <div className="flex items-center gap-1.5 text-[#6A35D8] font-bold mb-2">
                     <ListOrdered className="w-3.5 h-3.5" />
-                    <span>Structured Problem-Solving Sequence</span>
+                    <span>Structured Execution Trace</span>
                   </div>
                   <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-bold">
                     <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
-                      1. Identify Values
+                      1. Parse Input
                     </div>
                     <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
-                      2. Set Up Fraction
+                      2. Apply Logic
                     </div>
                     <div className="bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-purple-200">
-                      3. Solve & Simplify
+                      3. Verify Output
                     </div>
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export const TutorBubble: React.FC<TutorBubbleProps> = ({
                     <span>Plain English / Rule of Thumb</span>
                   </div>
                   <p className="text-emerald-900 dark:text-emerald-200 font-medium">
-                    "Top number = What you have. Bottom number = What makes a whole."
+                    "Break it down into simple terms: focus on the core rule and solve one step at a time."
                   </p>
                 </div>
               )}

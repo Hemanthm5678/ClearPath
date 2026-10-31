@@ -10,35 +10,61 @@
     "id": "c2_equal_parts",
     "name": "Equal Part Partitioning",
     "description": "Recognizing that fractions require strictly equal parts of a whole.",
-    "prerequisites": ["c1_fraction_basics"],
+    "prerequisites": [
+      "c1_fraction_basics"
+    ],
     "order": 2
   },
   {
     "id": "c3_fraction_as_division",
     "name": "Fraction as Division",
     "description": "Understanding that a/b represents dividing 'a' items equally among 'b' recipients (e.g., 3 pizzas among 4 people = 3/4 each).",
-    "prerequisites": ["c1_fraction_basics", "c2_equal_parts"],
+    "prerequisites": [
+      "c1_fraction_basics",
+      "c2_equal_parts"
+    ],
     "order": 3
   },
   {
     "id": "c4_equivalent_fractions",
     "name": "Equivalent Fractions",
     "description": "Recognizing different fractions that represent the same value by scaling numerator and denominator.",
-    "prerequisites": ["c3_fraction_as_division"],
+    "prerequisites": [
+      "c3_fraction_as_division"
+    ],
     "order": 4
   },
   {
     "id": "c5_comparing_fractions",
     "name": "Comparing Fractions",
     "description": "Comparing fractions with common or different denominators.",
-    "prerequisites": ["c4_equivalent_fractions"],
+    "prerequisites": [
+      "c4_equivalent_fractions"
+    ],
     "order": 5
   },
   {
     "id": "c6_adding_fractions",
     "name": "Adding Fractions",
     "description": "Adding fractions with matching denominators and understanding common denominators.",
-    "prerequisites": ["c4_equivalent_fractions", "c5_comparing_fractions"],
+    "prerequisites": [
+      "c4_equivalent_fractions",
+      "c5_comparing_fractions"
+    ],
     "order": 6
+  },
+  {
+    "id": "c7_python_tracing",
+    "name": "Python Code Output Tracing",
+    "description": "Predicting execution outputs of Python functions, list mutability, and recursion.",
+    "prerequisites": [],
+    "order": 7
+  },
+  {
+    "id": "c8_quadratic_algebra",
+    "name": "Quadratics & Deep Algebra",
+    "description": "Solving quadratic equations, analyzing discriminants, and applying root relations.",
+    "prerequisites": [],
+    "order": 8
   }
 ]

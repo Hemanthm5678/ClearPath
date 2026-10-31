@@ -1,5 +1,85 @@
 [
   {
+    "id": "q_quad_roots_top",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "Solve for the real roots of the quadratic equation: 2x² - 9x + 4 = 0. What are the values of x?",
+    "type": "multiple_choice",
+    "options": [
+      "x = 4, x = 1/2",
+      "x = -4, x = -1/2",
+      "x = 2, x = 1",
+      "x = 9/2, x = 2"
+    ],
+    "correct_answer": "x = 4, x = 1/2",
+    "hint": "Look at the coefficients: a = 2, b = -9, c = 4. Can you think of two numbers that multiply to +8 (a × c) and add up to -9 (b)? Once you find them, try splitting -9x into two terms!",
+    "step_by_step": "To solve 2x² - 9x + 4 = 0 by factoring: multiply a × c = 2 × 4 = 8. Find two numbers that multiply to 8 and add to -9: those are -8 and -1. Split the middle term: 2x² - 8x - x + 4 = 0 → 2x(x - 4) - 1(x - 4) = 0 → (2x - 1)(x - 4) = 0. Setting each factor to 0 gives x = 4 and x = 1/2."
+  },
+  {
+    "id": "q_code_mutable_top",
+    "concept_id": "c7_python_tracing",
+    "domain": "coding",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 45,
+    "complexity_weight": 1.7,
+    "prompt": "What is the exact output printed when the following Python snippet is executed?\n\n```python\ndef add_item(val, box=[]):\n    box.append(val)\n    return box\n\nadd_item(10)\nprint(add_item(20))\n```",
+    "type": "multiple_choice",
+    "options": [
+      "[10, 20]",
+      "[20]",
+      "[10]",
+      "Error: mutable default argument"
+    ],
+    "correct_answer": "[10, 20]",
+    "hint": "In Python, default arguments like box=[] are created once when the function is defined, NOT each time the function is called! The same list is reused across calls.",
+    "step_by_step": "1. def add_item(val, box=[]) creates one shared list in memory for box.\n2. add_item(10) appends 10 -> box is [10].\n3. add_item(20) reuses the same list and appends 20 -> box is [10, 20].\n4. print() outputs [10, 20]."
+  },
+  {
+    "id": "q_quad_param_top",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "hard",
+    "complexity_tier": "Hard",
+    "expected_time_sec": 60,
+    "complexity_weight": 2.2,
+    "prompt": "For what positive value of k does the quadratic equation x² - kx + 25 = 0 have exactly one real repeated root, and what is that root?",
+    "type": "multiple_choice",
+    "options": [
+      "k = 10, root is x = 5",
+      "k = 5, root is x = 10",
+      "k = 20, root is x = 2",
+      "k = 10, root is x = -5"
+    ],
+    "correct_answer": "k = 10, root is x = 5",
+    "hint": "A quadratic has exactly one real repeated root when its discriminant is zero: Δ = b² - 4ac = 0. Here a = 1, b = -k, c = 25. Set (-k)² - 4(1)(25) = 0.",
+    "step_by_step": "1. Condition for a single repeated root is Δ = b² - 4ac = 0.\n2. a = 1, b = -k, c = 25.\n3. Δ = k² - 4(1)(25) = k² - 100 = 0.\n4. Since k > 0, k = 10.\n5. Equation becomes x² - 10x + 25 = (x - 5)² = 0, so root is x = 5."
+  },
+  {
+    "id": "q_code_recursion_top",
+    "concept_id": "c7_python_tracing",
+    "domain": "coding",
+    "difficulty": "hard",
+    "complexity_tier": "Hard",
+    "expected_time_sec": 55,
+    "complexity_weight": 2.0,
+    "prompt": "What is the exact output printed when the following recursive Python code is executed?\n\n```python\ndef compute(n):\n    if n <= 1:\n        return 1\n    return n * compute(n - 2)\n\nprint(compute(5))\n```",
+    "type": "multiple_choice",
+    "options": [
+      "15",
+      "120",
+      "8",
+      "24"
+    ],
+    "correct_answer": "15",
+    "hint": "Look closely at the recursive call: compute(n - 2). It steps down by 2 each time, skipping even numbers! Trace compute(5) -> 5 * compute(3) -> 5 * 3 * compute(1).",
+    "step_by_step": "1. compute(5) calls 5 * compute(3).\n2. compute(3) calls 3 * compute(1).\n3. compute(1) returns 1 (base case n <= 1).\n4. Unwinding: compute(3) = 3 * 1 = 3.\n5. compute(5) = 5 * 3 = 15. Output is 15."
+  },
+  {
     "id": "q1_basics_1",
     "concept_id": "c1_fraction_basics",
     "difficulty": "easy",
@@ -13,7 +93,10 @@
     ],
     "correct_answer": "The total number of equal parts that make up the whole",
     "hint": "Remember: The bottom number (denominator) tells you how many equal slices the whole was divided into.",
-    "step_by_step": "1. Look at the fraction top/bottom. 2. The top is the numerator (parts counted). 3. The bottom is the denominator (total parts in the whole)."
+    "step_by_step": "1. Look at the fraction top/bottom. 2. The top is the numerator (parts counted). 3. The bottom is the denominator (total parts in the whole).",
+    "expected_time_sec": 20,
+    "complexity_weight": 1.0,
+    "complexity_tier": "Easy"
   },
   {
     "id": "q2_basics_2",
@@ -29,7 +112,10 @@
     ],
     "correct_answer": "5/8",
     "hint": "Check how many pieces are left over after Alex eats 3 out of the 8 pieces.",
-    "step_by_step": "1. Total pieces = 8. 2. Pieces eaten = 3. 3. Remaining pieces = 8 - 3 = 5. 4. Fraction remaining = 5/8."
+    "step_by_step": "1. Total pieces = 8. 2. Pieces eaten = 3. 3. Remaining pieces = 8 - 3 = 5. 4. Fraction remaining = 5/8.",
+    "expected_time_sec": 40,
+    "complexity_weight": 1.8,
+    "complexity_tier": "Medium"
   },
   {
     "id": "q3_division_1",
@@ -45,7 +131,10 @@
     ],
     "correct_answer": "3/4 of a pizza",
     "hint": "Think of sharing: items to divide (3) goes on top, people sharing (4) goes on the bottom.",
-    "step_by_step": "1. Total pizzas = 3. 2. Total friends = 4. 3. Sharing equally means dividing: 3 ÷ 4. 4. As a fraction, 3 ÷ 4 is written as 3/4."
+    "step_by_step": "1. Total pizzas = 3. 2. Total friends = 4. 3. Sharing equally means dividing: 3 ÷ 4. 4. As a fraction, 3 ÷ 4 is written as 3/4.",
+    "expected_time_sec": 25,
+    "complexity_weight": 1.0,
+    "complexity_tier": "Easy"
   },
   {
     "id": "q4_division_2",
@@ -61,7 +150,10 @@
     ],
     "correct_answer": "7 ÷ 10",
     "hint": "A fraction a/b always equals numerator divided by denominator (a ÷ b).",
-    "step_by_step": "1. Look at the fraction 7/10. 2. The top number 7 is the dividend. 3. The bottom number 10 is the divisor. 4. So 7/10 = 7 ÷ 10."
+    "step_by_step": "1. Look at the fraction 7/10. 2. The top number 7 is the dividend. 3. The bottom number 10 is the divisor. 4. So 7/10 = 7 ÷ 10.",
+    "expected_time_sec": 35,
+    "complexity_weight": 1.8,
+    "complexity_tier": "Medium"
   },
   {
     "id": "q5_division_3",
@@ -77,7 +169,10 @@
     ],
     "correct_answer": "5/2 liters (or 2 1/2 liters)",
     "hint": "Divide the total liters (5) by the number of pitchers (2).",
-    "step_by_step": "1. Quantity being split = 5 liters. 2. Containers = 2. 3. Division: 5 ÷ 2 = 5/2 = 2.5 liters."
+    "step_by_step": "1. Quantity being split = 5 liters. 2. Containers = 2. 3. Division: 5 ÷ 2 = 5/2 = 2.5 liters.",
+    "expected_time_sec": 60,
+    "complexity_weight": 2.5,
+    "complexity_tier": "Hard"
   },
   {
     "id": "q6_equiv_1",
@@ -93,7 +188,10 @@
     ],
     "correct_answer": "2/4",
     "hint": "Multiply both top and bottom of 1/2 by 2.",
-    "step_by_step": "1. Start with 1/2. 2. Multiply numerator by 2: 1 × 2 = 2. 3. Multiply denominator by 2: 2 × 2 = 4. 4. Equivalent fraction is 2/4."
+    "step_by_step": "1. Start with 1/2. 2. Multiply numerator by 2: 1 × 2 = 2. 3. Multiply denominator by 2: 2 × 2 = 4. 4. Equivalent fraction is 2/4.",
+    "expected_time_sec": 20,
+    "complexity_weight": 1.0,
+    "complexity_tier": "Easy"
   },
   {
     "id": "q7_equiv_2",
@@ -109,7 +207,10 @@
     ],
     "correct_answer": "9",
     "hint": "Notice that 4 was multiplied by 3 to get 12. Do the exact same to 3 on top!",
-    "step_by_step": "1. 12 ÷ 4 = 3, so denominator was multiplied by 3. 2. Multiply numerator by 3: 3 × 3 = 9. 3. So 3/4 = 9/12."
+    "step_by_step": "1. 12 ÷ 4 = 3, so denominator was multiplied by 3. 2. Multiply numerator by 3: 3 × 3 = 9. 3. So 3/4 = 9/12.",
+    "expected_time_sec": 45,
+    "complexity_weight": 1.8,
+    "complexity_tier": "Medium"
   },
   {
     "id": "q8_compare_1",
@@ -125,7 +226,10 @@
     ],
     "correct_answer": "2/5 < 3/5",
     "hint": "When denominators are identical, the fraction with the larger numerator is bigger.",
-    "step_by_step": "1. Both fractions have denominator 5. 2. Compare numerators: 2 is less than 3. 3. Therefore, 2/5 < 3/5."
+    "step_by_step": "1. Both fractions have denominator 5. 2. Compare numerators: 2 is less than 3. 3. Therefore, 2/5 < 3/5.",
+    "expected_time_sec": 35,
+    "complexity_weight": 1.8,
+    "complexity_tier": "Medium"
   },
   {
     "id": "q9_add_1",
@@ -141,6 +245,297 @@
     ],
     "correct_answer": "2/3",
     "hint": "Add the numerators together keeping denominator 6: 4/6, then simplify by dividing top and bottom by 2.",
-    "step_by_step": "1. Common denominator is 6. 2. Add numerators: 1 + 3 = 4. 3. Result: 4/6. 4. Simplify: divide top and bottom by 2 -> 2/3."
+    "step_by_step": "1. Common denominator is 6. 2. Add numerators: 1 + 3 = 4. 3. Result: 4/6. 4. Simplify: divide top and bottom by 2 -> 2/3.",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "complexity_tier": "Medium"
+  },
+  {
+    "id": "q_code_mutability",
+    "concept_id": "c7_python_tracing",
+    "domain": "coding",
+    "difficulty": "medium",
+    "expected_time_sec": 45,
+    "complexity_weight": 1.8,
+    "prompt": "Consider the following Python function with a mutable default argument:\n\n```python\ndef append_to(num, target=[]):\n    target.append(num)\n    return target\n\nprint(append_to(1))\nprint(append_to(2))\nprint(append_to(3, []))\n```\nWhat is printed to the console after all three calls?",
+    "type": "multiple_choice",
+    "options": [
+      "[1]\n[1, 2]\n[3]",
+      "[1]\n[2]\n[3]",
+      "[1]\n[1, 2]\n[1, 2, 3]",
+      "[1]\n[2]\n[1, 2, 3]"
+    ],
+    "correct_answer": "[1]\n[1, 2]\n[3]",
+    "hint": "In Python, default arguments are created once when the function is defined. The list target is reused on every call unless you explicitly pass a new list!",
+    "step_by_step": "1. Call 1: append_to(1) appends 1 to default list -> [1]. 2. Call 2: append_to(2) appends 2 to the same default list -> [1, 2]. 3. Call 3: append_to(3, []) explicitly passes a fresh list, so only 3 is appended -> [3].",
+    "complexity_tier": "Medium"
+  },
+  {
+    "id": "q_code_recursion",
+    "concept_id": "c7_python_tracing",
+    "domain": "coding",
+    "difficulty": "hard",
+    "expected_time_sec": 65,
+    "complexity_weight": 2.5,
+    "prompt": "Analyze the following recursive bitwise XOR function:\n\n```python\ndef mystery(n):\n    if n <= 1:\n        return n\n    return mystery(n - 1) ^ mystery(n - 2)\n\nprint(mystery(4))\n```\nWhat integer value is returned and printed?",
+    "type": "multiple_choice",
+    "options": [
+      "1",
+      "0",
+      "2",
+      "3"
+    ],
+    "correct_answer": "1",
+    "hint": "Trace the base cases: mystery(0)=0, mystery(1)=1. Then mystery(2)=1^0=1, mystery(3)=1^1=0, and mystery(4)=0^1=1.",
+    "step_by_step": "1. Base cases: mystery(0)=0, mystery(1)=1. 2. mystery(2) = mystery(1) ^ mystery(0) = 1 ^ 0 = 1. 3. mystery(3) = mystery(2) ^ mystery(1) = 1 ^ 1 = 0. 4. mystery(4) = mystery(3) ^ mystery(2) = 0 ^ 1 = 1.",
+    "complexity_tier": "Hard"
+  },
+  {
+    "id": "q_code_slicing",
+    "concept_id": "c7_python_tracing",
+    "domain": "coding",
+    "difficulty": "easy",
+    "expected_time_sec": 20,
+    "complexity_weight": 1.0,
+    "prompt": "What is the output of the following Python string slicing operation?\n\n```python\ntext = 'CLEARPATH'\nresult = text[1:7:2]\nprint(result)\n```",
+    "type": "multiple_choice",
+    "options": [
+      "LAP",
+      "LEARPA",
+      "CRP",
+      "LRP"
+    ],
+    "correct_answer": "LAP",
+    "hint": "Slice syntax is text[start:stop:step]. Starting at index 1 (L), step by 2 up to index 7: indices 1 (L), 3 (A), 5 (P).",
+    "step_by_step": "1. text[1] is L. 2. Next step +2 is text[3], which is A. 3. Next step +2 is text[5], which is P. 4. Combining them yields LAP.",
+    "complexity_tier": "Easy"
+  },
+  {
+    "id": "q_math_quad_roots",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "expected_time_sec": 55,
+    "complexity_weight": 1.8,
+    "prompt": "For the quadratic equation 2x² - 7x + 3 = 0:\nCalculate the discriminant Δ = b² - 4ac and determine the roots of the equation.",
+    "type": "multiple_choice",
+    "options": [
+      "Δ = 25, roots are x = 3 and x = 1/2",
+      "Δ = 25, roots are x = -3 and x = -1/2",
+      "Δ = 73, roots are irrational",
+      "Δ = 0, single repeated root x = 7/4"
+    ],
+    "correct_answer": "Δ = 25, roots are x = 3 and x = 1/2",
+    "hint": "Use Δ = (-7)² - 4(2)(3) = 49 - 24 = 25. Then apply quadratic formula: x = (-b ± √Δ)/(2a) = (7 ± 5)/4.",
+    "step_by_step": "1. Identify coefficients: a=2, b=-7, c=3. 2. Calculate discriminant: Δ = (-7)² - 4(2)(3) = 49 - 24 = 25. 3. Since Δ > 0, there are two distinct real roots. 4. Apply quadratic formula: x = (7 ± √25) / (2·2) = (7 ± 5) / 4. 5. Roots are (7+5)/4 = 3 and (7-5)/4 = 1/2.",
+    "complexity_tier": "Medium"
+  },
+  {
+    "id": "q_math_quad_param",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "hard",
+    "expected_time_sec": 75,
+    "complexity_weight": 2.5,
+    "prompt": "In the quadratic equation x² + kx + 48 = 0 (with positive roots α and β), one root is three times the other (β = 3α). What is the value of parameter k and what is α² + β²?",
+    "type": "multiple_choice",
+    "options": [
+      "k = -16 and α² + β² = 160",
+      "k = -12 and α² + β² = 144",
+      "k = -8 and α² + β² = 40",
+      "k = 16 and α² + β² = 128"
+    ],
+    "correct_answer": "k = -16 and α² + β² = 160",
+    "hint": "Product of roots: α · β = α(3α) = 3α² = 48 -> α² = 16 -> α = 4, β = 12. Sum of roots: α + β = -k.",
+    "step_by_step": "1. Let roots be α and β = 3α. 2. Product of roots: α · β = 3α² = 48 => α² = 16 => α = 4, β = 12. 3. Sum of roots: α + β = 4 + 12 = 16 = -k => k = -16. 4. Calculate sum of squares: α² + β² = 4² + 12² = 16 + 144 = 160.",
+    "complexity_tier": "Hard"
+  },
+  {
+    "id": "q_math_slope_intercept",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "easy",
+    "expected_time_sec": 20,
+    "complexity_weight": 1.0,
+    "prompt": "What are the slope m and y-intercept b of the linear equation 3x + 2y = 8?",
+    "type": "multiple_choice",
+    "options": [
+      "Slope m = -3/2, y-intercept b = 4",
+      "Slope m = 3/2, y-intercept b = -4",
+      "Slope m = -3, y-intercept b = 8",
+      "Slope m = 3, y-intercept b = 4"
+    ],
+    "correct_answer": "Slope m = -3/2, y-intercept b = 4",
+    "hint": "Rearrange into slope-intercept form y = mx + b: 2y = -3x + 8 -> y = (-3/2)x + 4.",
+    "step_by_step": "1. Start with 3x + 2y = 8. 2. Subtract 3x: 2y = -3x + 8. 3. Divide by 2: y = (-3/2)x + 4. 4. Slope m = -3/2, y-intercept b = 4.",
+    "complexity_tier": "Easy"
+  },
+  {
+    "id": "q_equal_parts_1",
+    "concept_id": "c2_equal_parts",
+    "domain": "math",
+    "difficulty": "easy",
+    "complexity_tier": "Easy",
+    "expected_time_sec": 20,
+    "complexity_weight": 1.0,
+    "prompt": "Which condition must be met for a shape divided into 4 pieces to represent fourths (1/4)?",
+    "type": "multiple_choice",
+    "options": [
+      "All 4 parts must have the exact same size/area",
+      "The 4 parts can be any random shape or size",
+      "Only the perimeter needs to be divided equally",
+      "Two parts must be larger than the other two"
+    ],
+    "correct_answer": "All 4 parts must have the exact same size/area",
+    "hint": "Fractions require equal-sized portions. If one person gets a huge slice and another gets a tiny crumb, they aren't equal fourths!",
+    "step_by_step": "1. Understand the definition of a fraction: equal sharing of a whole unit.\n2. In 1/4, the denominator 4 means 4 identical equal portions.\n3. Therefore, all 4 parts must have the exact same size/area."
+  },
+  {
+    "id": "q_equal_parts_2",
+    "concept_id": "c2_equal_parts",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 25,
+    "complexity_weight": 1.2,
+    "prompt": "A rectangular chocolate bar is cut into 3 pieces: Piece A has area 50cm², Piece B has 25cm², and Piece C has 25cm². Can Piece A be represented as 1/3 of the chocolate bar?",
+    "type": "multiple_choice",
+    "options": [
+      "No, because the 3 pieces are not equal in size",
+      "Yes, because there are 3 total pieces",
+      "Yes, because 50 is half of 100",
+      "No, because chocolate cannot be partitioned"
+    ],
+    "correct_answer": "No, because the 3 pieces are not equal in size",
+    "hint": "Having 3 pieces is not enough for thirds! The pieces must be identical in size (each would need to be 33.3cm²).",
+    "step_by_step": "1. Total area = 50 + 25 + 25 = 100cm².\n2. For each piece to be 1/3, all 3 pieces must each measure 100/3 = 33.3cm².\n3. Since Piece A is 50cm² (half the bar) and not equal to B or C, it is not 1/3."
+  },
+  {
+    "id": "q_compare_fractions_2",
+    "concept_id": "c5_comparing_fractions",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 30,
+    "complexity_weight": 1.2,
+    "prompt": "When comparing the fractions 3/4 and 3/8, which fraction is larger and why?",
+    "type": "multiple_choice",
+    "options": [
+      "3/4 is larger because cutting a whole into 4 parts makes bigger pieces than cutting it into 8 parts",
+      "3/8 is larger because 8 is a bigger number than 4",
+      "They are equal because both have the same numerator 3",
+      "3/8 is larger because 8 has more fractional units"
+    ],
+    "correct_answer": "3/4 is larger because cutting a whole into 4 parts makes bigger pieces than cutting it into 8 parts",
+    "hint": "When numerators match (both have 3 parts), look at the denominator: fewer total parts means each individual part is bigger!",
+    "step_by_step": "1. Both fractions have the same numerator: 3 parts.\n2. Compare piece sizes: 1/4 of a pizza is larger than 1/8 of a pizza.\n3. Having 3 fourths (3/4 = 75%) is therefore much larger than 3 eighths (3/8 = 37.5%)."
+  },
+  {
+    "id": "q_add_fractions_2",
+    "concept_id": "c6_adding_fractions",
+    "domain": "math",
+    "difficulty": "easy",
+    "complexity_tier": "Easy",
+    "expected_time_sec": 25,
+    "complexity_weight": 1.0,
+    "prompt": "What is 2/5 + 1/5, and why does the denominator remain 5?",
+    "type": "multiple_choice",
+    "options": [
+      "3/5, because you combine the counts (2 + 1 = 3) while the unit size remains fifths",
+      "3/10, because you add both the top and bottom numbers",
+      "2/10, because the denominators multiply together",
+      "1/5, because the denominators cancel out"
+    ],
+    "correct_answer": "3/5, because you combine the counts (2 + 1 = 3) while the unit size remains fifths",
+    "hint": "Think of fifths like units (2 fifths + 1 fifth = 3 fifths). You never add denominators when adding fractions with like units!",
+    "step_by_step": "1. Check denominators: both are 5 (common denominator).\n2. Add the numerators: 2 + 1 = 3.\n3. Keep the denominator: 3/5."
+  },
+  {
+    "id": "q_quadratic__fc8639",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "What is the discriminant of the quadratic equation 3x² - 5x + 2 = 0?",
+    "type": "multiple_choice",
+    "options": [
+      "Δ = 1",
+      "Δ = 49",
+      "Δ = -1",
+      "Δ = 25"
+    ],
+    "correct_answer": "Δ = 1",
+    "hint": "Recall standard quadratic form ax² + bx + c = 0. Consider factoring, the quadratic formula x = [-b ± √(b² - 4ac)]/(2a), or root substitution.",
+    "step_by_step": "Step 1: Write the equation in standard form ax² + bx + c = 0.\nStep 2: Identify coefficients and factor or compute discriminant Δ = b² - 4ac.\nStep 3: Solve for real roots. The confirmed solution is: Δ = 1",
+    "created_by": "teacher",
+    "created_at": 1793396004.497087
+  },
+  {
+    "id": "q_quadratic__5f91b5",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "What is the discriminant of the quadratic equation 3x² - 5x + 2 = 0?",
+    "type": "multiple_choice",
+    "options": [
+      "Δ = 1",
+      "Δ = 49",
+      "Δ = -1",
+      "Δ = 25"
+    ],
+    "correct_answer": "Δ = 1",
+    "hint": "Recall standard quadratic form ax² + bx + c = 0. Consider factoring, the quadratic formula x = [-b ± √(b² - 4ac)]/(2a), or root substitution.",
+    "step_by_step": "Step 1: Write the equation in standard form ax² + bx + c = 0.\nStep 2: Identify coefficients and factor or compute discriminant Δ = b² - 4ac.\nStep 3: Solve for real roots. The confirmed solution is: Δ = 1",
+    "created_by": "teacher",
+    "created_at": 1793396190.883649
+  },
+  {
+    "id": "q_quadratic__41bab0",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "What is the nature and count of the real roots for the quadratic equation: 4x² - 12x + 9 = 0?",
+    "type": "multiple_choice",
+    "options": [
+      "Exactly one real root (repeated rational root, Δ = 0)",
+      "Two distinct irrational real roots (Δ > 0)",
+      "Two complex conjugate imaginary roots (Δ < 0)",
+      "No real or complex roots exist"
+    ],
+    "correct_answer": "Exactly one real root (repeated rational root, Δ = 0)",
+    "hint": "What does the discriminant (Δ) tell you about the number of real roots of a quadratic equation?",
+    "step_by_step": "1. Identify a, b, c: a=4, b=-12, c=9.\n2. Compute the discriminant: Δ = b² - 4ac = (-12)² - 4·4·9 = 144 - 144 = 0.\n3. Interpret Δ: Δ = 0 means the quadratic has exactly one real root (a repeated root).\n4. Find the root: x = -b/(2a) = 12/(8) = 1.5.\n5. Conclusion: The equation has one real root, x = 1.5.",
+    "created_by": "teacher",
+    "created_at": 1793396518.3731804
+  },
+  {
+    "id": "q_quadratic__3e0fb4",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "What is the nature and count of the real roots for the quadratic equation: 4x² - 12x + 9 = 0?",
+    "type": "multiple_choice",
+    "options": [
+      "Exactly one real root (repeated rational root, Δ = 0)",
+      "Two distinct irrational real roots (Δ > 0)",
+      "Two complex conjugate imaginary roots (Δ < 0)",
+      "No real or complex roots exist"
+    ],
+    "correct_answer": "Exactly one real root (repeated rational root, Δ = 0)",
+    "hint": "What does the discriminant (Δ) tell you about the number of real solutions for a quadratic?",
+    "step_by_step": "1. Identify a, b, c: a = 4, b = -12, c = 9.\n2. Compute the discriminant: Δ = b² - 4ac = (-12)² - 4·4·9 = 144 - 144 = 0.\n3. Interpret Δ: Δ = 0 means the quadratic has exactly one real root (a repeated root).\n4. Find the root: x = -b/(2a) = 12/(8) = 1.5.\n5. Conclude: The equation has one real root, x = 1.5.",
+    "created_by": "teacher",
+    "created_at": 1793402887.2126489
   }
 ]

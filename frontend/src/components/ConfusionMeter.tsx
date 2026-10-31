@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ConfusionData, ConfusionState } from "../types/api";
-import { Activity, Wifi, WifiOff } from "lucide-react";
+import { ConfusionData, ConfusionState, CognitiveState } from "../types/api";
+import { Activity, Wifi, WifiOff, Clock, ShieldAlert, Sparkles, Brain } from "lucide-react";
 
 interface ConfusionMeterProps {
   sessionId?: string;
   data?: ConfusionData;
   score?: number;
   state?: ConfusionState;
+  cognitiveState?: CognitiveState;
+  studentPaceFactor?: number;
+  cooldownSeconds?: number;
   isWsConnected?: boolean;
 }
 
@@ -31,11 +34,23 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
   data: propData,
   score: propScore,
   state: propState,
+  cognitiveState: propCogState,
+  studentPaceFactor: propPace,
+  cooldownSeconds: propCooldown,
   isWsConnected: propIsWsConnected,
 }) => {
-  const [internalData, setInternalData] = useState<{ score: number; state: string }>({
+  const [internalData, setInternalData] = useState<{
+    score: number;
+    state: string;
+    cognitiveState: CognitiveState;
+    studentPaceFactor: number;
+    cooldownSeconds: number;
+  }>({
     score: propScore ?? propData?.score ?? 0.05,
     state: propState ?? propData?.state ?? "calm",
+    cognitiveState: propCogState ?? "FOCUSED",
+    studentPaceFactor: propPace ?? 1.0,
+    cooldownSeconds: propCooldown ?? 0,
   });
   const [wsConnected, setWsConnected] = useState<boolean>(false);
   const wsRef = useRef<WebSocket | null>(null);
@@ -43,19 +58,14 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
 
   // Sync with prop updates if provided
   useEffect(() => {
-    if (propData) {
-      setInternalData({
-        score: propData.score,
-        state: propData.state,
-      });
-    } else if (propScore !== undefined) {
-      setInternalData((prev) => ({
-        ...prev,
-        score: propScore,
-        state: propState ?? prev.state,
-      }));
-    }
-  }, [propData, propScore, propState]);
+    setInternalData((prev) => ({
+      score: propScore ?? propData?.score ?? prev.score,
+      state: propState ?? propData?.state ?? prev.state,
+      cognitiveState: propCogState ?? prev.cognitiveState,
+      studentPaceFactor: propPace ?? prev.studentPaceFactor,
+      cooldownSeconds: propCooldown ?? prev.cooldownSeconds,
+    }));
+  }, [propData, propScore, propState, propCogState, propPace, propCooldown]);
 
   // Connect live WebSocket if sessionId is provided
   useEffect(() => {
@@ -65,8 +75,6 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
       const isHttps = typeof window !== "undefined" && window.location.protocol === "https:";
       const host = typeof window !== "undefined" ? window.location.host : "localhost:8000";
       const wsProtocol = isHttps ? "wss:" : "ws:";
-      
-      // Use local vite proxy or direct connection
       const wsUrl = `${wsProtocol}//${host}/ws/${sessionId}`;
 
       try {
@@ -80,11 +88,14 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
         ws.onmessage = (event) => {
           try {
             const payload = JSON.parse(event.data);
-            if (payload && typeof payload.score === "number") {
-              setInternalData({
-                score: Math.max(0.0, Math.min(1.0, payload.score)),
-                state: payload.state || "calm",
-              });
+            if (payload) {
+              setInternalData((prev) => ({
+                score: typeof payload.score === "number" ? Math.max(0.0, Math.min(1.0, payload.score)) : prev.score,
+                state: payload.state || prev.state,
+                cognitiveState: (payload.cognitive_state as CognitiveState) || prev.cognitiveState,
+                studentPaceFactor: payload.student_pace_factor ?? prev.studentPaceFactor,
+                cooldownSeconds: payload.cooldown_seconds ?? prev.cooldownSeconds,
+              }));
             }
           } catch (e) {
             // Ignore parse errors
@@ -117,24 +128,64 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
   }, [sessionId]);
 
   const currentScore = internalData.score;
-  const currentState = internalData.state;
+  const currentCogState = internalData.cognitiveState;
+  const paceFactor = internalData.studentPaceFactor;
+  const cooldownSecs = internalData.cooldownSeconds;
   const percentage = Math.round(currentScore * 100);
   const isConnected = propIsWsConnected !== undefined ? propIsWsConnected : wsConnected;
 
-  // Format state label
-  const stateLabel =
-    currentState === "calm" || currentState === "focused"
-      ? "Calm & Focused"
-      : currentState === "hesitant" || currentState === "mild" || currentState === "uncertain"
-      ? "Hesitant"
-      : "Confused";
+  // Cognitive State badge styling and description
+  const getCognitiveStateDisplay = () => {
+    switch (currentCogState) {
+      case "GAMING":
+        return {
+          label: "Gaming Detected",
+          tag: "Hint Cooldown Active",
+          color: "text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 border-purple-200 dark:border-purple-800",
+          dotColor: "#9333ea",
+          desc: "Rapid hint tapping detected. 10s cooldown enforced with self-check prompt.",
+          icon: <ShieldAlert className="w-3.5 h-3.5 text-purple-600" />,
+        };
+      case "BORED":
+        return {
+          label: "Under-Engaged / Bored",
+          tag: "Rapid Streak Challenge",
+          color: "text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800",
+          dotColor: "#d97706",
+          desc: "Hasty answering in < 28% of expected time. Rapid streak booster triggered.",
+          icon: <Sparkles className="w-3.5 h-3.5 text-amber-600" />,
+        };
+      case "NATURALLY_SLOW":
+        return {
+          label: "Deliberate Thinker",
+          tag: "Uninterrupted Cadence",
+          color: "text-cyan-800 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/60 border-cyan-200 dark:border-cyan-800",
+          dotColor: "#0891b2",
+          desc: "Response time aligns with personal deliberate baseline. Popups suppressed.",
+          icon: <Clock className="w-3.5 h-3.5 text-cyan-600" />,
+        };
+      case "CONFUSED":
+        return {
+          label: "Stuck / Confused",
+          tag: "Socratic Scaffolding",
+          color: "text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-800",
+          dotColor: "#ef4444",
+          desc: "High hesitation ratio detected. Step-by-step Socratic explanation dispatched.",
+          icon: <Brain className="w-3.5 h-3.5 text-rose-600" />,
+        };
+      default:
+        return {
+          label: "Focused & Steady",
+          tag: "Optimal Cadence",
+          color: "text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800",
+          dotColor: "#10b981",
+          desc: "Optimal response cadence and accurate progression. Cognitive load minimal.",
+          icon: <Activity className="w-3.5 h-3.5 text-emerald-600" />,
+        };
+    }
+  };
 
-  const stateColor =
-    currentScore >= 0.65
-      ? "text-red-500 bg-red-50 dark:bg-red-950/60 border-red-200 dark:border-red-900"
-      : currentScore >= 0.35
-      ? "text-[#F25C1E] bg-orange-50 dark:bg-orange-950/60 border-orange-200 dark:border-orange-900"
-      : "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-900";
+  const cogDisplay = getCognitiveStateDisplay();
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm hover:shadow-md transition-shadow">
@@ -145,9 +196,9 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-              Live Confusion Meter
+              Live Cognitive & Telemetry Meter
             </h3>
-            <p className="text-[10px] text-slate-400">Passive Telemetry Detection</p>
+            <p className="text-[10px] text-slate-400">Non-Intrusive Cadence & Persona-Normalized Detection</p>
           </div>
         </div>
 
@@ -186,7 +237,6 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
           aria-valuemax={100}
         >
           {SEGMENTS.map((seg, idx) => {
-            // A segment is filled if score reaches or exceeds threshold
             const isFilled = currentScore >= seg.threshold;
 
             return (
@@ -201,7 +251,6 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
                   transform: isFilled ? "scale(1.03)" : "scale(1)",
                 }}
               >
-                {/* Tooltip on hover */}
                 <div className="absolute left-12 whitespace-nowrap bg-slate-900 text-white text-[10px] font-semibold px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-20">
                   {seg.label} (≥ {Math.round(seg.threshold * 100)}%)
                 </div>
@@ -212,38 +261,38 @@ export const ConfusionMeter: React.FC<ConfusionMeterProps> = ({
 
         {/* Status Metrics */}
         <div className="flex-1 space-y-2.5">
-          <div>
-            <span className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              {percentage}%
+          <div className="flex items-baseline justify-between flex-wrap gap-1">
+            <div>
+              <span className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                {percentage}%
+              </span>
+              <span className="text-xs text-slate-400 font-medium ml-1">confusion score</span>
+            </div>
+            {/* Personal Pace Factor Badge */}
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+              Personal Pace: <strong>{paceFactor.toFixed(1)}x</strong> {paceFactor >= 1.3 ? "(Deliberate)" : "(Steady)"}
             </span>
-            <span className="text-xs text-slate-400 font-medium ml-1">confusion</span>
           </div>
 
-          <div>
+          {/* Cognitive State Badge */}
+          <div className="flex items-center gap-2 flex-wrap">
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border capitalize ${stateColor}`}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border ${cogDisplay.color}`}
             >
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{
-                  backgroundColor:
-                    currentScore >= 0.65
-                      ? "#ef4444"
-                      : currentScore >= 0.35
-                      ? "#F25C1E"
-                      : "#22c55e",
-                }}
-              />
-              {stateLabel}
+              {cogDisplay.icon}
+              <span>{cogDisplay.label}</span>
             </span>
+
+            {cooldownSecs > 0 && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold bg-purple-100 text-purple-700 border border-purple-300 animate-pulse">
+                <ShieldAlert className="w-3 h-3" />
+                <span>Cooldown: {cooldownSecs}s</span>
+              </span>
+            )}
           </div>
 
           <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
-            {currentScore >= 0.65
-              ? "High hesitation detected. Multimodal intervention prepared."
-              : currentScore >= 0.35
-              ? "Moderate pauses observed. Monitoring response cadence."
-              : "Steady interaction cadence. Cognitive load is optimal."}
+            {cogDisplay.desc}
           </p>
         </div>
       </div>

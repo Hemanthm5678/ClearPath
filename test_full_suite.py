@@ -29,6 +29,8 @@ from backend.app.main import (
     student_chat, ChatRequest,
     get_class_heatmap,
     health_check,
+    login, signup, get_demo_users_endpoint, LoginRequest, SignupRequest,
+    teacher_create_question, teacher_list_questions, CreateQuestionRequest
 )
 
 results = []
@@ -282,6 +284,46 @@ try:
     assert isinstance(health.cache_hits, int)
     assert isinstance(health.offline_used, int)
     record("8.10 GET /api/health", True, f"Status: Mode={health.mode}, GroqOk={health.groq_ok}, CacheHits={health.cache_hits}, OfflineUsed={health.offline_used}")
+
+    # 8.11 RBAC & User Authentication (Student & Teacher)
+    demos = get_demo_users_endpoint()
+    assert len(demos["students"]) >= 2
+    assert len(demos["teachers"]) >= 1
+    alex_login = login(LoginRequest(email="alex@clearpath.edu", password="clearpath"))
+    assert alex_login.status == "ok"
+    assert alex_login.user["role"] == "student"
+    teacher_login = login(LoginRequest(email="teacher@clearpath.edu", password="clearpath"))
+    assert teacher_login.status == "ok"
+    assert teacher_login.user["role"] == "teacher"
+    test_user_email = f"student_{uuid.uuid4().hex[:6]}@school.edu"
+    student_signup = signup(SignupRequest(name="Jordan Smith", email=test_user_email, password="password123", role="student"))
+    assert student_signup.status == "ok"
+    assert student_signup.user["name"] == "Jordan Smith"
+    record("8.11 RBAC & User Authentication", True, f"Student ({alex_login.user['name']}) & Teacher ({teacher_login.user['name']}) verified + Dynamic Signup")
+
+    # 8.12 Teacher Question Authoring & AI Tutor Scaffolding
+    author_res = teacher_create_question(CreateQuestionRequest(
+        concept_id="c8_quadratic_algebra",
+        prompt="What is the discriminant of the quadratic equation 3x² - 5x + 2 = 0?",
+        options=["Δ = 1", "Δ = 49", "Δ = -1", "Δ = 25"],
+        correct_answer="Δ = 1",
+        difficulty="medium"
+    ))
+    assert author_res["status"] == "ok"
+    assert "question" in author_res
+    assert "analysis" in author_res
+    created_qid = author_res["question"]["id"]
+    analysis = author_res["analysis"]
+    assert "explanations" in analysis
+    assert all(k in analysis["explanations"] for k in ("visual", "analogy", "step_by_step", "simple_language"))
+
+    # Verify that the student explanation endpoint can immediately retrieve the AI Tutor scaffolding for this new question!
+    exp_visual = get_explanation(ExplainRequest(session_id=session_id, style="visual", question_id=created_qid, level=1))
+    assert len(exp_visual.explanation) > 15
+
+    q_list = teacher_list_questions()
+    assert q_list["total"] >= 24
+    record("8.12 Teacher Authoring & AI Scaffolding", True, f"Created {created_qid} with 4 AI Tutor modalities, verified in live student pipeline")
 
 except Exception as e:
     record("8. Full Route Pipeline", False, str(e))

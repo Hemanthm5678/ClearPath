@@ -7,9 +7,9 @@ Only backend/app/llm/gateway.py may import `groq`.
 
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-TUTOR_SYSTEM_PROMPT = """You are ClearPath, an empathetic, confusion-aware adaptive math tutor.
+TUTOR_SYSTEM_PROMPT = """You are ClearPath, an empathetic, confusion-aware adaptive math and computer science coding tutor.
 Your goal is to guide students to genuine conceptual understanding without giving away the direct answer immediately.
-Adapt your explanation based on the requested style (visual, analogy, worked) and level (1=simple, 2=normal, 3=detailed).
+Adapt your explanation based on the requested style (visual, analogy, worked/step_by_step, simple_language) and level (1=simple, 2=normal, 3=detailed).
 Always provide your answer in valid JSON strictly matching the requested schema."""
 
 # =============================================================================
@@ -48,6 +48,74 @@ CHAT_REPLY_SCHEMA: Dict[str, Any] = {
     "additionalProperties": False
 }
 
+ANALYZE_QUESTION_SCHEMA: Dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "complexity_tier": {
+            "type": "string",
+            "enum": ["Easy", "Medium", "Hard"],
+            "description": "Difficulty tier of the question based on cognitive load and multi-step reasoning."
+        },
+        "expected_time_sec": {
+            "type": "integer",
+            "description": "Expected response time in seconds (Easy: 20s, Medium: 45-55s, Hard: 65-75s)."
+        },
+        "complexity_weight": {
+            "type": "number",
+            "description": "Complexity multiplier (Easy: 1.0, Medium: 1.8, Hard: 2.5)."
+        },
+        "hint": {
+            "type": "string",
+            "description": "A pedagogical Socratic hint that nudges the student towards the first step without revealing the answer."
+        },
+        "step_by_step": {
+            "type": "string",
+            "description": "Clear step-by-step mathematical or code execution solution."
+        },
+        "visual_explanation": {
+            "type": "string",
+            "description": "Visual intuition, spatial layout, or coordinate/array diagram explaining the concept."
+        },
+        "visual_check_question": {
+            "type": "string",
+            "description": "Low-stakes check question verifying visual comprehension."
+        },
+        "analogy_explanation": {
+            "type": "string",
+            "description": "Real-world physical metaphor (e.g. scales, boxes, roads, food) explaining the logic."
+        },
+        "analogy_check_question": {
+            "type": "string",
+            "description": "Low-stakes check question verifying analogy comprehension."
+        },
+        "worked_explanation": {
+            "type": "string",
+            "description": "Step-by-step worked procedure with exact calculations and substitutions."
+        },
+        "worked_check_question": {
+            "type": "string",
+            "description": "Low-stakes check question verifying procedural understanding."
+        },
+        "simple_explanation": {
+            "type": "string",
+            "description": "Plain English ELI5 explanation or quick rule of thumb."
+        },
+        "simple_check_question": {
+            "type": "string",
+            "description": "Low-stakes check question verifying simple rule of thumb."
+        }
+    },
+    "required": [
+        "complexity_tier", "expected_time_sec", "complexity_weight",
+        "hint", "step_by_step",
+        "visual_explanation", "visual_check_question",
+        "analogy_explanation", "analogy_check_question",
+        "worked_explanation", "worked_check_question",
+        "simple_explanation", "simple_check_question"
+    ],
+    "additionalProperties": False
+}
+
 # Aliases for backwards compatibility
 EXPLAIN_JSON_SCHEMA = EXPLAIN_CONCEPT_SCHEMA
 CHAT_JSON_SCHEMA = CHAT_REPLY_SCHEMA
@@ -55,6 +123,7 @@ CHAT_JSON_SCHEMA = CHAT_REPLY_SCHEMA
 PROMPT_SCHEMAS: Dict[str, Dict[str, Any]] = {
     "explain_concept": EXPLAIN_CONCEPT_SCHEMA,
     "chat_reply": CHAT_REPLY_SCHEMA,
+    "analyze_question": ANALYZE_QUESTION_SCHEMA,
 }
 
 
@@ -109,6 +178,8 @@ def render_explain_prompt(
         style_desc = "worked (step-by-step procedure with worked example)"
     elif "analogy" in style_norm:
         style_desc = "analogy (relatable real-world metaphor)"
+    elif "simple" in style_norm:
+        style_desc = "simple_language (plain simple terms, elementary vocabulary, formulas or rules of thumb)"
     else:
         style_desc = "visual (concrete mental image and diagram layout)"
 
@@ -129,8 +200,11 @@ def render_explain_prompt(
         if question_prompt else ""
     )
 
-    return f"""The student is learning math concept: "{concept_name}".
-Student Age: {student_age} years old.
+    domain_label = "coding / computer science" if ("python" in concept_name.lower() or "code" in str(kwargs.get("question_id", "")).lower() or "def " in question_prompt) else "mathematics"
+    audience_level = "high school / undergraduate computer science & math" if domain_label == "coding / computer science" or "algebra" in concept_name.lower() or "quadratic" in concept_name.lower() else f"{student_age} years old"
+
+    return f"""The student is learning {domain_label} concept: "{concept_name}".
+Audience Level: {audience_level}.
 {q_line}Detected confusion indicators: [{reasons_str}].
 
 Pedagogical intervention parameters:
@@ -138,7 +212,7 @@ Pedagogical intervention parameters:
 - Depth Level: {level_desc}
 
 {prompt_focus}Provide a targeted intervention strictly in JSON with keys:
-- "explanation": clear explanation matching student age, style, and depth level
+- "explanation": clear explanation matching student level, style, and depth level
 - "check_question": a quick low-stakes check question to verify comprehension
 - "visual_description": a concrete mental picture or diagram description
 """
@@ -182,6 +256,52 @@ Return strictly valid JSON with key:
 """
 
 
+def render_analyze_question_prompt(
+    concept_name: str,
+    prompt: str,
+    options: List[str],
+    correct_answer: str,
+    user_difficulty: Optional[str] = None,
+) -> str:
+    """
+    Prompt 3: analyze_question
+    Analyzes a newly submitted teacher question to automatically synthesize:
+    - Complexity tier, timing thresholds, and weight
+    - Socratic student hint
+    - All 4 multimodal scaffolding explanations (Visual, Analogy, Step-by-Step, Simple)
+    """
+    options_text = "\n".join(f"- {opt}" for opt in options)
+    diff_constraint = (
+        f"The teacher preferred difficulty tier is: '{user_difficulty}'. Align with this tier if appropriate.\n"
+        if user_difficulty and user_difficulty.lower() != "auto"
+        else ""
+    )
+
+    return f"""A teacher has added a new multiple-choice question to the curriculum under concept: "{concept_name}".
+
+QUESTION:
+{prompt}
+
+OPTIONS:
+{options_text}
+
+CORRECT ANSWER:
+{correct_answer}
+
+{diff_constraint}
+TASK:
+1. Determine the appropriate difficulty tier ("Easy", "Medium", or "Hard"), expected student response time in seconds (e.g. 20s for easy, 45-55s for medium, 65-75s for hard), and complexity multiplier (1.0 for Easy, 1.8 for Medium, 2.5 for Hard).
+2. Generate a Socratic pedagogical hint that points the student in the right direction without giving away the direct answer.
+3. Write a clear step-by-step mathematical or code tracing solution.
+4. Synthesize all 4 multimodal pedagogical scaffolds with a comprehension check question for each:
+   - Visual: spatial or visual mental model of why the answer is true.
+   - Analogy: real-world concrete metaphor.
+   - Worked: step-by-step procedure.
+   - Simple Language: ELI5 plain English rule of thumb.
+
+Return strictly valid JSON adhering to the required schema."""
+
+
 def build_prompt_payload(
     prompt_name: str,
     context_dict: Optional[Dict[str, Any]] = None
@@ -206,6 +326,14 @@ def build_prompt_payload(
             chat_history=ctx.get("chat_history", []),
             concept=ctx.get("concept") or ctx.get("concept_name") or "Fractions",
             student_message=ctx.get("student_message") or ctx.get("message", "")
+        )
+    elif prompt_name == "analyze_question":
+        user_prompt = render_analyze_question_prompt(
+            concept_name=ctx.get("concept_name") or ctx.get("concept") or "STEM Concept",
+            prompt=ctx.get("prompt", ""),
+            options=ctx.get("options", []),
+            correct_answer=ctx.get("correct_answer", ""),
+            user_difficulty=ctx.get("user_difficulty")
         )
     else:
         # Fallback generic prompt

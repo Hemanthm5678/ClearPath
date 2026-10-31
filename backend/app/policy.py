@@ -409,46 +409,42 @@ def select_next_question(
     current_question_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    Chooses the next appropriate question based on concept mastery and policy difficulty.
+    Chooses the next appropriate question based on the curated question sequence.
+    Guarantees sequential progression:
+    - Question 1 (Index 0): Math (Quadratic Equation Roots)
+    - Question 2 (Index 1): Coding (Python Mutable Default Args)
+    - Question 3 (Index 2): Math (Quadratic Discriminant Parameter)
+    - Question 4 (Index 3): Coding (Python Recursion Tracing)
+    - Later questions follow in the designated curriculum order.
     """
     questions = load_questions()
-    concepts = load_concepts()
+    if not questions:
+        return {
+            "question": {},
+            "concept": current_concept_id,
+            "difficulty": "medium",
+        }
 
-    current_mastery = bkt.get_mastery(session_id, current_concept_id)
+    # Find the current question in the sequence
+    current_idx = -1
+    if current_question_id:
+        for idx, q in enumerate(questions):
+            if q.get("id") == current_question_id:
+                current_idx = idx
+                break
 
-    # Advance concept if mastered
-    target_concept_id = current_concept_id
-    if current_mastery >= 0.90:
-        target_concept_id = get_next_concept(current_concept_id)
-
-    # Filter questions
-    candidate_questions = [
-        q for q in questions
-        if q.get("concept_id") == target_concept_id and q.get("id") != current_question_id
-    ]
-
-    if not candidate_questions:
-        candidate_questions = [q for q in questions if q.get("concept_id") == target_concept_id]
-        if not candidate_questions:
-            candidate_questions = questions
-
-    # Determine difficulty
-    s_state = get_or_create_policy_state(session_id)
-    recent = s_state.get("recent_correct_history", [])
-    last_3_correct = (len(recent) >= 3 and all(recent[-3:]))
-
-    if current_mastery < 0.40:
-        preferred_diff = "easy"
-    elif last_3_correct or current_mastery >= 0.75:
-        preferred_diff = "hard"
+    if current_idx >= 0 and current_idx + 1 < len(questions):
+        chosen = questions[current_idx + 1]
+    elif current_idx >= 0:
+        # Loop back to the first question if at the end of the bank
+        chosen = questions[0]
     else:
-        preferred_diff = "medium"
+        chosen = questions[0]
 
-    matching = [q for q in candidate_questions if q.get("difficulty") == preferred_diff]
-    chosen = matching[0] if matching else candidate_questions[0]
+    target_concept_id = chosen.get("concept_id", current_concept_id)
 
     return {
         "question": chosen,
         "concept": target_concept_id,
-        "difficulty": chosen.get("difficulty", preferred_diff),
+        "difficulty": chosen.get("difficulty", "medium"),
     }

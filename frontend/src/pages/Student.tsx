@@ -5,6 +5,8 @@ import {
   EventResponse,
   ConfusionData,
   TutorData,
+  CognitiveState,
+  User,
 } from "../types/api";
 import { useSignals } from "../hooks/useSignals";
 import { useSpeech } from "../hooks/useSpeech";
@@ -22,6 +24,10 @@ import {
   Sparkles,
   RefreshCw,
   RotateCcw,
+  Clock,
+  ShieldAlert,
+  Zap,
+  Brain,
 } from "lucide-react";
 
 // Celebration visual on correct answer
@@ -37,17 +43,130 @@ const triggerCelebration = () => {
   }
 };
 
+// Formatted Code & Math Prompt Renderer
+const renderFormattedPrompt = (prompt: string) => {
+  if (!prompt) return null;
+
+  // Check for triple-backtick markdown code blocks
+  if (prompt.includes("```")) {
+    const parts = prompt.split("```");
+    return (
+      <div className="space-y-2 mb-4">
+        {parts.map((part, idx) => {
+          if (idx % 2 === 1) {
+            const cleanCode = part.replace(/^(python|c|cpp)\n/, "");
+            return (
+              <pre
+                key={idx}
+                className="p-3.5 rounded-xl bg-slate-900 text-purple-200 font-mono text-xs overflow-x-auto border border-purple-900/60 shadow-inner"
+              >
+                <code>{cleanCode}</code>
+              </pre>
+            );
+          }
+          if (!part.trim()) return null;
+          return (
+            <p key={idx} className="text-base font-bold text-slate-900 dark:text-white leading-relaxed">
+              {part.trim()}
+            </p>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Check if python code structure (def ... return ...)
+  if (prompt.includes("def ") || prompt.includes("return ") || prompt.includes("print(")) {
+    const lines = prompt.split("\n");
+    const intro: string[] = [];
+    const code: string[] = [];
+    const outro: string[] = [];
+    let inCode = false;
+
+    lines.forEach((line) => {
+      const isDefOrBody =
+        line.trim().startsWith("def ") ||
+        line.trim().startsWith("return ") ||
+        (inCode && (line.startsWith(" ") || line.startsWith("\t") || line.includes("print") || line.includes("append_to") || line.includes("mystery")));
+
+      if (isDefOrBody) {
+        inCode = true;
+        code.push(line);
+      } else if (inCode && line.trim().length > 0 && !line.startsWith(" ")) {
+        inCode = false;
+        outro.push(line);
+      } else if (!inCode) {
+        intro.push(line);
+      }
+    });
+
+    if (code.length > 0) {
+      return (
+        <div className="space-y-2.5 mb-4">
+          {intro.length > 0 && (
+            <p className="text-base font-bold text-slate-900 dark:text-white leading-relaxed">
+              {intro.join(" ")}
+            </p>
+          )}
+          <pre className="p-3.5 rounded-xl bg-slate-900 text-purple-200 font-mono text-xs overflow-x-auto border border-purple-900/60 shadow-inner">
+            <code>{code.join("\n")}</code>
+          </pre>
+          {outro.length > 0 && (
+            <p className="text-base font-bold text-slate-900 dark:text-white leading-relaxed">
+              {outro.join(" ")}
+            </p>
+          )}
+        </div>
+      );
+    }
+  }
+
+  // Deep Math / Quadratic Clean Formatting
+  const cleanMath = prompt
+    .replace(/\^2/g, "²")
+    .replace(/\^3/g, "³")
+    .replace(/Delta/g, "Δ")
+    .replace(/alpha/g, "α")
+    .replace(/beta/g, "β");
+
+  return (
+    <p className="text-base font-bold text-slate-900 dark:text-white leading-relaxed mb-4">
+      {cleanMath}
+    </p>
+  );
+};
+
+const formatOptionText = (opt: string) => {
+  return opt
+    .replace(/\^2/g, "²")
+    .replace(/\^3/g, "³")
+    .replace(/Delta/g, "Δ")
+    .replace(/alpha/g, "α")
+    .replace(/beta/g, "β");
+};
+
 interface StudentProps {
+  currentUser?: User | null;
+  onLogout?: () => void;
   onNavigateTeacher: () => void;
 }
 
-export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
+export const Student: React.FC<StudentProps> = ({
+  currentUser,
+  onLogout,
+  onNavigateTeacher,
+}) => {
   const [sessionId, setSessionId] = useState<string>("");
   const [concept, setConcept] = useState<Concept | null>(null);
   const [question, setQuestion] = useState<Question | null>(null);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [numericAnswer, setNumericAnswer] = useState<string>("");
   const [lastSubmittedAnswer, setLastSubmittedAnswer] = useState<string>("");
+
+  // Cognitive State & Telemetry Metrics
+  const [cognitiveState, setCognitiveState] = useState<CognitiveState>("FOCUSED");
+  const [studentPaceFactor, setStudentPaceFactor] = useState<number>(1.0);
+  const [cooldownSeconds, setCooldownSeconds] = useState<number>(0);
 
   // Real-time confusion and mastery state
   const [confusion, setConfusion] = useState<ConfusionData>({
@@ -67,6 +186,15 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
   const [currentStyle, setCurrentStyle] = useState<
     "visual" | "analogy" | "step_by_step" | "simple_language"
   >("visual");
+
+  // Hint Cooldown Timer Countdown
+  useEffect(() => {
+    if (cooldownSeconds <= 0) return;
+    const timer = setInterval(() => {
+      setCooldownSeconds((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldownSeconds]);
 
   // Text to Speech hook
   const {
@@ -88,6 +216,16 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
         setCurrentStyle(norm as any);
       }
       if (res.action?.why) setActionWhy(res.action.why);
+      if (res.telemetry) {
+        setCognitiveState(res.telemetry.cognitive_state);
+        setStudentPaceFactor(res.telemetry.student_pace_factor);
+        if (res.telemetry.cooldown_seconds > 0) {
+          setCooldownSeconds(res.telemetry.cooldown_seconds);
+        }
+      }
+      if (res.action?.cooldown_seconds && res.action.cooldown_seconds > 0) {
+        setCooldownSeconds(res.action.cooldown_seconds);
+      }
     }
   }, []);
 
@@ -108,7 +246,11 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
       const res = await fetch("/api/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile: "live" }),
+        body: JSON.stringify({
+          profile: "live",
+          student_name: currentUser?.name || "Alex Chen",
+          user_id: currentUser?.id,
+        }),
       });
       if (res.ok) {
         const data = await res.json();
@@ -121,18 +263,21 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
         setSubmissionStatus("unsubmitted");
         setTutorData(null);
         setActionWhy(null);
+        setCognitiveState("FOCUSED");
+        setStudentPaceFactor(1.0);
+        setCooldownSeconds(0);
         resetForNewQuestion();
       }
     } catch (err) {
       console.error("Failed to initialize session:", err);
     }
-  }, [resetForNewQuestion]);
+  }, [resetForNewQuestion, currentUser]);
 
   useEffect(() => {
     initSession();
   }, [initSession]);
 
-  // WebSocket for 2-second real-time confusion updates
+  // WebSocket for 2-second real-time confusion & cognitive updates
   useEffect(() => {
     if (!sessionId) return;
     const isHttps = typeof window !== "undefined" && window.location.protocol === "https:";
@@ -148,12 +293,23 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
       socket.onmessage = (event) => {
         try {
           const payload = JSON.parse(event.data);
-          if (payload && typeof payload.score === "number") {
-            setConfusion((prev) => ({
-              ...prev,
-              score: payload.score,
-              state: payload.state || prev.state,
-            }));
+          if (payload) {
+            if (typeof payload.score === "number") {
+              setConfusion((prev) => ({
+                ...prev,
+                score: payload.score,
+                state: payload.state || prev.state,
+              }));
+            }
+            if (payload.cognitive_state) {
+              setCognitiveState(payload.cognitive_state);
+            }
+            if (typeof payload.student_pace_factor === "number") {
+              setStudentPaceFactor(payload.student_pace_factor);
+            }
+            if (typeof payload.cooldown_seconds === "number" && payload.cooldown_seconds > 0) {
+              setCooldownSeconds((prev) => Math.max(prev, payload.cooldown_seconds));
+            }
           }
         } catch (e) {
           // ignore
@@ -206,6 +362,16 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
           }
         }
         if (data.action?.why) setActionWhy(data.action.why);
+        if (data.telemetry) {
+          setCognitiveState(data.telemetry.cognitive_state);
+          setStudentPaceFactor(data.telemetry.student_pace_factor);
+          if (data.telemetry.cooldown_seconds > 0) {
+            setCooldownSeconds(data.telemetry.cooldown_seconds);
+          }
+        }
+        if (data.action?.cooldown_seconds && data.action.cooldown_seconds > 0) {
+          setCooldownSeconds(data.action.cooldown_seconds);
+        }
         return data;
       }
     } catch (err) {
@@ -214,7 +380,7 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
     return null;
   };
 
-  // Submit Answer with robust loading state and answer matching
+  // Submit Answer
   const handleSubmitAnswer = async () => {
     const answer =
       question?.type === "numeric" ? numericAnswer : selectedOption;
@@ -226,8 +392,7 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
       const data = await sendEvent("submit", answer);
       const correct = question?.correct_answer?.trim().toLowerCase() || "";
       const studentAns = answer.trim().toLowerCase();
-      
-      // Match exactly or contained in either direction
+
       const isCorrect =
         correct === studentAns ||
         (correct.length > 0 && studentAns.includes(correct)) ||
@@ -241,7 +406,6 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
       }
     } catch (err) {
       console.error("Error during submission:", err);
-      // Fallback local check
       const correct = question?.correct_answer?.trim().toLowerCase() || "";
       const studentAns = answer.trim().toLowerCase();
       const isCorrect = correct === studentAns || (correct.length > 0 && studentAns.includes(correct));
@@ -252,15 +416,13 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
     }
   };
 
-  // Option selection handler that clears old error states when a different option is chosen
+  // Option selection handler
   const handleSelectOption = (opt: string) => {
     if (opt === selectedOption) return;
     setSelectedOption(opt);
     if (opt !== lastSubmittedAnswer) {
       setSubmissionStatus("unsubmitted");
     }
-    // If student already submitted once and got it wrong, changing choice to try again is a RETRY!
-    // If student hasn't submitted yet, changing choice is an answer EDIT / REVISION!
     if (lastSubmittedAnswer) {
       recordOptionSwitch();
     } else {
@@ -268,8 +430,9 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
     }
   };
 
-  // Hint tapped
+  // Hint tapped (protected by cooldown)
   const handleHintClick = async () => {
+    if (cooldownSeconds > 0) return;
     recordHint();
     await sendEvent("hint");
   };
@@ -334,6 +497,61 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
     }
   };
 
+  // Instant Hurdle Preset Simulator for Live Judge Testing
+  const handleSimulatePreset = async (
+    profile: "confused" | "bored" | "gaming" | "naturally_slow"
+  ) => {
+    try {
+      const res = await fetch("/api/simulate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profile }),
+      });
+      if (res.ok) {
+        const sim = await res.json();
+        setSessionId(sim.session_id);
+        setConfusion({
+          score: sim.confusion_score,
+          state: sim.confusion_state,
+          reasons: [],
+        });
+        setMastery(sim.mastery || {});
+
+        if (sim.question) {
+          setQuestion(sim.question);
+        } else {
+          const nextRes = await fetch(`/api/question/next?session_id=${sim.session_id}`);
+          if (nextRes.ok) {
+            const nextData = await nextRes.json();
+            setQuestion(nextData.question);
+          }
+        }
+
+        const cogMap: Record<string, CognitiveState> = {
+          confused: "CONFUSED",
+          bored: "BORED",
+          gaming: "GAMING",
+          naturally_slow: "NATURALLY_SLOW",
+        };
+        const newCog = cogMap[profile] || "FOCUSED";
+        setCognitiveState(newCog);
+        setStudentPaceFactor(profile === "naturally_slow" ? 1.4 : 1.0);
+        if (profile === "gaming") {
+          setCooldownSeconds(10);
+        } else {
+          setCooldownSeconds(0);
+        }
+        setSubmissionStatus("unsubmitted");
+        setSelectedOption("");
+        setNumericAnswer("");
+        setLastSubmittedAnswer("");
+        resetForNewQuestion();
+      }
+    } catch (e) {
+      console.error("Simulation failed:", e);
+    }
+  };
+
   const currentMastery = concept ? mastery[concept.id] ?? 0.2 : 0.2;
   const currentAnswer = question?.type === "numeric" ? numericAnswer : selectedOption;
 
@@ -373,12 +591,35 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
               </span>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Confusion-Aware Adaptive Learning
+              Non-Intrusive Cognitive & Hurdle Detection
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
+          {currentUser && (
+            <div className="flex items-center gap-2 pr-2 border-r border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200/60 dark:border-purple-800/40 text-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-bold text-[#6A35D8] dark:text-purple-300">
+                  {currentUser.name}
+                </span>
+                <span className="text-[10px] text-slate-400 capitalize">
+                  ({currentUser.role})
+                </span>
+              </div>
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  title="Switch Account or Role"
+                  className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 underline"
+                >
+                  Switch
+                </button>
+              )}
+            </div>
+          )}
+
           <button
             onClick={onNavigateTeacher}
             className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs border border-slate-200 dark:border-slate-700 transition-colors"
@@ -397,15 +638,79 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <main className="flex-1 max-w-[1680px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Confusion Meter & Question Card (7 cols) */}
         <div className="lg:col-span-7 space-y-5">
+          {/* Hackathon Preset Simulator Controls */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3.5 shadow-sm">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#6A35D8] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                Hackathon Hurdle Presets (Live Judge Controls)
+              </span>
+              <span className="text-[10px] text-slate-400">Instant Telemetry Injection</span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                onClick={() => handleSimulatePreset("confused")}
+                className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold border border-red-200 transition-colors"
+              >
+                <Brain className="w-3.5 h-3.5" />
+                <span>Simulate Confused</span>
+              </button>
+              <button
+                onClick={() => handleSimulatePreset("bored")}
+                className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200 transition-colors"
+              >
+                <Zap className="w-3.5 h-3.5" />
+                <span>Simulate Bored</span>
+              </button>
+              <button
+                onClick={() => handleSimulatePreset("gaming")}
+                className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 transition-colors"
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>Simulate Gaming</span>
+              </button>
+              <button
+                onClick={() => handleSimulatePreset("naturally_slow")}
+                className="flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-700 text-xs font-bold border border-cyan-200 transition-colors"
+              >
+                <Clock className="w-3.5 h-3.5" />
+                <span>Naturally Slow</span>
+              </button>
+            </div>
+          </div>
+
           {/* 5-segment vertical bar ConfusionMeter */}
           <ConfusionMeter
             sessionId={sessionId}
             data={confusion}
+            cognitiveState={cognitiveState}
+            studentPaceFactor={studentPaceFactor}
+            cooldownSeconds={cooldownSeconds}
             isWsConnected={isWsConnected}
           />
+
+          {/* State-Specific Alert / Intervention Banners */}
+          {cognitiveState === "NATURALLY_SLOW" && (
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-cyan-50 dark:bg-cyan-950/40 text-cyan-800 dark:text-cyan-200 border border-cyan-200 dark:border-cyan-800 animate-fade-in text-xs font-semibold shadow-sm">
+              <Clock className="w-4 h-4 text-cyan-600 flex-shrink-0" />
+              <span>Status: Deliberate Thinker - Allowing uninterrupted processing time</span>
+            </div>
+          )}
+          {cognitiveState === "BORED" && (
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800 animate-fade-in text-xs font-semibold shadow-sm">
+              <Sparkles className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <span>⚡ Rapid Challenge / Streak Booster Active: Verify edge cases before submitting!</span>
+            </div>
+          )}
+          {cooldownSeconds > 0 && (
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-800 dark:text-purple-200 border border-purple-200 dark:border-purple-800 animate-fade-in text-xs font-semibold shadow-sm">
+              <ShieldAlert className="w-4 h-4 text-purple-600 flex-shrink-0 animate-pulse" />
+              <span>🔒 Hint Cooldown Active ({cooldownSeconds}s): Trace through each term/variable before requesting another hint.</span>
+            </div>
+          )}
 
           {/* Target Concept and BKT Mastery Card */}
           {concept && (
@@ -444,19 +749,34 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
           {/* Active Question Card */}
           {question ? (
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-md relative overflow-hidden">
-              <div className="flex items-center justify-between gap-2 mb-4">
-                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                  Difficulty: {question.difficulty}
-                </span>
-                <span className="text-xs font-mono text-slate-400">
-                  ID: {question.id}
-                </span>
+              {/* Question Metadata Header */}
+              <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-purple-50 text-[#6A35D8] border border-purple-200 dark:bg-purple-950/50 dark:border-purple-800">
+                    {question.difficulty === "easy"
+                      ? "Easy • 20s"
+                      : question.difficulty === "medium"
+                      ? `Medium • ${question.expected_time_sec || 50}s`
+                      : `Hard • ${question.expected_time_sec || 75}s`}
+                  </span>
+                  {question.complexity_weight && (
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                      Weight: {question.complexity_weight}x
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    Personal Pace: <strong>{studentPaceFactor.toFixed(1)}x</strong> {studentPaceFactor >= 1.3 ? "(Deliberate)" : "(Steady)"}
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">
+                    ID: {question.id}
+                  </span>
+                </div>
               </div>
 
-              {/* Question Text */}
-              <p className="text-lg font-bold text-slate-900 dark:text-white leading-relaxed mb-6">
-                {question.prompt}
-              </p>
+              {/* Formatted Question Text & Code Snippets */}
+              {renderFormattedPrompt(question.prompt)}
 
               {/* Multiple Choice Options - Clean accessible cards */}
               {question.type === "multiple_choice" && question.options && (
@@ -511,7 +831,9 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
                             )}
                           </div>
                         )}
-                        <span className="text-sm select-none">{opt}</span>
+                        <span className="text-sm select-none font-medium">
+                          {formatOptionText(opt)}
+                        </span>
                         {isWrongAttempt && (
                           <span className="ml-auto text-[10px] font-bold text-rose-600 uppercase tracking-wide px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-900/40">
                             Incorrect Attempt
@@ -566,12 +888,32 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
               {/* Action Buttons Row */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                 <div className="flex items-center gap-2">
+                  {/* Hint Button with Cooldown Lock */}
                   <button
                     onClick={handleHintClick}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 font-semibold text-xs border border-amber-200 dark:border-amber-800 transition-colors"
+                    disabled={cooldownSeconds > 0}
+                    title={
+                      cooldownSeconds > 0
+                        ? "Cooldown active: Read the code/equation step carefully before requesting the next hint"
+                        : "Request a hint"
+                    }
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl font-semibold text-xs border transition-colors ${
+                      cooldownSeconds > 0
+                        ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed dark:bg-slate-800 dark:border-slate-700"
+                        : "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 border-amber-200 dark:border-amber-800"
+                    }`}
                   >
-                    <HelpCircle className="w-4 h-4" />
-                    <span>Get a Hint</span>
+                    {cooldownSeconds > 0 ? (
+                      <>
+                        <ShieldAlert className="w-4 h-4 text-purple-600 animate-pulse" />
+                        <span>Hint Cooldown ({cooldownSeconds}s)</span>
+                      </>
+                    ) : (
+                      <>
+                        <HelpCircle className="w-4 h-4" />
+                        <span>Get a Hint</span>
+                      </>
+                    )}
                   </button>
 
                   <button
@@ -584,7 +926,7 @@ export const Student: React.FC<StudentProps> = ({ onNavigateTeacher }) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {/* If incorrect, give option to skip to next question so student is not permanently blocked */}
+                  {/* Skip Option */}
                   {submissionStatus === "incorrect" && (
                     <button
                       onClick={handleNextQuestion}

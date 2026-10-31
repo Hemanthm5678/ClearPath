@@ -5,7 +5,11 @@ import {
   Concept,
   StudentSummary,
   HeatmapCell,
+  CognitiveState,
+  User,
 } from "../types/api";
+import { DarkModeToggle } from "../components/DarkModeToggle";
+import { AddQuestionModal } from "../components/AddQuestionModal";
 import {
   Users,
   ArrowLeft,
@@ -19,13 +23,23 @@ import {
   Play,
   Layers,
   HelpCircle,
+  Clock,
+  ShieldAlert,
+  Brain,
+  PlusCircle,
 } from "lucide-react";
 
 interface TeacherProps {
+  currentUser?: User | null;
+  onLogout?: () => void;
   onNavigateStudent: () => void;
 }
 
-export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
+export const Teacher: React.FC<TeacherProps> = ({
+  currentUser,
+  onLogout,
+  onNavigateStudent,
+}) => {
   const [heatmap, setHeatmap] = useState<HeatmapResponse | null>(null);
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +49,7 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
     cell: HeatmapCell;
   } | null>(null);
   const [simMessage, setSimMessage] = useState<string>("");
+  const [showAddQuestionModal, setShowAddQuestionModal] = useState<boolean>(false);
 
   const fetchHeatmap = useCallback(async () => {
     setIsLoading(true);
@@ -67,16 +82,16 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
   // Simulate a student telemetry profile across concepts for hackathon demonstration
   const triggerSimulation = async (
     personaName: string,
-    state: "confused" | "hesitant" | "focused"
+    profile: "confused" | "bored" | "gaming" | "naturally_slow" | "focused"
   ) => {
-    setSimMessage(`Simulating telemetry for ${personaName} across all curriculum concepts...`);
+    setSimMessage(`Simulating telemetry for ${personaName}...`);
     try {
       const res = await fetch("/api/simulate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           persona: personaName,
-          profile: state,
+          profile,
         }),
       });
 
@@ -84,57 +99,56 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
         setSimMessage(`Simulation recorded for ${personaName}! Heatmap refreshed.`);
         await fetchHeatmap();
       } else {
-        // Fallback to single session
-        const sessRes = await fetch("/api/session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ profile: state }),
-        });
-        if (sessRes.ok) {
-          const sess = await sessRes.json();
-          await fetch("/api/events", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              session_id: sess.session_id,
-              question_id: sess.question.id,
-              type: state === "confused" ? "lost" : "submit",
-              features: {
-                idle_time: state === "confused" ? 28.0 : state === "hesitant" ? 14.0 : 4.0,
-                edit_count: state === "confused" ? 4 : state === "hesitant" ? 2 : 0,
-                retries: state === "confused" ? 3 : state === "hesitant" ? 1 : 0,
-                backspace_rate: state === "confused" ? 0.35 : 0.05,
-                focus_lost_count: state === "confused" ? 2 : 0,
-              },
-              answer: state === "focused" ? sess.question.correct_answer : "incorrect answer",
-            }),
-          });
-          setSimMessage(`Simulation recorded for ${personaName}. Heatmap refreshed!`);
-          await fetchHeatmap();
-        }
+        setSimMessage(`Simulation endpoint responded with status ${res.status}`);
       }
     } catch (err) {
       setSimMessage(`Simulation error: ${err}`);
     }
   };
 
-  // Helper: map confusion score to cell background color
-  const getCellColor = (score: number) => {
-    if (score >= 0.65) {
+  // Helper: map Cognitive State to cell background color & badge
+  // Color-coded by state:
+  // Green: FOCUSED
+  // Blue/Teal: NATURALLY_SLOW (No intervention needed)
+  // Yellow/Amber: BORED
+  // Purple: GAMING
+  // Red: CONFUSED
+  const getCellColor = (cell: HeatmapCell) => {
+    const cog = cell.cognitive_state?.toUpperCase();
+    const score = cell.confusion;
+
+    if (cog === "GAMING") {
       return {
-        bg: "bg-red-500 hover:bg-red-600 text-white shadow-red-500/20",
-        label: "Confused",
+        bg: "bg-purple-600 hover:bg-purple-700 text-white shadow-purple-600/30",
+        label: "GAMING",
+        badgeClass: "bg-purple-100 text-purple-700 border-purple-300 dark:bg-purple-950/60 dark:border-purple-800",
       };
     }
-    if (score >= 0.35) {
+    if (cog === "BORED") {
       return {
-        bg: "bg-[#F25C1E] hover:bg-orange-600 text-white shadow-orange-500/20",
-        label: "Hesitant",
+        bg: "bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/30",
+        label: "BORED",
+        badgeClass: "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/60 dark:border-amber-800",
+      };
+    }
+    if (cog === "NATURALLY_SLOW") {
+      return {
+        bg: "bg-cyan-600 hover:bg-cyan-700 text-white shadow-cyan-600/30",
+        label: "NATURALLY SLOW",
+        badgeClass: "bg-cyan-100 text-cyan-800 border-cyan-300 dark:bg-cyan-950/60 dark:border-cyan-800",
+      };
+    }
+    if (cog === "CONFUSED" || score >= 0.65) {
+      return {
+        bg: "bg-red-500 hover:bg-red-600 text-white shadow-red-500/30",
+        label: "CONFUSED",
+        badgeClass: "bg-red-100 text-red-700 border-red-300 dark:bg-red-950/60 dark:border-red-800",
       };
     }
     return {
-      bg: "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/20",
-      label: "Calm",
+      bg: "bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/30",
+      label: "FOCUSED",
+      badgeClass: "bg-emerald-100 text-emerald-700 border-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-800",
     };
   };
 
@@ -169,12 +183,46 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
               </span>
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Real-time cognitive load & concept confusion matrix
+              Cognitive State & Closed-Loop Telemetry Verification
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <DarkModeToggle showLabel={false} />
+
+          {currentUser && (
+            <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200/60 dark:border-orange-800/40 text-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-bold text-[#F25C1E] dark:text-orange-300">
+                  {currentUser.name}
+                </span>
+                <span className="text-[10px] text-slate-400 capitalize">
+                  ({currentUser.role})
+                </span>
+              </div>
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  title="Switch Account or Role"
+                  className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 underline"
+                >
+                  Switch
+                </button>
+              )}
+            </div>
+          )}
+
+          <button
+            onClick={() => setShowAddQuestionModal(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#6A35D8] hover:bg-[#562ab3] text-white text-xs font-bold shadow-md shadow-purple-500/20 transition-all hover:scale-105 active:scale-95"
+            title="Author a new MCQ with AI Tutor auto-scaffolding"
+          >
+            <PlusCircle className="w-3.5 h-3.5" />
+            <span>+ Add New Question</span>
+          </button>
+
           <button
             onClick={fetchHeatmap}
             disabled={isLoading}
@@ -187,7 +235,7 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
       </header>
 
       {/* Main Grid View */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+      <main className="flex-1 max-w-[1720px] w-full mx-auto px-4 sm:px-8 py-6 space-y-6">
         {/* Health & Fallback Status Banner */}
         {health && (
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
@@ -249,7 +297,7 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
 
         {/* Live Simulation Trigger Controls for Hackathon Judges */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
-          <div className="flex items-center justify-between gap-3 mb-2">
+          <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
             <span
               className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
               style={{ color: "#6A35D8" }}
@@ -264,29 +312,43 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
             )}
           </div>
           <p className="text-xs text-slate-500 mb-3">
-            Inject realistic student telemetry to see the heatmap matrix update live:
+            Inject realistic student telemetry across 5 Cognitive States to see the heatmap update live:
           </p>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => triggerSimulation("Alex (High Hesitation)", "confused")}
+              onClick={() => triggerSimulation("Alex (High Confusion)", "confused")}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold border border-red-200 transition-colors"
             >
-              <Play className="w-3.5 h-3.5" />
-              <span>Simulate Confused Student</span>
+              <Brain className="w-3.5 h-3.5" />
+              <span>Simulate Confused</span>
             </button>
             <button
-              onClick={() => triggerSimulation("Sam (Pauses & Edits)", "hesitant")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 text-xs font-bold border border-orange-200 transition-colors"
+              onClick={() => triggerSimulation("Taylor (Bored / Guessing)", "bored")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200 transition-colors"
             >
-              <Play className="w-3.5 h-3.5" />
-              <span>Simulate Hesitant Student</span>
+              <Zap className="w-3.5 h-3.5" />
+              <span>Simulate Bored / Guessing</span>
+            </button>
+            <button
+              onClick={() => triggerSimulation("Casey (Hint Gaming)", "gaming")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 transition-colors"
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span>Simulate Gaming Hints</span>
+            </button>
+            <button
+              onClick={() => triggerSimulation("Sam (Deliberate Thinker)", "naturally_slow")}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-700 text-xs font-bold border border-cyan-200 transition-colors"
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>Simulate Naturally Slow</span>
             </button>
             <button
               onClick={() => triggerSimulation("Maya (Steady Cadence)", "focused")}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200 transition-colors"
             >
-              <Play className="w-3.5 h-3.5" />
-              <span>Simulate Focused Student</span>
+              <Activity className="w-3.5 h-3.5" />
+              <span>Simulate Focused</span>
             </button>
           </div>
         </div>
@@ -295,47 +357,65 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md p-6 overflow-hidden">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
-                <Users className="w-5 h-5 text-[#6A35D8]" />
-                Student vs Concept Confusion Matrix
-              </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Cells colored by real-time confusion score. Click any cell to inspect the pedagogical diagnostic reasoning.
+              <div className="flex items-center gap-3">
+                <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Users className="w-5 h-5 text-[#6A35D8]" />
+                  Student vs Concept Cognitive Heatmap Matrix
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowAddQuestionModal(true)}
+                  className="hidden sm:flex items-center gap-1 text-xs font-bold text-[#6A35D8] dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-1 rounded-lg border border-purple-200/60 dark:border-purple-800/40 transition-colors"
+                >
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>+ Author New Question</span>
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Cells color-coded by detected Cognitive State. Click any cell to inspect Hint 1 breakdown & Hint 3 efficacy verification.
               </p>
             </div>
 
-            {/* Legend */}
-            <div className="flex items-center gap-4 text-xs font-semibold">
+            {/* 5-State Legend */}
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded bg-emerald-500 inline-block shadow-sm"></span>
-                <span className="text-slate-600 dark:text-slate-300">Calm (0 - 35%)</span>
+                <span className="w-3 h-3 rounded bg-emerald-500 inline-block shadow-sm"></span>
+                <span className="text-slate-600 dark:text-slate-300">Focused (Green)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded bg-[#F25C1E] inline-block shadow-sm"></span>
-                <span className="text-slate-600 dark:text-slate-300">Hesitant (35 - 65%)</span>
+                <span className="w-3 h-3 rounded bg-cyan-600 inline-block shadow-sm"></span>
+                <span className="text-slate-600 dark:text-slate-300">Naturally Slow (Teal)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3.5 h-3.5 rounded bg-red-500 inline-block shadow-sm"></span>
-                <span className="text-slate-600 dark:text-slate-300">Confused (&gt; 65%)</span>
+                <span className="w-3 h-3 rounded bg-amber-500 inline-block shadow-sm"></span>
+                <span className="text-slate-600 dark:text-slate-300">Bored (Amber)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded bg-purple-600 inline-block shadow-sm"></span>
+                <span className="text-slate-600 dark:text-slate-300">Gaming (Purple)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded bg-red-500 inline-block shadow-sm"></span>
+                <span className="text-slate-600 dark:text-slate-300">Confused (Red)</span>
               </div>
             </div>
           </div>
 
           {/* Matrix Table */}
           {students.length > 0 && concepts.length > 0 ? (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto scrollbar-thin">
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="text-left font-bold text-xs uppercase tracking-wider text-slate-400 py-3 px-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 rounded-tl-xl w-48">
-                      Student
+                    <th className="text-left font-bold text-xs uppercase tracking-wider text-slate-400 py-3.5 px-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 rounded-tl-xl w-44 min-w-[150px]">
+                      Student Profile
                     </th>
                     {concepts.map((concept) => (
                       <th
                         key={concept.id}
-                        className="text-center font-bold text-xs text-slate-700 dark:text-slate-200 py-3 px-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 min-w-[130px]"
+                        className="text-center font-bold text-xs text-slate-700 dark:text-slate-200 py-3 px-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 min-w-[115px]"
                       >
-                        <span className="block truncate max-w-[140px] mx-auto" title={concept.name}>
+                        <span className="block text-[11px] font-bold leading-tight mx-auto max-w-[125px]" title={concept.name}>
                           {concept.name}
                         </span>
                       </th>
@@ -360,7 +440,7 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
                           const cell = rowCells[cIdx] || { confusion: 0.1, why: "" };
                           const confScore = Math.max(0.0, Math.min(1.0, cell.confusion));
                           const percentage = Math.round(confScore * 100);
-                          const { bg } = getCellColor(confScore);
+                          const { bg, label } = getCellColor(cell);
                           const isSelected =
                             selectedCell?.student.id === student.id &&
                             selectedCell?.concept.id === concept.id;
@@ -381,7 +461,7 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
                                     ? "ring-4 ring-[#6A35D8] scale-105 z-10"
                                     : ""
                                 }`}
-                                title={`${percentage}% confusion - ${cell.why}`}
+                                title={`${label}: ${percentage}% confusion - ${cell.why}`}
                               >
                                 {percentage}%
                               </button>
@@ -401,59 +481,134 @@ export const Teacher: React.FC<TeacherProps> = ({ onNavigateStudent }) => {
             </div>
           )}
 
-          {/* Diagnostic Inspection Drawer for Selected Cell */}
+          {/* Clickable Telemetry Diagnostic Drawer for Selected Cell */}
           {selectedCell && (
-            <div className="mt-6 p-4 rounded-2xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 animate-slide-up">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-[#6A35D8] flex items-center gap-1.5">
+            <div className="mt-6 p-5 rounded-2xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 animate-slide-up space-y-4">
+              <div className="flex items-center justify-between border-b border-purple-200 dark:border-purple-800 pb-3">
+                <span className="text-xs font-bold text-[#6A35D8] flex items-center gap-1.5 uppercase tracking-wider">
                   <Layers className="w-4 h-4" />
-                  Diagnostic Telemetry Inspector
+                  Telemetry Diagnostic & Efficacy Drawer
                 </span>
                 <button
                   onClick={() => setSelectedCell(null)}
-                  className="text-xs text-slate-400 hover:text-slate-600 font-bold"
+                  className="text-xs text-slate-400 hover:text-slate-600 font-bold px-2 py-1 rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-colors"
                 >
                   ✕ Close
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              {/* Student & Cell Metadata */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Student:</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Student:</span>
                   <span className="font-bold text-slate-800 dark:text-slate-200">
                     {selectedCell.student.name}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Concept:</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Concept:</span>
                   <span className="font-bold text-slate-800 dark:text-slate-200">
                     {selectedCell.concept.name}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px]">Confusion Score:</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Cognitive State:</span>
+                  <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold border mt-0.5 ${getCellColor(selectedCell.cell).badgeClass}`}>
+                    {selectedCell.cell.cognitive_state || "FOCUSED"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px] uppercase font-bold">Confusion Score:</span>
                   <span className="font-bold text-slate-800 dark:text-slate-200">
-                    {Math.round(selectedCell.cell.confusion * 100)}% (
-                    {selectedCell.cell.confusion >= 0.65
-                      ? "Confused"
-                      : selectedCell.cell.confusion >= 0.35
-                      ? "Hesitant"
-                      : "Calm"}
-                    )
+                    {Math.round(selectedCell.cell.confusion * 100)}%
                   </span>
                 </div>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-purple-200 dark:border-purple-800 text-xs text-slate-700 dark:text-slate-300">
-                <span className="font-bold block mb-1">Contributing Diagnostic Signals:</span>
-                <p className="font-mono text-[11px] bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-purple-100 dark:border-purple-900">
-                  {selectedCell.cell.why || "Cadence optimal; no negative cognitive signals."}
+              {/* Hint 1 Breakdown: Why this state was chosen */}
+              <div className="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-purple-100 dark:border-purple-900/60 shadow-sm">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#6A35D8]" />
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Hint 1: Persona-Normalized & Complexity-Scaled Breakdown
+                  </span>
+                </div>
+                <p className="font-mono text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                  {selectedCell.cell.breakdown || selectedCell.cell.why || "Cadence optimal; response matches student baseline."}
                 </p>
+              </div>
+
+              {/* Hint 3 Verification Card: Closed-Loop Intervention Efficacy */}
+              <div className="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-purple-100 dark:border-purple-900/60 shadow-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                      Hint 3: Closed-Loop Intervention Efficacy Verification
+                    </span>
+                  </div>
+                  {selectedCell.cell.efficacy?.status && (
+                    <span
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border ${
+                        selectedCell.cell.efficacy.status === "HELPED"
+                          ? "bg-emerald-50 text-emerald-700 border-emerald-300"
+                          : selectedCell.cell.efficacy.status === "UNRESOLVED"
+                          ? "bg-rose-50 text-rose-700 border-rose-300"
+                          : "bg-blue-50 text-blue-700 border-blue-300"
+                      }`}
+                    >
+                      {selectedCell.cell.efficacy.status}
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-[11px]">
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">BEFORE INTERVENTION:</span>
+                      <strong className="text-amber-600">{selectedCell.cell.efficacy?.state_before || selectedCell.cell.cognitive_state || "CONFUSED"}</strong>
+                    </div>
+                    <div className="text-slate-400">➔</div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">ACTION DISPATCHED:</span>
+                      <strong className="text-purple-600">
+                        {selectedCell.cell.cognitive_state === "GAMING"
+                          ? "10s Cooldown Lock + Self-Check"
+                          : selectedCell.cell.cognitive_state === "BORED"
+                          ? "Rapid Streak Challenge"
+                          : selectedCell.cell.cognitive_state === "NATURALLY_SLOW"
+                          ? "Popup Suppression (Autonomous)"
+                          : "Socratic Re-explanation"}
+                      </strong>
+                    </div>
+                    <div className="text-slate-400">➔</div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px]">OUTCOME:</span>
+                      <strong className={selectedCell.cell.efficacy?.status === "HELPED" ? "text-emerald-600" : "text-rose-600"}>
+                        {selectedCell.cell.efficacy?.state_after || selectedCell.cell.cognitive_state || "RESOLVED"}
+                      </strong>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                    {selectedCell.cell.efficacy?.summary_text ||
+                      "✅ Verified Autonomous: Student pace matches deliberate profile. Intervention withheld to prevent cognitive friction."}
+                  </p>
+                </div>
               </div>
             </div>
           )}
         </div>
       </main>
+
+      {/* AI Question Authoring Studio Modal */}
+      <AddQuestionModal
+        isOpen={showAddQuestionModal}
+        onClose={() => setShowAddQuestionModal(false)}
+        concepts={concepts}
+        onQuestionCreated={() => fetchHeatmap()}
+        onNavigateStudent={onNavigateStudent}
+      />
     </div>
   );
 };
