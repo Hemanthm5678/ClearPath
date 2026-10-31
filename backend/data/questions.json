@@ -537,5 +537,27 @@
     "step_by_step": "1. Identify a, b, c: a = 4, b = -12, c = 9.\n2. Compute the discriminant: Δ = b² - 4ac = (-12)² - 4·4·9 = 144 - 144 = 0.\n3. Interpret Δ: Δ = 0 means the quadratic has exactly one real root (a repeated root).\n4. Find the root: x = -b/(2a) = 12/(8) = 1.5.\n5. Conclude: The equation has one real root, x = 1.5.",
     "created_by": "teacher",
     "created_at": 1793402887.2126489
+  },
+  {
+    "id": "q_quadratic__03af26",
+    "concept_id": "c8_quadratic_algebra",
+    "domain": "math",
+    "difficulty": "medium",
+    "complexity_tier": "Medium",
+    "expected_time_sec": 50,
+    "complexity_weight": 1.8,
+    "prompt": "What is the nature and count of the real roots for the quadratic equation: 4x² - 12x + 9 = 0?",
+    "type": "multiple_choice",
+    "options": [
+      "Exactly one real root (repeated rational root, Δ = 0)",
+      "Two distinct irrational real roots (Δ > 0)",
+      "Two complex conjugate imaginary roots (Δ < 0)",
+      "No real or complex roots exist"
+    ],
+    "correct_answer": "Exactly one real root (repeated rational root, Δ = 0)",
+    "hint": "What does the discriminant (b²-4ac) tell you about the number of real solutions of a quadratic?",
+    "step_by_step": "1. Identify a, b, c: a=4, b=-12, c=9.\n2. Compute discriminant Δ = b²-4ac = (-12)²-4·4·9 = 144-144 = 0.\n3. Since Δ = 0, the quadratic has exactly one real root (a repeated root).\n4. Find the root using x = -b/(2a) = -(-12)/(2·4) = 12/8 = 3/2.",
+    "created_by": "teacher",
+    "created_at": 1793415147.0391052
   }
 ]

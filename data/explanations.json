@@ -1524,5 +1524,36 @@
         "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
       }
     }
+  },
+  "q_quadratic__03af26": {
+    "concept_id": "c8_quadratic_algebra",
+    "visual": {
+      "level_1": {
+        "explanation": "Imagine the parabola y = 4x²-12x+9 opening upward. Its vertex lies on the x‑axis because the discriminant is zero, so the curve just touches the axis at one point and never crosses it.",
+        "check_question": "If you sketch the parabola y = 4x²-12x+9, does it intersect the x‑axis at two points, one point, or not at all?",
+        "visual_description": "Visual scaffolding diagram for Quadratics & Deep Algebra"
+      }
+    },
+    "analogy": {
+      "level_1": {
+        "explanation": "Think of a ball thrown straight up that just grazes the ground before coming back down. It touches the ground only once—just like the parabola touches the x‑axis once when Δ = 0.",
+        "check_question": "If a ball thrown upward only touches the ground once, how many times does it touch the ground?",
+        "visual_description": "Real-world analogy for Quadratics & Deep Algebra"
+      }
+    },
+    "step_by_step": {
+      "level_1": {
+        "explanation": "Δ = (-12)²-4·4·9 = 144-144 = 0 → one repeated root.\nRoot: x = -b/(2a) = 12/(8) = 3/2.",
+        "check_question": "What is the discriminant of 4x²-12x+9?",
+        "visual_description": "Step-by-step logic breakdown for Quadratics & Deep Algebra"
+      }
+    },
+    "simple_language": {
+      "level_1": {
+        "explanation": "When the part under the square root in the quadratic formula is zero, the equation has exactly one real solution.",
+        "check_question": "If the discriminant of a quadratic is zero, how many real solutions does it have?",
+        "visual_description": "Plain English rule of thumb for Quadratics & Deep Algebra"
+      }
+    }
   }
 }
